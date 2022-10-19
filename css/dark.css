@@ -5,7 +5,7 @@
 
 /* snote夜间模式 */
 .night .tip{
-    color: #4c4948;
+    color: #231aa7;
 }
 
 /* 背景颜色变灰色 */
@@ -75,7 +75,7 @@ body.DarkMode .v[data-class="v"] .vinput, .v[data-class="v"] .veditor, .v[data-c
 body.DarkMode blockquote {
     background-color: #666 !important;
     border-left: 5px solid #3d8afd !important;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(0, 0, 0, 0.6);
 }
 body.DarkMode .nav-menu li .sub-nav li a {
     color: rgba(255, 255, 255, 0.306) !important;
@@ -88,11 +88,11 @@ body.DarkMode .prev-next .article-badge {
     background-color: rgba(255, 255, 255, 0.6);
 }
 body.DarkMode header .side-nav .menu-list a {
-    color: rgba(255, 255, 255, 0.6) !important;
+    color: rgba(0, 0, 0, 0.6) !important;
 }
 
 body.DarkMode .mobile-menu-list a i {
-    color: rgba(255, 255, 255, 0.6) !important;
+    color: rgba(0, 0, 0, 0.6) !important;
 }
 body.DarkMode .bg-color {
     background-image:linear-gradient(to right, #363636 0, rgba(0, 0, 241, 0.7) 100%);
@@ -104,7 +104,7 @@ body.DarkMode span.bg-color {
 
 /* 背景颜色变黑色 */
 /* body.DarkMode #rewardModal .modal-content, */
-body.DarkMode #reward .reward-link,
+/* body.DarkMode #reward .reward-link,
 body.DarkMode #rewardModal .fa-times,
 body.DarkMode #rewardModal .reward-title,
 body.DarkMode #vcomments ::placeholder,
@@ -122,9 +122,9 @@ body.DarkMode .tag_share .chip,
 body.DarkMode .archive-container,
 body.DarkMode .modal,
 body.DarkMode .v[data-class="v"] .vcount,
-body.DarkMode header .side-nav,
-body.DarkMode header .side-nav .menu-list .m-nav-show {
-    filter: invert(0.8);
+body.DarkMode header .side-nav,.menu-list.m-nav-show */
+body.DarkMode header .side-nav {
+   filter: invert(0.8);
 }
 body.DarkMode .waline-card .comment_headling span {
     color: rgba(255, 255, 255, 0.6);
@@ -269,8 +269,8 @@ body.DarkMode header .brand-logo .logo-img {
 .DarkMode .wrapper, .DarkMode hr, 
 .DarkMode img, 
 .DarkMode li:before {
-    -webkit-filter: brightness(0.8) !important;
-    filter: brightness(0.8) !important;
+    -webkit-filter: brightness(0.7) !important;
+    filter: brightness(0.7) !important;
 }
 body.DarkMode .toc-widget .toc-list-item {
     color:#000
