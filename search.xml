@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Strassen算法</title>
+      <link href="/2022/10/19/strassen-suan-fa/"/>
+      <url>/2022/10/19/strassen-suan-fa/</url>
+      
+        <content type="html"><![CDATA[<p>本篇博客正式的第一篇文章，令人感叹。<br>看群里香肠爷的说法心血来潮，搜搜看这个加速后的矩阵乘法怎么做。</p><p>本篇假设，涉及乘法的两矩阵都为方阵且</p><h2 id="普通矩阵乘法"><a href="#普通矩阵乘法" class="headerlink" title="普通矩阵乘法"></a>普通矩阵乘法</h2><p>大家应该都能写出来代码吧（逃），$O(n^3)$复杂度捏。</p><h2 id="Strassen算法原理"><a href="#Strassen算法原理" class="headerlink" title="Strassen算法原理"></a>Strassen算法原理</h2><p>咕咕咕，等有时间写😭😭<br>占坑啊嗯。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 时间复杂度 </tag>
+            
+            <tag> 矩阵 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Part1</title>
       <link href="/2022/10/19/part1/"/>
       <url>/2022/10/19/part1/</url>
@@ -25,19 +52,6 @@
             <tag> 暑假前集训 </tag>
             
         </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>text title</title>
-      <link href="/2022/10/18/text-title/"/>
-      <url>/2022/10/18/text-title/</url>
-      
-        <content type="html"><![CDATA[<h2 id="test2"><a href="#test2" class="headerlink" title="test2"></a>test2</h2><h3 id="test3"><a href="#test3" class="headerlink" title="test3"></a>test3</h3><p>helloworld！</p>]]></content>
-      
-      
       
     </entry>
     
