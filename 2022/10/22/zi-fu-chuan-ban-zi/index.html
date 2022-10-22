@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Apriori, ZzzRemake">
-    <meta name="description" content="某课程的先导，但我觉得这是数据结构老师随手划的一个项目。不管了，先挖挖你的🏃✋。">
+    <meta name="keywords" content="字符串板子, ZzzRemake">
+    <meta name="description" content="缓缓投下板子🏊‍♂️">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Apriori | ZzzRemake</title>
+    <title>字符串板子 | ZzzRemake</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="/medias/favicon.png">
     
@@ -570,12 +570,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Apriori</h1>
+                    <h1 class="description center-align post-title">字符串板子</h1>
                 </div>
             </div>
         </div>
@@ -599,12 +599,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/">
-                                <span class="chip bg-color">数据挖掘</span>
+                            <a href="/tags/String/">
+                                <span class="chip bg-color">String</span>
                             </a>
                         
-                            <a href="/tags/%E9%A2%91%E7%B9%81%E9%A1%B9%E9%9B%86/">
-                                <span class="chip bg-color">频繁项集</span>
+                            <a href="/tags/%E6%9D%BF%E5%AD%90/">
+                                <span class="chip bg-color">板子</span>
                             </a>
                         
                     </div>
@@ -615,8 +615,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E7%AE%97%E6%B3%95/" class="post-category">
-                                算法
+                            <a href="/categories/ACM/" class="post-category">
+                                ACM
                             </a>
                         
                     </div>
@@ -654,27 +654,51 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>先存着，乐。<br>捏麻麻滴图灵的项目和报告有点多，Apriori算法以及数据挖掘的相关概念倒是可以稍微总结下，毕竟我之后不会去看课本和ppt了。<br>谁看这些啊（暴论）</p>
-<h2 id="来点概念"><a href="#来点概念" class="headerlink" title="来点概念"></a>来点概念</h2><h3 id="basic-conception"><a href="#basic-conception" class="headerlink" title="basic conception"></a>basic conception</h3><p>首先要明白的一点是，这里的数据挖掘基本上是去寻找数据的关联性的。</p>
-<p>项集：若干个项的集合，是数据挖掘种最基本的模式。<br>事务：每个事务都是非空项集，都拥有一个唯一表示TID。<br>数据集：事务的集合。<br>k项集：事务$|A|=k$</p>
-<p>总体而言，给定了数据集后，我们需要通过分析来发现频繁项集。</p>
-<p>呐，接下来整点数学。</p>
-<h3 id="math"><a href="#math" class="headerlink" title="math"></a>math</h3><p>支持度$Support(A,B)=P(AB)=\frac{|AB|}{|\Omega|}$</p>
-<p>多个事物的支持度当然可以推了嘛。当然，这种东西不一定能够成为频繁项集的评判标准，接下来便有：</p>
-<p>置信度$Confidence(A&lt;-B)=P(A|B)$</p>
-<p>呐，条件概率！条件概率就能稍微整点和关联性了，但是还是不够。</p>
-<p>提升度$Lift(A&lt;-B)=P(A|B)/P(AB)$</p>
-<p>这就能一眼顶针了。若 $Lift$ 能够大于1，则该规则($A&lt;-B$)为有效强关联规则，而等于1就是我们概率论学过的相互独立事件：</p>
-<p>$P(X|Y)=P(X)$</p>
-<p>小于等于1就是无效的强关联规则了。<br>当然，可以自己定义标准，这里只是一些常用的形式。当我们自定义的标准算出的值大于某个阈值（看看之后能不能填坑解释下）,便可认为他是频繁k项集。</p>
-<h2 id="来点性质"><a href="#来点性质" class="headerlink" title="来点性质"></a>来点性质</h2><p>k维数据项集为频繁项集的必要条件是所有k-1子项集也为频繁项集。（先验原理）<br>似乎可以根据这个规则来线性递推？</p>
-<p>具体似乎也补充不了太多，先放着🕊。</p>
-<h2 id="来点实现"><a href="#来点实现" class="headerlink" title="来点实现"></a>来点实现</h2><p>为了找出所有频繁k项集的集合$L_k$，需要逐层搜索。现在，对于生成$L_k$:</p>
-<h3 id="连接步骤"><a href="#连接步骤" class="headerlink" title="连接步骤"></a>连接步骤</h3><p>根据给的数据集，生成$C_k$（候选集合）罢！也就是多一项的问题！<br>但一眼TLE（错乱）</p>
-<h3 id="剪枝步骤"><a href="#剪枝步骤" class="headerlink" title="剪枝步骤"></a>剪枝步骤</h3><p>$C_k$是$(L_k)$的超集，所以$C_k$可以继续剪枝。<br>压缩$C_k $（利用前面讲的性质）,用非空子集是否是频繁项集（阈值之类的）做判断条件来剪枝，然后用阈值再次判断是否是频繁项集。</p>
-<p>最后，若扫描k项集为空集，则k-1为最大频繁项集，算法结束。</p>
-<p>当然，还有诸如极大频繁项集，这等之后填坑了。从中也可以看到，其实这方法蛮低效的，两剪枝在每层都要扫描数据集前面都是fw，其实和暴实差不多了。</p>
-<h2 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h2><p>感觉我写了一堆挖了一堆坑，乐。图灵👊😭。</p>
+                <h2 id="字典树"><a href="#字典树" class="headerlink" title="字典树"></a>字典树</h2><pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">struct</span> trie<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> nxt<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">26</span><span class="token punctuation">]</span><span class="token punctuation">,</span> cnt <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">bool</span> vis<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//该节点结尾的字符串是否存在</span>
+    <span class="token comment" spellcheck="true">//int repeat[N] = {0};</span>
+    <span class="token comment" spellcheck="true">//两种重载版本</span>
+    <span class="token keyword">void</span> <span class="token function">insert</span><span class="token punctuation">(</span>string <span class="token operator">&amp;</span>s<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">int</span> now <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>s<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">int</span> tem <span class="token operator">=</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span><span class="token punctuation">)</span> nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">++</span>cnt<span class="token punctuation">;</span>
+            now <span class="token operator">=</span> nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        vis<span class="token punctuation">[</span>now<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">int</span> <span class="token function">find</span><span class="token punctuation">(</span>string <span class="token operator">&amp;</span>s<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">int</span> now <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>s<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">int</span> tem <span class="token operator">=</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            now <span class="token operator">=</span> nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">/*if(vis[now]){
+            ++repeat[now];
+        }   return repeat[now];*/</span>
+        <span class="token keyword">return</span> vis<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="前缀函数"><a href="#前缀函数" class="headerlink" title="前缀函数"></a>前缀函数</h2><p>需要注意的是，前缀函数本身就是”跳转“，需要注意这个跳转的失配函数性质。</p>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">int</span> pre_len<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">pre_len_process</span><span class="token punctuation">(</span>string s<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//kmp:string s,string t;</span>
+    <span class="token comment" spellcheck="true">//string last=s+"#"+t;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>s<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">int</span> j<span class="token operator">=</span>pre_len<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span>j<span class="token operator">></span><span class="token number">0</span><span class="token operator">&amp;&amp;</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">!=</span>s<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            j<span class="token operator">=</span>pre_len<span class="token punctuation">[</span>j<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">==</span>s<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token operator">++</span>j<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        pre_len<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">=</span>j<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
 
                 
             </div>
@@ -701,7 +725,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zzzremake.github.io/2022/10/22/apriori/">https://zzzremake.github.io/2022/10/22/apriori/</a>
+                    <a href="https://zzzremake.github.io/2022/10/22/zi-fu-chuan-ban-zi/">https://zzzremake.github.io/2022/10/22/zi-fu-chuan-ban-zi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -739,12 +763,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/">
-                                    <span class="chip bg-color">数据挖掘</span>
+                                <a href="/tags/String/">
+                                    <span class="chip bg-color">String</span>
                                 </a>
                             
-                                <a href="/tags/%E9%A2%91%E7%B9%81%E9%A1%B9%E9%9B%86/">
-                                    <span class="chip bg-color">频繁项集</span>
+                                <a href="/tags/%E6%9D%BF%E5%AD%90/">
+                                    <span class="chip bg-color">板子</span>
                                 </a>
                             
                         </div>
@@ -1061,19 +1085,19 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2022/10/22/tu-lun-ban-zi/">
+                <a href="/2022/10/22/shu-ju-jie-gou-ban-zi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="图论板子">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="数据结构板子">
                         
-                        <span class="card-title">图论板子</span>
+                        <span class="card-title">数据结构板子</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            搬运板子ing
+                            再次投下————咕咕咕
                         
                     </div>
                     <div class="publish-info">
@@ -1095,12 +1119,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Graph/">
-                        <span class="chip bg-color">Graph</span>
-                    </a>
-                    
                     <a href="/tags/%E6%9D%BF%E5%AD%90/">
                         <span class="chip bg-color">板子</span>
+                    </a>
+                    
+                    <a href="/tags/Data-Structure/">
+                        <span class="chip bg-color">Data Structure</span>
                     </a>
                     
                 </div>
@@ -1114,31 +1138,31 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/10/19/strassen-suan-fa/">
+                <a href="/2022/10/22/tu-lun-ban-zi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Strassen算法">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="图论板子">
                         
-                        <span class="card-title">Strassen算法</span>
+                        <span class="card-title">图论板子</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            如何降低矩阵乘法时间复杂度？（虽然常数大的离谱）
+                            搬运板子ing
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-22
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%AE%97%E6%B3%95/" class="post-category">
-                                    算法
+                            <a href="/categories/ACM/" class="post-category">
+                                    ACM
                                 </a>
                             
                             
@@ -1148,20 +1172,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">
-                        <span class="chip bg-color">时间复杂度</span>
+                    <a href="/tags/Graph/">
+                        <span class="chip bg-color">Graph</span>
                     </a>
                     
-                    <a href="/tags/%E5%88%86%E6%B2%BB/">
-                        <span class="chip bg-color">分治</span>
-                    </a>
-                    
-                    <a href="/tags/Matrix/">
-                        <span class="chip bg-color">Matrix</span>
-                    </a>
-                    
-                    <a href="/tags/Math/">
-                        <span class="chip bg-color">Math</span>
+                    <a href="/tags/%E6%9D%BF%E5%AD%90/">
+                        <span class="chip bg-color">板子</span>
                     </a>
                     
                 </div>
