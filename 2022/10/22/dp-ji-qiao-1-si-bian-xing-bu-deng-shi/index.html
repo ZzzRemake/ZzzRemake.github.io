@@ -661,9 +661,9 @@
                 <p>区间dp中，我们可以见到以下式子：</p>
 <p>$dp(i,j)=min_{i\leq k&lt; j}(dp(i,k)+dp(k+1,j)+~~~w(i,j)~~~)$</p>
 <p>那么，对于这个 $w$ ，如果满足单调性：</p>
-<p>$(l\leq l’\leq r’\leq r)~~~w(l’,r’)\leq w(l,r)$</p>
+<p>$$(l\leq l’\leq r’\leq r)~~~w(l’,r’)\leq w(l,r)$$</p>
 <p>满足四边形不等式：</p>
-<p>$(l\leq l’\leq r’\leq r)~~~w(l,r’)+w(l’,r)\leq w(l,r)+w(l’,r’)$</p>
+<p>$$(l\leq l’\leq r’\leq r)~~~w(l,r’)+w(l’,r)\leq w(l,r)+w(l’,r’)$$</p>
 <p>那么有，对于上面的dp而言，满足四边形不等式。<br>证明：<br>对于$l=l’$或者$r=r’$，有：<br>$dp(l,r’)+dp(l’,r), ~~~ dp(l,r)+dp(l’,r’)$，我觉得你观察下就能整出来。。</p>
 <p>那么，数学归纳法整个：对$len=r-l+1$归纳：</p>
 <ol>
@@ -672,9 +672,8 @@
 <p> $原式=dp(l,r’)+dp(r’,r) \leq dp(l,r)+dp(l’,r’)=dp(l,r)$</p>
 </li>
 </ol>
-<p>即证明该式成立。<br>则对$dp(l,r)$:<br>设$k=max{ x|dp(l,r)=dp(l,x-1)+dp(x,r)+w(l,r)}$<br>由对称性：不妨设$k\leq r’$.<br>有：</p>
-<p>$dp(l,r’)+dp(l’,r) \leq w(l,r’)+dp(l,k-1)+dp(k,r’)+dp(l’,r)\<br>\leq w(l,r)+dp(l,k-1)+dp(k,r’)+dp(l’,r) \<br>\leq w(l,r)+dp(l,k-1)+dp(k,r)=dp(l,r)<br>$<br>2. $l&lt;l’&lt; r’&lt; r$<br>对$dp(l,r’)+dp(l’,r)$而言：设<br>$y=max{x|dp(l,r’)=dp(l,x-1)+dp(x,r’)+w(l,r’) }$<br>$z=max{x|dp(l’,r)=dp(l’,x-1)+dp(x,r)+w(l’,r)}$<br>则：<br>不妨设：$y\leq z$,则有$l&lt;z\leq y \leq r$.<br>$原式\leq dp(l,y-1)+dp(y,r’)+w(l,r’)+w(l’,r)+dp(l’,z-1)+dp(z,r) \<br>\leq w(l,r)+w(l’,r’)+dp(l,y-1)+dp(l’,z-1)+dp(y,r’)+dp(z,r) \<br>\leq w(l,r)+w(l’,r’)+dp(l,y-1)+dp(l’,z-1)+dp(y,r)+dp(z,r’) \<br>= dp(l,r)+dp(l’,r’)<br>$</p>
-<p>这性质和区间$dp$有啥关系呢？<br>该性质能够证明单调性：对于满足四边形不等式的dp状态，定义$s(i,j)$为$dp(i,j)$决策过程的最大值。<br>因此有:$s(i,j)$单调，<br>$s(i,j)\leq s(i,j+1)\leq s(i+1,j+1)$.<br>因此在dp过程中：<br>$dp(i,j)=\begin{cases}<br>min_{s(i,j-1)\leq k \leq s(i+1,j)}{dp(i,k-1)+dp(k,j)+w(i,j)} &amp; i&lt;j\<br>0 &amp;i=j \<br>+\infin &amp;i&gt;j<br>\end{cases}$</p>
+<p>即证明该式成立。<br>则对$dp(l,r)$:<br>设$k=max{ x|dp(l,r)=dp(l,x-1)+dp(x,r)+w(l,r)}$<br>由对称性：不妨设$k\leq r’$.<br>有：<br>$$<br>\begin{aligned}<br>dp(l,r’)+dp(l’,r) &amp;\leq w(l,r’)+dp(l,k-1)+dp(k,r’)+dp(l’,r)\\<br>&amp; \leq w(l,r)+dp(l,k-1)+dp(k,r’)+dp(l’,r)\\<br>&amp; \leq w(l,r)+dp(l,k-1)+dp(k,r)=dp(l,r)<br>\end{aligned}$$<br>2. $l&lt;l’&lt; r’&lt; r$<br>对$dp(l,r’)+dp(l’,r)$而言：设<br>$y=max{x|dp(l,r’)=dp(l,x-1)+dp(x,r’)+w(l,r’) }$<br>$z=max{x|dp(l’,r)=dp(l’,x-1)+dp(x,r)+w(l’,r)}$<br>则：<br>不妨设：$y\leq z$,则有$l&lt;z\leq y \leq r$.<br>原式<br>$$\begin{aligned}<br>\leq dp(l,y-1)+dp(y,r’)+w(l,r’)+w(l’,r)+dp(l’,z-1)+dp(z,r)\\<br>\leq w(l,r)+w(l’,r’)+dp(l,y-1)+dp(l’,z-1)+dp(y,r’)+dp(z,r)\\<br>\leq w(l,r)+w(l’,r’)+dp(l,y-1)+dp(l’,z-1)+dp(y,r)+dp(z,r’)\\<br>= dp(l,r)+dp(l’,r’)<br>\end{aligned}<br>$$</p>
+<p>这性质和区间$dp$有啥关系呢？<br>该性质能够证明单调性：对于满足四边形不等式的dp状态，定义$s(i,j)$为$dp(i,j)$决策过程的最大值。<br>因此有:$s(i,j)$单调，$s(i,j)\leq s(i,j+1)\leq s(i+1,j+1)$.<br>因此在dp过程中：<br>$$dp(i,j)=\begin{cases}<br>min_{s(i,j-1)\leq k \leq s(i+1,j)}{dp(i,k-1)+dp(k,j)+w(i,j)} &amp; i&lt;j \\<br>0 &amp;i=j \\<br>+\infty &amp;i&gt;j<br>\end{cases}$$</p>
 
                 
             </div>
