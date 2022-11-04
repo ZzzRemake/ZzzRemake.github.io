@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="dp技巧1：四边形不等式, ZzzRemake">
-    <meta name="description" content="区间dp的某种可能的优化技巧。">
+    <meta name="keywords" content="docker-first, ZzzRemake">
+    <meta name="description" content="供docker 某些指令的查询">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>dp技巧1：四边形不等式 | ZzzRemake</title>
+    <title>docker-first | ZzzRemake</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="/medias/favicon.png">
     
@@ -575,7 +575,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">dp技巧1：四边形不等式</h1>
+                    <h1 class="description center-align post-title">docker-first</h1>
                 </div>
             </div>
         </div>
@@ -599,16 +599,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Math/">
-                                <span class="chip bg-color">Math</span>
+                            <a href="/tags/docker/">
+                                <span class="chip bg-color">docker</span>
                             </a>
                         
-                            <a href="/tags/%E5%8C%BA%E9%97%B4dp/">
-                                <span class="chip bg-color">区间dp</span>
-                            </a>
-                        
-                            <a href="/tags/%E4%BC%98%E5%8C%96/">
-                                <span class="chip bg-color">优化</span>
+                            <a href="/tags/primary/">
+                                <span class="chip bg-color">primary</span>
                             </a>
                         
                     </div>
@@ -619,8 +615,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/ACM/" class="post-category">
-                                ACM
+                            <a href="/categories/docker/" class="post-category">
+                                docker
                             </a>
                         
                     </div>
@@ -632,14 +628,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2022-10-22
+                    2022-11-04
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2022-10-22
+                    2022-11-04
                 </div>
                 
 
@@ -658,22 +654,145 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>区间dp中，我们可以见到以下式子：</p>
-<p>$dp(i,j)=min_{i\leq k&lt; j}(dp(i,k)+dp(k+1,j)+~~~w(i,j)~~~)$</p>
-<p>那么，对于这个 $w$ ，如果满足单调性：</p>
-<p>$$(l\leq l’\leq r’\leq r)~~~w(l’,r’)\leq w(l,r)$$</p>
-<p>满足四边形不等式：</p>
-<p>$$(l\leq l’\leq r’\leq r)~~~w(l,r’)+w(l’,r)\leq w(l,r)+w(l’,r’)$$</p>
-<p>那么有，对于上面的dp而言，满足四边形不等式。<br>证明：<br>对于$l=l’$或者$r=r’$，有：<br>$dp(l,r’)+dp(l’,r), ~~~ dp(l,r)+dp(l’,r’)$，我觉得你观察下就能整出来。。</p>
-<p>那么，数学归纳法整个：对$len=r-l+1$归纳：</p>
+                <p>本文记录指令信息供之后查询。</p>
+<h2 id="begin"><a href="#begin" class="headerlink" title="begin"></a>begin</h2><p>link:<a target="_blank" rel="noopener" href="https://docs.docker.com/">docker-docs</a></p>
+<h3 id="docker-build"><a href="#docker-build" class="headerlink" title="docker build"></a>docker build</h3><pre class=" language-shell"><code class="language-shell">docker build -t tag-name .
+</code></pre>
+<p><code>build</code>: 用<code>dockerfile</code>来建立映像。<br><code>-t</code> flag your image,后面跟着名字。<br><code>.</code> current directory to find <code>Dockerfile</code></p>
+<h3 id="docker-run"><a href="#docker-run" class="headerlink" title="docker run"></a>docker run</h3><pre class=" language-shell"><code class="language-shell">docker run -dp 3000:3000 tag-name
+</code></pre>
+<p><code>run</code> 运行docker<br><code>-d</code> 分离“detached”mode运行。<br><code>-p</code> map from host’s port to container’s port</p>
+<h3 id="update-code"><a href="#update-code" class="headerlink" title="update code"></a>update code</h3><pre class=" language-shell"><code class="language-shell">docker ps
+# swap out container-id with ID from docker ps
+docker stop container-id
+docker rm container-id
+# or stop&rm:docker rm -f container-id
+</code></pre>
+<p><code>ps</code>：运行中容器list<br><code>stop</code> stop 运行<br><code>rm</code>：remove container（默认需要stop后）<br><code>-f</code>：强制。</p>
+<p>以上仍然需要麻烦的持续性重头再来。</p>
+<h3 id="push-docker-hub"><a href="#push-docker-hub" class="headerlink" title="push docker-hub"></a>push docker-hub</h3><p><code>docker-hub</code>:先创个仓库。后面会直接给你个代码：</p>
+<pre class=" language-shell"><code class="language-shell">docker push namespace/tagname
+</code></pre>
+<p>然而只有这个是不够的。</p>
+<pre class=" language-shell"><code class="language-shell">docker login -u USER-NAME
+docker tag image-name USER-NAME/NEW-NAME
+docker push USER-NAME/NEW-NAME
+</code></pre>
+<p>tag一下，才能找到正确的image捏。</p>
+<h3 id="DB"><a href="#DB" class="headerlink" title="DB"></a>DB</h3><p>一个容器运行的时候，他是用映像里头的多个层作为文件系统的，每个容器还有自己的暂存空间来创建/更新/删除文件，任何更改都不会在另一个容器看到。<br>比如：</p>
+<pre class=" language-shell"><code class="language-shell">docker run -d ubuntu bash -c "shuf -i 1-10000 -n 1 -o /data.txt && tail -f /dev/null"
+docker exec container-id cat /data.txt
+</code></pre>
+<p>then, we can use volume!</p>
+<h3 id="named-volumes"><a href="#named-volumes" class="headerlink" title="named volumes"></a>named volumes</h3><p>数据bucket，持久化指定位置的最后改动数据，</p>
+<p>用卷持久化：</p>
+<pre class=" language-shell"><code class="language-shell">docker volume create volume-name
+docker run -dp 3000:3000 -v volume-name:<where?> <container-name>
+</code></pre>
+<p>where is the volume?</p>
+<pre class=" language-shell"><code class="language-shell">docker volume inspect volume-name
+</code></pre>
+<h3 id="bind-mounts"><a href="#bind-mounts" class="headerlink" title="bind mounts"></a>bind mounts</h3><p>named volume持续化数据还是不错的。<br>这里讲的bind mounts，可以控制确切的挂载点。我们可以用其持久化数据，但它通常用于提供额外的数据给容器。用其可以立刻看到所需的更改。</p>
+<div class="admonition note"><p class="admonition-title">note</p><p>当然，其中还是有别的volume的，这里只有bind mounts和named volumed。</p>
+</div>
+
+<pre class=" language-shell"><code class="language-shell">docker run -dp 3000:3000 \
+     -w /app -v "$(pwd):/app" \
+     node:12-alpine \
+     sh -c "yarn install && yarn run dev"
+</code></pre>
+<p><code>-w app</code>：set working directory<br><code>-v "$(pwd):/app"</code>bind mount the current（pwd？）directory into the <code>/app</code> directory in the container<br><code>node:12-alpline</code> image to use（base image）<br><code>sh -c....</code> alpine：shell running command。</p>
+<p>查看docker日志：</p>
+<pre class=" language-shell"><code class="language-shell">docker logs -f container-id
+</code></pre>
+<h3 id="多应用：多容器"><a href="#多应用：多容器" class="headerlink" title="多应用：多容器"></a>多应用：多容器</h3><h4 id="container-networking"><a href="#container-networking" class="headerlink" title="container networking"></a>container networking</h4><p>两种方式：</p>
 <ol>
-<li><p>$l\leq l’=r’\leq r$，此时$len=0$.</p>
-<p> 对于$dp(l,r’)+dp(l’,r)$有：</p>
-<p> $原式=dp(l,r’)+dp(r’,r) \leq dp(l,r)+dp(l’,r’)=dp(l,r)$</p>
-</li>
+<li>开始的时候给你来个网</li>
+<li>连接现成的container</li>
 </ol>
-<p>即证明该式成立。<br>则对$dp(l,r)$:<br>设$k=max{ x|dp(l,r)=dp(l,x-1)+dp(x,r)+w(l,r)}$<br>由对称性：不妨设$k\leq r’$.<br>有：<br>$$<br>\begin{aligned}<br>dp(l,r’)+dp(l’,r) &amp;\leq w(l,r’)+dp(l,k-1)+dp(k,r’)+dp(l’,r)\\<br>&amp; \leq w(l,r)+dp(l,k-1)+dp(k,r’)+dp(l’,r)\\<br>&amp; \leq w(l,r)+dp(l,k-1)+dp(k,r)=dp(l,r)<br>\end{aligned}$$<br>2. $l&lt;l’&lt; r’&lt; r$<br>对$dp(l,r’)+dp(l’,r)$而言：设<br>$y=max{x|dp(l,r’)=dp(l,x-1)+dp(x,r’)+w(l,r’) }$<br>$z=max{x|dp(l’,r)=dp(l’,x-1)+dp(x,r)+w(l’,r)}$<br>则：<br>不妨设：$y\leq z$,则有$l&lt;z\leq y \leq r$.<br>原式<br>$$\begin{aligned}<br>\leq dp(l,y-1)+dp(y,r’)+w(l,r’)+w(l’,r)+dp(l’,z-1)+dp(z,r)\\<br>\leq w(l,r)+w(l’,r’)+dp(l,y-1)+dp(l’,z-1)+dp(y,r’)+dp(z,r)\\<br>\leq w(l,r)+w(l’,r’)+dp(l,y-1)+dp(l’,z-1)+dp(y,r)+dp(z,r’)\\<br>= dp(l,r)+dp(l’,r’)<br>\end{aligned}<br>$$</p>
-<p>这性质和区间$dp$有啥关系呢？<br>该性质能够证明单调性：对于满足四边形不等式的dp状态，定义$s(i,j)$为$dp(i,j)$决策过程的最大值。<br>因此有:$s(i,j)$单调，$s(i,j)\leq s(i,j+1)\leq s(i+1,j+1)$.<br>因此在dp过程中：<br>$$dp(i,j)=\begin{cases}<br>min_{s(i,j-1)\leq k \leq s(i+1,j)}{dp(i,k-1)+dp(k,j)+w(i,j)} &amp; i&lt;j \\<br>0 &amp;i=j \\<br>+\infty &amp;i&gt;j<br>\end{cases}$$</p>
+<pre class=" language-shell"><code class="language-shell">docker network create network-name
+# create network，and then：
+docker run -d \
+     --network todo-app --network-alias mysql \
+     -v todo-mysql-data:/var/lib/mysql \
+     -e MYSQL_ROOT_PASSWORD=secret \
+     -e MYSQL_DATABASE=todos \
+     mysql:5.7
+</code></pre>
+<p>可以看到，<code>-e</code>设置了环境变量.</p>
+<div class="admonition note"><p class="admonition-title">note</p><p>在这里,自动创建了个volume，因此出现了从未出现的卷名。</p>
+</div>
+
+<pre class=" language-shell"><code class="language-shell">docker run -it --network todo-app nicolaka/netshoot
+</code></pre>
+<p>use dig tool,we could find the mysql <code>ip</code>，docker可以将名字和网络地址联系：use<code>--network-alias</code>flag。</p>
+<h4 id="connect-mysql-with-app"><a href="#connect-mysql-with-app" class="headerlink" title="connect mysql with app"></a>connect mysql with app</h4><pre class=" language-shell"><code class="language-shell"># mysql version8.0 and higher:
+mysql> ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'secret';
+mysql> flush privileges;
+mysql> exit
+# docker:connect
+docker run -dp 3000:3000 \
+   -w /app -v "$(pwd):/app" \
+   --network todo-app \
+   -e MYSQL_HOST=mysql \
+   -e MYSQL_USER=root \
+   -e MYSQL_PASSWORD=secret \
+   -e MYSQL_DB=todos \
+   node:12-alpine \
+   sh -c "yarn install && yarn run dev"
+# operate, and show mysql imformation
+docker exec -it <mysql-container-id> mysql -p todos
+mysql> select * from todo_items;
+ +--------------------------------------+--------------------+-----------+
+ | id                                   | name               | completed |
+ +--------------------------------------+--------------------+-----------+
+ | c906ff08-60e6-44e6-8f49-ed56a0853e85 | Do amazing things! |         0 |
+ | 2912a79e-8486-4bc3-a4c5-460793a575ab | Be awesome!        |         0 |
+ +--------------------------------------+--------------------+-----------+
+</code></pre>
+<h3 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h3><p><a target="_blank" rel="noopener" href="https://docs.docker.com/compose/install/">install Docker Compose</a></p>
+<p>and then: create <code>docker-compose.yml</code> in root directory.</p>
+<div class="admonition info"><p class="admonition-title">info</p><p>you can see detail in <a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/08_using_compose/">here</a></p>
+</div>
+
+<h3 id="addition"><a href="#addition" class="headerlink" title="addition"></a>addition</h3><h4 id="扫描安全漏洞"><a href="#扫描安全漏洞" class="headerlink" title="扫描安全漏洞"></a>扫描安全漏洞</h4><pre class=" language-shell"><code class="language-shell">docker scan --login
+docker scanf image-name
+</code></pre>
+<h4 id="查看Image-Layering"><a href="#查看Image-Layering" class="headerlink" title="查看Image Layering"></a>查看Image Layering</h4><pre class=" language-shell"><code class="language-shell">docker image histroy image-name
+#  可以看到Image-id,create-time,create-by,size,comment
+docker image history --no-trunc getting-started
+# 忽略截断捏。
+</code></pre>
+<div class="admonition warning"><p class="admonition-title">warning</p><p>Once a layer changes, all downstream layers have to be recreated as well</p>
+</div>
+
+<h4 id="dockerignore"><a href="#dockerignore" class="headerlink" title=".dockerignore"></a>.dockerignore</h4><p>.dockerignore文件中：</p>
+<pre class=" language-docker"><code class="language-docker">node_modules
+</code></pre>
+<p>使用缓存speed up。</p>
+<h4 id="multi-stage-builds"><a href="#multi-stage-builds" class="headerlink" title="multi-stage builds"></a>multi-stage builds</h4><pre class=" language-dockerfile"><code class="language-dockerfile"># syntax=docker/dockerfile:1
+FROM maven AS build
+WORKDIR /app
+COPY . .
+RUN mvn package
+
+FROM tomcat
+COPY --from=build /app/target/file.war /usr/local/tomcat/webapps
+
+# react example
+# syntax=docker/dockerfile:1
+FROM node:12 AS build
+WORKDIR /app
+COPY package* yarn.lock ./
+RUN yarn install
+COPY public ./public
+COPY src ./src
+RUN yarn run build
+
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+</code></pre>
+<p>多阶段构建可以架鸟整体image size。</p>
 
                 
             </div>
@@ -700,7 +819,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zzzremake.github.io/2022/10/22/dp-ji-qiao-1-si-bian-xing-bu-deng-shi/">https://zzzremake.github.io/2022/10/22/dp-ji-qiao-1-si-bian-xing-bu-deng-shi/</a>
+                    <a href="https://zzzremake.github.io/2022/11/04/docker-first/">https://zzzremake.github.io/2022/11/04/docker-first/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -738,16 +857,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Math/">
-                                    <span class="chip bg-color">Math</span>
+                                <a href="/tags/docker/">
+                                    <span class="chip bg-color">docker</span>
                                 </a>
                             
-                                <a href="/tags/%E5%8C%BA%E9%97%B4dp/">
-                                    <span class="chip bg-color">区间dp</span>
-                                </a>
-                            
-                                <a href="/tags/%E4%BC%98%E5%8C%96/">
-                                    <span class="chip bg-color">优化</span>
+                                <a href="/tags/primary/">
+                                    <span class="chip bg-color">primary</span>
                                 </a>
                             
                         </div>
@@ -1060,9 +1175,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2022/11/04/docker-first/">
                     <div class="card-image">
@@ -1080,9 +1196,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-04
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-04
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1095,6 +1211,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -1117,19 +1234,19 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/10/22/shu-ju-jie-gou-ban-zi/">
+                <a href="/2022/10/22/dp-ji-qiao-1-si-bian-xing-bu-deng-shi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="数据结构板子">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="dp技巧1：四边形不等式">
                         
-                        <span class="card-title">数据结构板子</span>
+                        <span class="card-title">dp技巧1：四边形不等式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            再次投下————咕咕咕
+                            区间dp的某种可能的优化技巧。
                         
                     </div>
                     <div class="publish-info">
@@ -1151,12 +1268,16 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%9D%BF%E5%AD%90/">
-                        <span class="chip bg-color">板子</span>
+                    <a href="/tags/Math/">
+                        <span class="chip bg-color">Math</span>
                     </a>
                     
-                    <a href="/tags/Data-Structure/">
-                        <span class="chip bg-color">Data Structure</span>
+                    <a href="/tags/%E5%8C%BA%E9%97%B4dp/">
+                        <span class="chip bg-color">区间dp</span>
+                    </a>
+                    
+                    <a href="/tags/%E4%BC%98%E5%8C%96/">
+                        <span class="chip bg-color">优化</span>
                     </a>
                     
                 </div>
