@@ -166,7 +166,7 @@ body.DarkMode .card-content a > code,
 body.DarkMode .card-content td > code,
 body.DarkMode .card-content li > code {
     color: rgba(255, 255, 255, 0.6);
-    background-color: #666666;
+    background-color: #201e1e;
 }
 
 body.DarkMode p[style] .img-item {
