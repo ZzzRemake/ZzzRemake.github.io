@@ -2,10 +2,12 @@
 <html lang="zh-CN">
 
 
-<head>
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/bilicard.css">
+<!-- hexo injector head_begin end -->
     <meta charset="utf-8">
-    <meta name="keywords" content="post, ZzzRemake">
-    <meta name="description" content="现代密码学：导论部分，介绍基本概念和模型。">
+    <meta name="keywords" content="Modern CryptoⅠ  Introduction, ZzzRemake">
+    <meta name="description" content="现代密码学：导论部分，介绍基本概念和模型。\">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>post | ZzzRemake</title>
+    <title>Modern CryptoⅠ  Introduction | ZzzRemake</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="/medias/favicon.png">
     
@@ -548,12 +550,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">post</h1>
+                    <h1 class="description center-align post-title">Modern CryptoⅠ  Introduction</h1>
                 </div>
             </div>
         </div>
@@ -636,7 +638,7 @@ name：Introduction To Modern Cryptography</p>
 
 <h2 id="一些先导概念"><a href="#一些先导概念" class="headerlink" title="一些先导概念"></a>一些先导概念</h2><p>传统的密码学被称为Codes（编码）或是Ciphers（加密），而现代密码学提供的与之对应的概念被称为Encryption Scheme（加密方案），两者的差别后面就会提到。</p>
 <h3 id="密钥相关"><a href="#密钥相关" class="headerlink" title="密钥相关"></a>密钥相关</h3><p>在刚学密码学的时候，我们认为密钥能够安全共享，避开对安全传递密钥过程的讨论（因为目前的知识无法对其进行讨论），并且假设用户能够妥善保护密钥。</p>
-<h3 id="基本记号"><a href="#基本记号" class="headerlink" title="基本记号"></a>基本记号</h3><p>$K:key<del>space \ M:plaintext</del>space \ C:ciphertext~space$<br>类似于取值空间的概念。<br>M在传统密码学中可能是一些字母表，但现代密码学将其设定为二进制字符串（合情合理对吧）<br>加密方案（Encryption scheme）由以下部分组成：<br>$Gen-&gt;K(probabilistic，概率性)$ 密钥生成算法<br>$Enc:K\times M-&gt;C$ 加密算法<br>$Dec:K\times C-&gt;M$ 解密算法<br>正确性：$\forall k \in K,m \in M:Dec_k(Enc_k(m))=m $</p>
+<h3 id="基本记号"><a href="#基本记号" class="headerlink" title="基本记号"></a>基本记号</h3><p>$$<br>K:key\quad space \ M:plaintext\quad space \ C:ciphertext\quad space<br>$$<br>类似于取值空间的概念。<br>M在传统密码学中可能是一些字母表，但现代密码学将其设定为二进制字符串（合情合理对吧）<br>加密方案（Encryption scheme）由以下部分组成：<br>$Gen-&gt;K(probabilistic，概率性)$ 密钥生成算法<br>$Enc:K\times M-&gt;C$ 加密算法<br>$Dec:K\times C-&gt;M$ 解密算法<br>正确性：$\forall k \in K,m \in M:Dec_k(Enc_k(m))=m $</p>
 <p>现代密码学和传统密码学的一个重要区别是Kerckhoffs principle：</p>
 <div class="admonition info"><p class="admonition-title">Kerckhoffs principle
 </p><p>The cipher method must not be required to be secret, and it must be able to fall into the hands of the enemy without inconvenience.
@@ -685,9 +687,9 @@ name：Introduction To Modern Cryptography</p>
 
 <p>相信大家都懂计算复杂度相关的多项式吧（<br>也就是说，任何多项式算法，无论在现实中采用什么物理模型，都可以归约到图灵机，并且最多也同样是多项式。（当然还没有出来的量子计算机不在讨论范围内）</p>
 <p>我觉得这块蛮重要的，就移到这里了,<del>然而这是第三章的内容</del>.</p>
-<h4 id="NP"><a href="#NP" class="headerlink" title="NP"></a>NP</h4><p><del>你一定已经知道P和NP问题吧</del></p>
-<p>有了图灵机模型，才能够讨论NP问题。实际上，密码学大部分的原语(大约是基本组成部分的意思)都建立在$NP!=P$的基础上，这样才能讨论计算复杂性安全（后面的博客来讲）</p>
-<p>公钥密码学中的很多结构，例如因式分解的难解性就基于NP问题捏。</p>
+<h4 id="NP"><a href="#NP" class="headerlink" title="NP"></a>NP</h4><p><del>你一定已经知道$P$和$NP$问题吧</del></p>
+<p>有了图灵机模型，才能够讨论$NP$问题。实际上，密码学大部分的原语(大约是基本组成部分的意思)都建立在$NP\neq P$的基础上，这样才能讨论计算复杂性安全（后面的博客来讲）</p>
+<p>公钥密码学中的很多结构，例如因式分解的难解性就基于$NP$问题捏。</p>
 <p>🧐课件中特地强调了这里介绍的precise assumption的重要性，例如数学证明的安全性需要这个，或者加密方案的比较(用弱假设限制的加密方案肯定更好嘛),以及构建加密方案的安全性。</p>
 <p>😇这里介绍一下模块化的加密方案吧</p>
 <p>实际上，密码学也是一个自底而上的不断构建的过程，构建复杂加密方案的时候需要之前验证过的简单的密码学部分。这样，即使部分出现问题，换一个component就行了；若加密方案出现问题，则认为是加密方案组织的问题，不是component的问题。两全其美啊嗯。</p>
@@ -1082,15 +1084,15 @@ name：Introduction To Modern Cryptography</p>
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="post">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Modern CryptoⅠ  Introduction">
                         
-                        <span class="card-title">post</span>
+                        <span class="card-title">Modern CryptoⅠ  Introduction</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            现代密码学：导论部分，介绍基本概念和模型。
+                            现代密码学：导论部分，介绍基本概念和模型。\
                         
                     </div>
                     <div class="publish-info">
@@ -1327,6 +1329,15 @@ name：Introduction To Modern Cryptography</p>
 
 
     
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
     
 
     <footer class="page-footer bg-color">
