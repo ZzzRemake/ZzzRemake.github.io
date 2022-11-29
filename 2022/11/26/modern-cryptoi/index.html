@@ -71,15 +71,14 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background: #FFF;
+        background: rgba(33, 33, 33, 0.95);
         text-align: center;
         /* loader页面消失采用渐隐的方式*/
-        -webkit-transition: opacity 1s ease;
-        -moz-transition: opacity 1s ease;
-        -o-transition: opacity 1s ease;
-        transition: opacity 1s ease;
+        -webkit-transition: opacity 0.7s ease;
+        -moz-transition: opacity 0.7s ease;
+        -o-transition: opacity 0.7s ease;
+        transition: opacity 0.7s ease;
     }
-
     .loading-image {
         width: 120px;
         height: 50px;
@@ -87,23 +86,23 @@
     }
 
     .loading-image div:nth-child(2) {
-        -webkit-animation: pacman-balls 1s linear 0s infinite;
-        animation: pacman-balls 1s linear 0s infinite
+        -webkit-animation: pacman-balls 0.7s linear 0s infinite;
+        animation: pacman-balls 0.7s linear 0s infinite
     }
 
     .loading-image div:nth-child(3) {
-        -webkit-animation: pacman-balls 1s linear .33s infinite;
-        animation: pacman-balls 1s linear .33s infinite
+        -webkit-animation: pacman-balls 0.7s linear .33s infinite;
+        animation: pacman-balls 0.7s linear .33s infinite
     }
 
     .loading-image div:nth-child(4) {
-        -webkit-animation: pacman-balls 1s linear .66s infinite;
-        animation: pacman-balls 1s linear .66s infinite
+        -webkit-animation: pacman-balls 0.7s linear .66s infinite;
+        animation: pacman-balls 0.7s linear .66s infinite
     }
 
     .loading-image div:nth-child(5) {
-        -webkit-animation: pacman-balls 1s linear .99s infinite;
-        animation: pacman-balls 1s linear .99s infinite
+        -webkit-animation: pacman-balls 0.7s linear .99s infinite;
+        animation: pacman-balls 0.7s linear .99s infinite
     }
 
     .loading-image div:first-of-type {
@@ -223,11 +222,11 @@
     .loading-text {
         margin-bottom: 20vh;
         text-align: center;
-        color: #2c3e50;
+        color: rgba(255, 255, 255, 0.8);
         font-size: 2rem;
         box-sizing: border-box;
         padding: 0 10px;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
     }
 
     @media only screen and (max-width: 500px) {
@@ -271,8 +270,8 @@
                 //document.getElementById("body-wrap").style.display = "flex";
                 setTimeout(function () {
                     loader.style.display = "none";
-                }, 800);
-            }, 700);//强制显示loading page 1s
+                }, 600);
+            }, 500);//强制显示loading page 0.7s
         };
         loaded();
     })()
@@ -700,9 +699,10 @@ $Dec:K\times C-&gt;M$ 解密算法<br>
 <h4 id="Turing-Machine">Turing Machine</h4>
 <p>图灵机模型在计算机科学中占有极为重要的地位，以其为基础建立的图灵机模型成为可计算性理论、计算复杂度理论中重要的一环。<br>
 在之后的学习中，将会学习到以下定理：</p>
-<p>!!! info Strong Church-Turing Thesis<br>
-Every physically realisable computation can be simulated on a Turing Machine with at most polynomial slowdown. Probably only true if we exclude quantum computers.</p>
-<p>相信大家都懂计算复杂度相关的多项式吧（<br>
+<div class="admonition info"><p class="admonition-title">Strong Church-Turing Thesis
+</p><p>Every physically realisable computation can be simulated on a Turing Machine with at most polynomial slowdown. Probably only true if we exclude quantum computers.</p>
+</div>
+<p><s>相信大家都懂计算复杂度相关的多项式吧</s><br>
 也就是说，任何多项式算法，无论在现实中采用什么物理模型，都可以归约到图灵机，并且最多也同样是多项式。（当然还没有出来的量子计算机不在讨论范围内）</p>
 <p>我觉得这块蛮重要的，就移到这里了,<s>然而这是第三章的内容</s>.</p>
 <h4 id="NP">NP</h4>
@@ -1613,7 +1613,7 @@ $(function () {
             $('.Cuteen_DarkSky').fadeOut(3e2, function () {
                 $(this).remove()
             })
-            }, 1100)
+            }, 1000)
         })
     }
 </script>
