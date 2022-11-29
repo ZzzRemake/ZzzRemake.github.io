@@ -673,10 +673,7 @@ docker run -dp 3000:3000 -v volume-name:<where?> <container-name>
 <pre class=" language-shell"><code class="language-shell">docker volume inspect volume-name
 </code></pre>
 <h3 id="bind-mounts"><a href="#bind-mounts" class="headerlink" title="bind mounts"></a>bind mounts</h3><p>named volume持续化数据还是不错的。<br>这里讲的bind mounts，可以控制确切的挂载点。我们可以用其持久化数据，但它通常用于提供额外的数据给容器。用其可以立刻看到所需的更改。</p>
-<div class="admonition note"><p class="admonition-title">various volume
-</p><p>当然，其中还是有别的volume的，这里只有bind mounts和named volumed。</p>
-</div>
-
+<p>!!! note various volume<br>    当然，其中还是有别的volume的，这里只有bind mounts和named volumed。</p>
 <pre class=" language-shell"><code class="language-shell">docker run -dp 3000:3000 \
      -w /app -v "$(pwd):/app" \
      node:12-alpine \
@@ -701,10 +698,7 @@ docker run -d \
      mysql:5.7
 </code></pre>
 <p>可以看到，<code>-e</code>设置了环境变量.</p>
-<div class="admonition note"><p class="admonition-title">new volume?
-</p><p>在这里,自动创建了个volume，因此出现了从未出现的卷名。</p>
-</div>
-
+<p>!!! note new volume?<br>    在这里,自动创建了个volume，因此出现了从未出现的卷名。</p>
 <pre class=" language-shell"><code class="language-shell">docker run -it --network todo-app nicolaka/netshoot
 </code></pre>
 <p>use dig tool,we could find the mysql <code>ip</code>，docker可以将名字和网络地址联系：use<code>--network-alias</code>flag。</p>
@@ -734,10 +728,7 @@ mysql> select * from todo_items;
 </code></pre>
 <h3 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h3><p><a target="_blank" rel="noopener" href="https://docs.docker.com/compose/install/">install Docker Compose</a></p>
 <p>and then: create <code>docker-compose.yml</code> in root directory.</p>
-<div class="admonition info"><p class="admonition-title">不想写了，看连接吧
-</p><p>you can see detail in <a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/08_using_compose/">here</a></p>
-</div>
-
+<p>!!! info 不想写了，看连接吧<br>    you can see detail in <a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/08_using_compose/">here</a></p>
 <h3 id="addition"><a href="#addition" class="headerlink" title="addition"></a>addition</h3><h4 id="扫描安全漏洞"><a href="#扫描安全漏洞" class="headerlink" title="扫描安全漏洞"></a>扫描安全漏洞</h4><pre class=" language-shell"><code class="language-shell">docker scan --login
 docker scanf image-name
 </code></pre>
@@ -746,10 +737,7 @@ docker scanf image-name
 docker image history --no-trunc getting-started
 # 忽略截断捏。
 </code></pre>
-<div class="admonition warning"><p class="admonition-title">layer changes
-</p><p>Once a layer changes, all downstream layers have to be recreated as well</p>
-</div>
-
+<p>!!! warning layer changes<br>    Once a layer changes, all downstream layers have to be recreated as well</p>
 <h4 id="dockerignore"><a href="#dockerignore" class="headerlink" title=".dockerignore"></a>.dockerignore</h4><p>.dockerignore文件中：</p>
 <pre class=" language-docker"><code class="language-docker">node_modules
 </code></pre>
@@ -1330,7 +1318,7 @@ COPY --from=build /app/build /usr/share/nginx/html
 
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget card" style="background-color: white;">
+        <div class="toc-widget card">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
             <div id="toc-content"></div>
         </div>
@@ -1676,10 +1664,10 @@ $(function () {
             : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
             
             setTimeout(function () {
-            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+            $('.Cuteen_DarkSky').fadeOut(3e2, function () {
                 $(this).remove()
             })
-            }, 2e3)
+            }, 1100)
         })
     }
 </script>

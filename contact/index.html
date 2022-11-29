@@ -1131,7 +1131,7 @@
 
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget card" style="background-color: white;">
+        <div class="toc-widget card">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
             <div id="toc-content"></div>
         </div>
@@ -1468,10 +1468,10 @@ $(function () {
             : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
             
             setTimeout(function () {
-            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+            $('.Cuteen_DarkSky').fadeOut(3e2, function () {
                 $(this).remove()
             })
-            }, 2e3)
+            }, 1100)
         })
     }
 </script>

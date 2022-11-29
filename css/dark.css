@@ -64,13 +64,16 @@ body.DarkMode p,
 body.DarkMode pre,
 body.DarkMode .markmap-container svg g div,
 body.DarkMode .read .bg-cover .description {
-    color: rgba(255, 255, 255, 0.6); /*.85为透明度，可依据需求修改*/
+    color: rgba(255, 255, 255, 0.8); /*.85为透明度，可依据需求修改*/
 }
 body.DarkMode .fArticleTitle, body.DarkMode .fArticleAuthor, body.DarkMode .fArticleUpdate {
     color: rgba(37, 37, 37, 0.6) !important;
 }
 body.DarkMode .v[data-class="v"] .vinput, .v[data-class="v"] .veditor, .v[data-class="v"] p, .v[data-class="v"] pre code, .v[data-class="v"] .status-bar {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
+}
+body.DarkMode .admonition {
+    background-color:rgba(0.8, 0.8, 0.8, 0.4) !important;
 }
 body.DarkMode blockquote {
     background-color: #666 !important;
@@ -81,11 +84,11 @@ body.DarkMode .nav-menu li .sub-nav li a {
     color: rgba(255, 255, 255, 0.306) !important;
 }
 body.DarkMode th td li {
-    color: rgba(255, 255, 255, 0.6) !important;
+    color: rgba(255, 255, 255, 0.8) !important;
     background-color: #2f3742 !important;
 }
 body.DarkMode .prev-next .article-badge {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 body.DarkMode header .side-nav .menu-list a {
     color: rgba(0, 0, 0, 0.6) !important;
@@ -127,10 +130,10 @@ body.DarkMode header .side-nav {
    filter: invert(0.8);
 }
 body.DarkMode .waline-card .comment_headling span {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
 }
 body.DarkMode #waline .wl-card .wl-meta span{
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
     background: #666666;
 }
 
@@ -142,7 +145,7 @@ body.DarkMode .tabs .tab a,
 body.DarkMode .tabs .tab {
     filter: invert(0.8);
     font-weight: bolder;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /*首页文章滑动卡片文字*/
@@ -165,16 +168,16 @@ body.DarkMode .card-content h6 > code,
 body.DarkMode .card-content a > code,
 body.DarkMode .card-content td > code,
 body.DarkMode .card-content li > code {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
     background-color: #201e1e;
 }
 
 body.DarkMode p[style] .img-item {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 body.DarkMode .card-content mark {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
     background-color: #2d2d2d;
 }
 body.DarkMode table th {
@@ -182,7 +185,7 @@ body.DarkMode table th {
     color: rgb(0, 84, 253);
 }
 .DarkMode .btn-floating, .DarkMode #floating-toc-btn .btn-floating, .DarkMode .btn-floating, .DarkMode #switchspring {
-    background-color:rgba(255, 255, 255, 0.6);
+    background-color:rgba(255, 255, 255, 0.8);
 }
 /*音乐播放器*/
 body.DarkMode .aplayer {
@@ -215,7 +218,6 @@ body.DarkMode .aplayer .aplayer-body {
 
 /*图片滤镜*/
 body.DarkMode img,
-body.DarkMode strong,
 body.DarkMode .douban-card-img {
     filter: brightness(0.7);
 }
@@ -273,7 +275,7 @@ body.DarkMode header .brand-logo .logo-img {
     filter: brightness(0.7) !important;
 }
 body.DarkMode .toc-widget .toc-list-item {
-    color:#000
+    color:rgba(255, 255, 255, 0.8)
 }
 body.DarkMode .toc-title {
     color:#666 !important
@@ -313,7 +315,7 @@ body.DarkMode .test {
     color: red;
 }
 
-body.DarkMode img, body.DarkMode strong {
+body.DarkMode img{
     filter:brightness(.7)
 }
 
@@ -350,7 +352,7 @@ body.DarkMode #waline textarea {
 }
 
 .Cuteen_DarkSky:before {
-    transition: 2s ease all;
+    transition: 1s ease all;
     opacity: 0;
     background: linear-gradient(#4c3f6d, #6c62bb, #93b1ed);
 }
@@ -366,8 +368,8 @@ body.DarkMode #waline textarea {
     top: -50%;
     width: 200%;
     height: 200%;
-    -webkit-animation: CuteenPlanetMove 2s cubic-bezier(0.7, 0, 0, 1);
-    animation: CuteenPlanetMove 2s cubic-bezier(0.7, 0, 0, 1);
+    -webkit-animation: CuteenPlanetMove 1s cubic-bezier(0.7, 0, 0, 1);
+    animation: CuteenPlanetMove 1s cubic-bezier(0.7, 0, 0, 1);
     transform-origin: center bottom;
 }
 

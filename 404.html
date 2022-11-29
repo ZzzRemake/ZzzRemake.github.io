@@ -559,9 +559,6 @@
                         404 Sorry,Who Moved My page🧐🧐🧐?
                     </div>
                     <div class="title center-align">
-                        try<span style="color:blue;font-weight:bold">search</span>function in the top right?
-                    </div>
-                    <div class="title center-align">
                         <a href="/" target="_blank">return main page?</a>
                     </div>
                     <div class="description center-align">
@@ -831,10 +828,10 @@ $(function () {
             : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
             
             setTimeout(function () {
-            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+            $('.Cuteen_DarkSky').fadeOut(3e2, function () {
                 $(this).remove()
             })
-            }, 2e3)
+            }, 1100)
         })
     }
 </script>
