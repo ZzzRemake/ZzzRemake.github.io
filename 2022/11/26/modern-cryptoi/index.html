@@ -21,7 +21,7 @@
 
     <title>Modern CryptoⅠ  Introduction | ZzzRemake</title>
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" href="/medias/favicon.png">
+    <link rel="icon" type="image/png" href="/medias/favicon.webp">
     
 
 
@@ -299,7 +299,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.webp" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">ZzzRemake</span>
                 </a>
@@ -392,7 +392,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.webp" class="logo-img circle responsive-img">
         
         <div class="logo-name">ZzzRemake</div>
         <div class="logo-desc">
@@ -549,7 +549,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.webp')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -610,7 +610,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2022-12-02
+                    2022-12-18
                 </div>
                 
 
@@ -703,7 +703,7 @@ $Dec:K\times C-&gt;M$ 解密算法<br>
 </p><p>Every physically realisable computation can be simulated on a Turing Machine with at most polynomial slowdown. Probably only true if we exclude quantum computers.</p>
 </div>
 <p><s>相信大家都懂计算复杂度相关的多项式吧</s><br>
-也就是说，任何多项式算法，无论在现实中采用什么物理模型，都可以归约到图灵机，并且最多也同样是多项式。（当然还没有出来的量子计算机不在讨论范围内）</p>
+也就是说，任何多项式算法，无论在现实中采用什么物理模型，都可以归约到图灵机模型，并且时间复杂度也同样是多项式。（当然还没有出来的量子计算机不在讨论范围内）</p>
 <p>我觉得这块蛮重要的，就移到这里了,<s>然而这是第三章的内容</s>.</p>
 <h4 id="NP">NP</h4>
 <p><s>你一定已经知道$P$和$NP$问题吧</s></p>
@@ -715,6 +715,28 @@ $Dec:K\times C-&gt;M$ 解密算法<br>
 <h4 id="安全性">安全性</h4>
 <p>之前讨论的是可证明安全性，加密方案建立在安全目标和威胁模型的假设基础上证明其安全性。自然是和实际中的安全性是不一样的。</p>
 <p>可证明安全性建立在安全目标、威胁模型的基础上，现实世界不会提供这么理想的模型的。同时，即使现实世界满足了可证明安全性的条件，也不能一定确保安全性，但这种方式自然是极难找到的。在密码学中不进行讨论。</p>
+<h2 id="二次修订部分">----二次修订部分----</h2>
+<p>有书就是不一样啊😋</p>
+<h2 id="Principles">Principles</h2>
+<h3 id="1-Formal-Definitions">1.Formal Definitions</h3>
+<p>形式化定义，也就是形式化以上的安全加密方案。</p>
+<p>作用：</p>
+<ol>
+<li>避免糊里糊涂的方案定义，能够提供一种方法去评估、证明安全性与否。</li>
+<li>提供了方案比较的有效性。方案的安全性取决于具体的上下文环境，弱定义的安全方案可能比强定义更加有效。-&gt;模块化的可行性。</li>
+</ol>
+<p>这里给了形式化定义的一个例子，也就是上面的对于安全目标的定义。这里进行补充。<br>
+回顾一下定义：</p>
+<div class="admonition info"><p class="admonition-title">info</p><p><strong>不管攻击者有了多少信息。密文都不能泄露给敌手任何额外的关于明文的信息。</strong></p>
+</div>
+<p>这里并没有定义信息的“meaningful”，而是直接定义没有任何信息被泄露，因此该定义可以满足其他潜在的需要。关于“不泄露任何关于明文的信息”，以及有关攻击手可能有的先验知识相关，在之后的第二、三章中便有涉及。</p>
+<h3 id="2-Precise-Assumptions">2. Precise Assumptions</h3>
+<p>除了安全性证明需要精确的假设，其还可以让我们能够进行方案间的比较（弱就是好！），以及若组成加密方案的block被公婆后，假设仍然成立的衡量原加密方案安全性方式。</p>
+<p>这里解释了一堆为什么采用建立在假设上的安全方案，而不是直接认为安全方案是安全的原因，这里略了（书P19）。</p>
+<h3 id="3-Proofs-of-Security">3. Proofs of Security</h3>
+<p>若要构建加密方案，必须要建立在精确假设上的安全性证明上，这比启发式，或者没有假设的证明好。</p>
+<h3 id="4-Provable-Security-and-Real-world-Security">4. Provable Security and Real-world Security</h3>
+<p>现实情况的不同，导致可能的安全目标、威胁模型、假设等不满足可证明安全所需，另外也有各种意想不到的方式攻破可证明安全下的加密方案。</p>
 <hr>
 <p><strong>碎碎念</strong>：哦完蛋，基础理论我也不太会，密码学要寄了😭</p>
 
@@ -1103,7 +1125,7 @@ $Dec:K\times C-&gt;M$ 解密算法<br>
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Modern CryptoⅡ Perfect Encryption">
+                        <img src="/medias/featureimages/23.webp" class="responsive-img" alt="Modern CryptoⅡ Perfect Encryption">
                         
                         <span class="card-title">Modern CryptoⅡ Perfect Encryption</span>
                     </div>
@@ -1152,7 +1174,7 @@ $Dec:K\times C-&gt;M$ 解密算法<br>
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="docker-first">
+                        <img src="/medias/featureimages/21.webp" class="responsive-img" alt="docker-first">
                         
                         <span class="card-title">docker-first</span>
                     </div>

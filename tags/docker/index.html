@@ -19,7 +19,7 @@
 
     <title>Tag: docker | ZzzRemake</title>
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" href="/medias/favicon.png">
+    <link rel="icon" type="image/png" href="/medias/favicon.webp">
     
 
 
@@ -297,7 +297,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.webp" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">ZzzRemake</span>
                 </a>
@@ -390,7 +390,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.webp" class="logo-img circle responsive-img">
         
         <div class="logo-name">ZzzRemake</div>
         <div class="logo-desc">
@@ -550,44 +550,43 @@
         <div class="brand">
             <div class="title center-align">
                 
-                Hey,bro!
-                
+                    Hey,bro!
+                        
             </div>
 
             <div class="description center-align">
                 
-                <span id="subtitle"></span>
-                <script src="/libs/typed/typed.js"></script>
-                <script>
-                    var typed = new Typed("#subtitle", {
-                        strings: [ 
+                    <span id="subtitle"></span>
+                    <script src="/libs/typed/typed.js"></script>
+                    <script>
+                        var typed = new Typed("#subtitle", {
+                            strings: [ 
                             
                                 "泉香而酒洌，玉碗盛来琥珀光，直饮到梅梢月下...",
                             
                                 "...醉扶归，却为宜会亲友。",
                             
                         ],
-                        startDelay: 300,
-                        typeSpeed: 100,
-                        loop: true,
-                        backSpeed: 50,
-                        showCursor: true
+                            startDelay: 300,
+                            typeSpeed: 100,
+                            loop: true,
+                            backSpeed: 50,
+                            showCursor: true
                     });
-                </script>
-                
+                    </script>
+                    
             </div>
         </div>
     </div>
 </div>
 
 
-<script>
-    // 每天切换 banner 图.  Switch banner image every ***.
-    var bannerUrl = "/medias/banner/" + new Date().getMinutes() + '.jpg';
-    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
-</script>
-
-
+    <script>
+        // 每天切换 banner 图.  Switch banner image every ***.
+        var bannerUrl = "/medias/banner/" + new Date().getMinutes() % 7 + '.webp';
+        $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+    </script>
+    
     </div>
 </div>
 
@@ -764,7 +763,7 @@
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="docker-first">
+                            <img src="/medias/featureimages/21.webp" class="responsive-img" alt="docker-first">
                             
                             <span class="card-title">docker-first</span>
                         </div>
