@@ -633,50 +633,52 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="字典树"><a href="#字典树" class="headerlink" title="字典树"></a>字典树</h2><pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">struct</span> trie<span class="token punctuation">{</span>
-    <span class="token keyword">int</span> nxt<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">26</span><span class="token punctuation">]</span><span class="token punctuation">,</span> cnt <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">bool</span> vis<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//该节点结尾的字符串是否存在</span>
-    <span class="token comment" spellcheck="true">//int repeat[N] = {0};</span>
-    <span class="token comment" spellcheck="true">//两种重载版本</span>
-    <span class="token keyword">void</span> <span class="token function">insert</span><span class="token punctuation">(</span>string <span class="token operator">&amp;</span>s<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">int</span> now <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>s<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-            <span class="token keyword">int</span> tem <span class="token operator">=</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span><span class="token punctuation">)</span> nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">++</span>cnt<span class="token punctuation">;</span>
-            now <span class="token operator">=</span> nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        vis<span class="token punctuation">[</span>now<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">int</span> <span class="token function">find</span><span class="token punctuation">(</span>string <span class="token operator">&amp;</span>s<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">int</span> now <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>s<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-            <span class="token keyword">int</span> tem <span class="token operator">=</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-            now <span class="token operator">=</span> nxt<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>tem<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token comment" spellcheck="true">/*if(vis[now]){
+                <h2 id="字典树">字典树</h2>
+<pre class=" language-language-cpp"><code class="language-language-cpp">struct trie{
+    int nxt[N][26], cnt = 0;
+    bool vis[N]={0};//该节点结尾的字符串是否存在
+    //int repeat[N] = {0};
+    //两种重载版本
+    void insert(string &s){
+        int now = 0;
+        for (int i = 0;i<s.size();++i){
+            int tem = s[i] - 'a';
+            if(!nxt[now][tem]) nxt[now][tem] = ++cnt;
+            now = nxt[now][tem];
+        }
+        vis[now] = 1;
+    }
+    int find(string &s){
+        int now = 0;
+        for (int i=0;i<s.size();++i){
+            int tem = s[i] - 'a';
+            if(!nxt[now][tem]) return false;
+            now = nxt[now][tem];
+        }
+        /*if(vis[now]){
             ++repeat[now];
-        }   return repeat[now];*/</span>
-        <span class="token keyword">return</span> vis<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+        }   return repeat[now];*/
+        return vis[now];
+    }
+};
 </code></pre>
-<h2 id="前缀函数"><a href="#前缀函数" class="headerlink" title="前缀函数"></a>前缀函数</h2><p>需要注意的是，前缀函数本身就是”跳转“，需要注意这个跳转的失配函数性质。</p>
-<pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">int</span> pre_len<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">void</span> <span class="token function">pre_len_process</span><span class="token punctuation">(</span>string s<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">//kmp:string s,string t;</span>
-    <span class="token comment" spellcheck="true">//string last=s+"#"+t;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>s<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">int</span> j<span class="token operator">=</span>pre_len<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span>j<span class="token operator">></span><span class="token number">0</span><span class="token operator">&amp;&amp;</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">!=</span>s<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-            j<span class="token operator">=</span>pre_len<span class="token punctuation">[</span>j<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">==</span>s<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-            <span class="token operator">++</span>j<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        pre_len<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">=</span>j<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2 id="前缀函数">前缀函数</h2>
+<p>需要注意的是，前缀函数本身就是”跳转“，需要注意这个跳转的失配函数性质。</p>
+<pre class=" language-language-cpp"><code class="language-language-cpp">int pre_len[N];
+void pre_len_process(string s){
+    //kmp:string s,string t;
+    //string last=s+"#"+t;
+    for(int i=0;i<s.size();++i){
+        int j=pre_len[i-1];
+        while(j>0&&s[i]!=s[j]){
+            j=pre_len[j-1];
+        }
+        if(s[i]==s[j]){
+            ++j;
+        }
+        pre_len[i]=j;
+    }
+}
 </code></pre>
 
                 
@@ -1068,7 +1070,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.webp" class="responsive-img" alt="数据结构板子">
+                        <img src="/medias/featureimages/0.webp" class="responsive-img" alt="数据结构板子">
                         
                         <span class="card-title">数据结构板子</span>
                     </div>
@@ -1121,7 +1123,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.webp" class="responsive-img" alt="图论板子">
+                        <img src="/medias/featureimages/1.webp" class="responsive-img" alt="图论板子">
                         
                         <span class="card-title">图论板子</span>
                     </div>

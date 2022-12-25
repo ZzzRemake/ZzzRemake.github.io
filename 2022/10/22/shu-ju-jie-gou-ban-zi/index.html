@@ -633,74 +633,83 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h2><p>判断集合，合并集合，比如图论中的kruskal，连通分支等。</p>
-<pre class=" language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//int fa[N],siz[N];</span>
-<span class="token keyword">void</span> <span class="token function">init_set</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token comment" spellcheck="true">//初始化</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>i<span class="token operator">&lt;=</span>n<span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        fa<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">=</span>i<span class="token punctuation">,</span>siz<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">int</span> <span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token comment" spellcheck="true">//路径压缩</span>
-    <span class="token keyword">return</span> fa<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token operator">==</span>x<span class="token operator">?</span>x<span class="token operator">:</span><span class="token punctuation">(</span>fa<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>fa<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">void</span> <span class="token function">unionfa</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span><span class="token keyword">int</span> y<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token comment" spellcheck="true">//启发式合并</span>
-    <span class="token keyword">int</span> parent_x<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>parent_y<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>parent_x<span class="token operator">==</span>parent_y<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">return</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>siz<span class="token punctuation">[</span>parent_x<span class="token punctuation">]</span><span class="token operator">></span>siz<span class="token punctuation">[</span>parent_y<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token function">swap</span><span class="token punctuation">(</span>parent_x<span class="token punctuation">,</span>parent_y<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token comment" spellcheck="true">//按照节点集合大小，保证小的和到大的里面。</span>
-    fa<span class="token punctuation">[</span>parent_x<span class="token punctuation">]</span><span class="token operator">=</span>parent_y<span class="token punctuation">;</span>
-    siz<span class="token punctuation">[</span>parent_y<span class="token punctuation">]</span><span class="token operator">+</span><span class="token operator">=</span>siz<span class="token punctuation">[</span>parent_x<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+                <h2 id="并查集">并查集</h2>
+<p>判断集合，合并集合，比如图论中的kruskal，连通分支等。</p>
+<pre class=" language-language-cpp"><code class="language-language-cpp">//int fa[N],siz[N];
+void init_set(int n){//初始化
+    for(int i=1;i<=n;++i){
+        fa[i]=i,siz[i]=1;
+    }
+}
+int find(int x){//路径压缩
+    return fa[x]==x?x:(fa[x]=find(fa[x]));
+}
+void unionfa(int x,int y){//启发式合并
+    int parent_x=find(x),parent_y=find(y);
+    if(parent_x==parent_y){
+        return;
+    }
+    if(siz[parent_x]>siz[parent_y]){
+        swap(parent_x,parent_y);
+    }//按照节点集合大小，保证小的和到大的里面。
+    fa[parent_x]=parent_y;
+    siz[parent_y]+=siz[parent_x];
+}
 </code></pre>
-<h2 id="ST表"><a href="#ST表" class="headerlink" title="ST表"></a>ST表</h2><p>$\Theta(nlogn)预处理，\Theta(1)查询$</p>
-<p>可重复贡献———若对某种运算$opt$，有:$x<del>opt</del> x=x$，例如$gcd(x,x)=x,max(x,x)=x$，则类似的区间查询，比如区间gcd，区间最大值，且$opt$满足结合律$a<del>opt</del>(b<del>opt</del>c)=(a<del>opt</del>b)<del>opt</del>c$,则可以使用ST表进行区间查询。<br>但比如区间和，opt行为就会计算两次，还是不行捏。<br>DP:$f(i,j)=max[i,i+2^j-1]$<br>$f(i,0)=max[i,i]=i$<br>-&gt;<br>$f(i,j)=max(f(i,j-1),f(i+2^{j-1},j-1))$</p>
-<pre class=" language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//以最大值为例</span>
-<span class="token comment" spellcheck="true">//#define N 2000001</span>
-<span class="token keyword">const</span> <span class="token keyword">int</span> maxlog<span class="token operator">=</span><span class="token number">21</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> st<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">[</span>maxlog<span class="token punctuation">]</span><span class="token punctuation">,</span>logn<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">void</span> <span class="token function">init_st</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    logn<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-    logn<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>N<span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        logn<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">=</span>logn<span class="token punctuation">[</span>i<span class="token operator">>></span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">void</span> <span class="token function">st_process</span><span class="token punctuation">(</span><span class="token keyword">int</span> total<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token function">init_st</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>i<span class="token operator">&lt;=</span>n<span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        cin<span class="token operator">>></span>st<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2 id="ST表">ST表</h2>
+<p>$\Theta(nlogn)预处理，\Theta(1)查询$</p>
+<p>可重复贡献———若对某种运算$opt$，有:$x<sub>opt</sub> x=x$，例如$gcd(x,x)=x,max(x,x)=x$，则类似的区间查询，比如区间gcd，区间最大值，且$opt$满足结合律$a<sub>opt</sub>(b<sub>opt</sub>c)=(a<sub>opt</sub>b)<sub>opt</sub>c$,则可以使用ST表进行区间查询。<br>
+但比如区间和，opt行为就会计算两次，还是不行捏。<br>
+DP:$f(i,j)=max[i,i+2^j-1]$<br>
+$f(i,0)=max[i,i]=i$<br>
+-&gt;<br>
+$f(i,j)=max(f(i,j-1),f(i+2^{j-1},j-1))$</p>
+<pre class=" language-language-cpp"><code class="language-language-cpp">//以最大值为例
+//#define N 2000001
+const int maxlog=21;
+int st[N][maxlog],logn[N];
+void init_st(int n){
+    logn[1]=0;
+    logn[2]=1;
+    for(int i=3;i<N;++i){
+        logn[i]=logn[i>>1]+1;
+    }
+}
+void st_process(int total){
+    init_st();
+    for(int i=1;i<=n;++i){
+        cin>>st[i][0];
+    }
+}
 </code></pre>
-<h2 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h2><pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">int</span> tree<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>diff<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> <span class="token function">lowbit</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token keyword">return</span> x<span class="token operator">&amp;</span><span class="token operator">-</span>x<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span><span class="token keyword">int</span> k<span class="token punctuation">,</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token keyword">int</span> tem<span class="token operator">=</span>x<span class="token operator">*</span>k<span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>x<span class="token operator">&lt;=</span>n<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        tree<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token operator">+</span><span class="token operator">=</span>k<span class="token punctuation">,</span>diff<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token operator">+</span><span class="token operator">=</span>tem<span class="token punctuation">;</span>
-        x<span class="token operator">+</span><span class="token operator">=</span><span class="token function">lowbit</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>   
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">void</span> <span class="token function">add_range</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">,</span>l<span class="token punctuation">,</span><span class="token keyword">int</span> r<span class="token punctuation">,</span><span class="token keyword">int</span> k<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token function">add</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span>k<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">add</span><span class="token punctuation">(</span>r<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">long</span> <span class="token keyword">long</span> <span class="token keyword">int</span> <span class="token function">get_sum_range</span><span class="token punctuation">(</span>intl<span class="token punctuation">,</span><span class="token keyword">int</span> r<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token punctuation">(</span>r<span class="token operator">+</span><span class="token number">1ll</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token function">getpre</span><span class="token punctuation">(</span>r<span class="token punctuation">,</span>tree<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1ll</span><span class="token operator">*</span>l<span class="token operator">*</span><span class="token function">getpre</span><span class="token punctuation">(</span>l<span class="token number">-1</span><span class="token punctuation">,</span>tree<span class="token punctuation">)</span><span class="token operator">-</span>
-    <span class="token punctuation">(</span><span class="token function">getpre</span><span class="token punctuation">(</span>r<span class="token punctuation">,</span>diff<span class="token punctuation">)</span><span class="token operator">-</span><span class="token function">getpre</span><span class="token punctuation">(</span>l<span class="token number">-1</span><span class="token punctuation">,</span>diff<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">int</span> <span class="token function">getpre</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span><span class="token keyword">int</span> <span class="token operator">*</span>tree<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token keyword">int</span> cnt<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        cnt<span class="token operator">+</span><span class="token operator">=</span>tree<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        x<span class="token operator">-</span><span class="token operator">=</span><span class="token function">lowbit</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> cnt<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<h2 id="树状数组">树状数组</h2>
+<pre class=" language-language-cpp"><code class="language-language-cpp">int tree[N],diff[N];
+int lowbit(int x){
+    return x&-x;
+}
+void add(int x,int k,int n){
+    int tem=x*k;
+    while(x<=n){
+        tree[x]+=k,diff[x]+=tem;
+        x+=lowbit(x);   
+    }
+}
+void add_range(int,l,int r,int k){
+    add(l,k),add(r+1,-v);
+}
+long long int get_sum_range(intl,int r){
+    return (r+1ll)*getpre(r,tree)-1ll*l*getpre(l-1,tree)-
+    (getpre(r,diff)-getpre(l-1,diff));
+}
+int getpre(int x,int *tree){
+    int cnt=0;
+    while(x) {
+        cnt+=tree[x];
+        x-=lowbit(x);
+    }
+    return cnt;
+}
+
 </code></pre>
 
                 
@@ -1092,7 +1101,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.webp" class="responsive-img" alt="dp技巧1：四边形不等式">
+                        <img src="/medias/featureimages/8.webp" class="responsive-img" alt="dp技巧1：四边形不等式">
                         
                         <span class="card-title">dp技巧1：四边形不等式</span>
                     </div>
@@ -1149,7 +1158,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.webp" class="responsive-img" alt="字符串板子">
+                        <img src="/medias/featureimages/16.webp" class="responsive-img" alt="字符串板子">
                         
                         <span class="card-title">字符串板子</span>
                     </div>

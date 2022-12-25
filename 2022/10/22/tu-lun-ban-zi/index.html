@@ -633,146 +633,152 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="建图"><a href="#建图" class="headerlink" title="建图"></a>建图</h3><pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">struct</span> edge<span class="token punctuation">{</span>
-    <span class="token keyword">int</span> u<span class="token punctuation">,</span>v<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-vector<span class="token operator">&lt;</span>edge<span class="token operator">></span> e<span class="token punctuation">;</span>
-vector<span class="token operator">&lt;</span><span class="token keyword">bool</span><span class="token operator">></span> vis<span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//较为低效，若用时基本上是需要存边的消息以多次建图，</span>
-<span class="token comment" spellcheck="true">//或者需要像kruskal那样对边权等进行直接操作。</span>
+                <h2 id="基础">基础</h2>
+<h3 id="建图">建图</h3>
+<pre class=" language-language-cpp"><code class="language-language-cpp">struct edge{
+    int u,v;
+};
+vector<edge> e;
+vector<bool> vis;
+//较为低效，若用时基本上是需要存边的消息以多次建图，
+//或者需要像kruskal那样对边权等进行直接操作。
 
 邻接表，同平常写法。
 链式前向星：
-<span class="token keyword">int</span> total<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>head<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//需要全部初始化为-1。</span>
-<span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">int</span> u<span class="token punctuation">,</span><span class="token keyword">int</span> v<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    nxt<span class="token punctuation">[</span><span class="token operator">++</span>cnt<span class="token punctuation">]</span><span class="token operator">=</span>head<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    head<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">=</span>cnt<span class="token punctuation">;</span>
-    to<span class="token punctuation">[</span>cnt<span class="token punctuation">]</span><span class="token operator">=</span>v<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">//遍历时</span>
-<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span>head<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token operator">~</span>i<span class="token punctuation">;</span>i<span class="token operator">=</span>nxt<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    v<span class="token operator">=</span>to<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+int total=-1,head[]...;//需要全部初始化为-1。
+void add(int u,int v){
+    nxt[++cnt]=head[u];
+    head[u]=cnt;
+    to[cnt]=v;
+}
+//遍历时
+for(int i=head[u];~i;i=nxt[i]){
+    v=to[i];
+}
 </code></pre>
-<h3 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h3><p>Kahn算法：不断维护一个入度为0的集合（BFS）</p>
-<pre class=" language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//struct node{ int now, val;};//第一种写法，采用结构体加以判断</span>
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> graph<span class="token punctuation">[</span><span class="token number">30</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> intonow<span class="token punctuation">[</span><span class="token number">30</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//set&lt;int> total;//现有节点</span>
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> output<span class="token punctuation">;</span>
-<span class="token keyword">bool</span> <span class="token function">toposort</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    queue<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> q<span class="token punctuation">;</span>
-    output<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>intonow<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-            q<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>q<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token comment" spellcheck="true">//</span>
-        <span class="token keyword">int</span> now <span class="token operator">=</span> q<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        q<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        output<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>now<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> graph<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-            <span class="token keyword">int</span> nxt <span class="token operator">=</span> graph<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">--</span>intonow<span class="token punctuation">[</span>nxt<span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-                q<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>nxt<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>output<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">==</span>n<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        cout<span class="token operator">&lt;&lt;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">/*在这里保留的原因是因为这里的完全建立关系和拓扑排序还是有所不同，在这里就当拓展思路了。
+<h3 id="拓扑排序">拓扑排序</h3>
+<p>Kahn算法：不断维护一个入度为0的集合（BFS）</p>
+<pre class=" language-language-cpp"><code class="language-language-cpp">//struct node{ int now, val;};//第一种写法，采用结构体加以判断
+vector<int> graph[30];
+int intonow[30];
+//set<int> total;//现有节点
+vector<int> output;
+bool toposort(int n){
+    queue<int> q;
+    output.clear();
+    for (int i = 0; i < n;++i)
+        if(!intonow[i])
+            q.push(i);
+    while(!q.empty()){//
+        int now = q.front();
+        q.pop();
+        output.push_back(now);
+        for (int i = 0; i < graph[now].size();++i){
+            int nxt = graph[now][i];
+            if(--intonow[nxt]==0){
+                q.push(nxt);
+            }
+        }
+    }
+    if(output.size()==n){
+        cout<<....;
+        return true;
+    } else {
+        return false;
+    }
+    /*在这里保留的原因是因为这里的完全建立关系和拓扑排序还是有所不同，在这里就当拓展思路了。
     if(maxs==n){
-        cout &lt;&lt; "Sorted sequence determined after " &lt;&lt; len &lt;&lt; " relations: ";//len为函数参数，自己看看要不要罢
-        for (int i = 0; i &lt; output.size();++i)
-            cout &lt;&lt; char('A' + output[i]);
-        cout &lt;&lt; ".";return true;
+        cout << "Sorted sequence determined after " << len << " relations: ";//len为函数参数，自己看看要不要罢
+        for (int i = 0; i < output.size();++i)
+            cout << char('A' + output[i]);
+        cout << ".";return true;
     } 
     if(cnt!=total.size()){
-        cout &lt;&lt; "Inconsistency found after " &lt;&lt; len &lt;&lt; " relations.";
+        cout << "Inconsistency found after " << len << " relations.";
         return true;
     }
-    return false;*/</span>
-<span class="token punctuation">}</span>
+    return false;*/
+}
 </code></pre>
 <p>DFS：需要注意的就是最后的output是dfs序，需要reverse</p>
-<pre class=" language-cpp"><code class="language-cpp">vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> graph<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>output<span class="token punctuation">;</span>
-<span class="token keyword">int</span> marked<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">bool</span> <span class="token function">dfs</span><span class="token punctuation">(</span><span class="token keyword">int</span> now<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    marked<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> nxt<span class="token operator">:</span>graph<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>marked<span class="token punctuation">[</span>nxt<span class="token punctuation">]</span><span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>marked<span class="token punctuation">[</span>nxt<span class="token punctuation">]</span><span class="token operator">&amp;&amp;</span><span class="token operator">!</span><span class="token function">dfs</span><span class="token punctuation">(</span>nxt<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    marked<span class="token punctuation">[</span>now<span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
-    output<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>now<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">bool</span> <span class="token function">toposort</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    output<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">memset</span><span class="token punctuation">(</span>marked<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>marked<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>n<span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span>   <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>marked<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">&amp;&amp;</span><span class="token operator">!</span><span class="token function">dfs</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token function">reverse</span><span class="token punctuation">(</span>output<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>output<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<pre class=" language-language-cpp"><code class="language-language-cpp">vector<int> graph[N],output;
+int marked[N];
+bool dfs(int now){
+    marked[now]=-1;
+    for(int nxt:graph[now]){
+        if(marked[nxt]<0) return false;
+        if(!marked[nxt]&&!dfs(nxt)) return false;
+    }
+    marked[now]=1;
+    output.push_back(now);
+    return true;
+}
+bool toposort(){
+    output.clear(),memset(marked,0,sizeof(marked));
+    for(int i=0;i<n;++i)   if(!marked[i]&&!dfs(i)) return false;
+    reverse(output.begin(),output.end());
+    return true;
+}
 </code></pre>
-<h3 id="树链剖分"><a href="#树链剖分" class="headerlink" title="树链剖分"></a>树链剖分</h3><p>下面是重链剖分，按照子树大小进行划分。其他如长链剖分，可以直接改改就行。</p>
-<pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">int</span> fa<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>dep<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>siz<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>hson<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//父节点，深度，子树大小，重节点</span>
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> a<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> top<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>dfn<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>rnk<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>tot<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//链顶，dfs序，rnk：逆函数，rnk[dfn[x]]=x;</span>
-<span class="token keyword">int</span> <span class="token function">dfs1</span><span class="token punctuation">(</span><span class="token keyword">int</span> u<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token comment" spellcheck="true">//记录所需信息</span>
-    hson<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-    siz<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>a<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">int</span> v<span class="token operator">=</span>a<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>dep<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-            dep<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token operator">=</span>dep<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
-            siz<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">+</span><span class="token operator">=</span><span class="token function">dfs</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span>d<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            fa<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token operator">=</span>u<span class="token punctuation">;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>hson<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">==</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">||</span>siz<span class="token punctuation">[</span>hson<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token operator">&lt;</span>siz<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-                hson<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">=</span>v<span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> siz<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">void</span> <span class="token function">dfs2</span><span class="token punctuation">(</span><span class="token keyword">int</span> u<span class="token punctuation">,</span><span class="token keyword">int</span> nowtop<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    top<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">=</span>nowtop<span class="token punctuation">;</span>
-    dfn<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">++</span>tot<span class="token punctuation">;</span>
-    rnk<span class="token punctuation">[</span>cnt<span class="token punctuation">]</span><span class="token operator">=</span>u<span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>hson<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">==</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token keyword">return</span><span class="token punctuation">;</span>
-    <span class="token function">dfs2</span><span class="token punctuation">(</span>hson<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">,</span>nowtop<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>a<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">int</span> v<span class="token operator">=</span>a<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>v<span class="token operator">!=</span>hson<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">&amp;&amp;</span>v<span class="token operator">!=</span>fa<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-            <span class="token function">dfs2</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h3 id="树链剖分">树链剖分</h3>
+<p>下面是重链剖分，按照子树大小进行划分。其他如长链剖分，可以直接改改就行。</p>
+<pre class=" language-language-cpp"><code class="language-language-cpp">int fa[N],dep[N],siz[N],hson[N];//父节点，深度，子树大小，重节点
+vector<int> a[N];
+int top[N],dfn[N],rnk[N],tot;//链顶，dfs序，rnk：逆函数，rnk[dfn[x]]=x;
+int dfs1(int u){//记录所需信息
+    hson[u]=-1;
+    siz[u]=1;
+    for(int i=0;i<a[u].size();++i){
+        int v=a[u][i];
+        if(!dep[v]){
+            dep[v]=dep[u]+1;
+            siz[u]+=dfs(v,d+1);
+            fa[v]=u;
+            if(hson[u]==-1||siz[hson[u]]<siz[v]){
+                hson[u]=v;
+            }
+        }
+    }
+    return siz[u];
+}
+void dfs2(int u,int nowtop){
+    top[u]=nowtop;
+    dfn[u]=++tot;
+    rnk[cnt]=u;
+    if(hson[u]==-1)return;
+    dfs2(hson[u],nowtop);
+    for(int i=0;i<a[u].size();++i){
+        int v=a[u][i];
+        if(v!=hson[u]&&v!=fa[u]){
+            dfs2(v,v);
+        }
+    }
+}
 </code></pre>
-<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><h3 id="树直径"><a href="#树直径" class="headerlink" title="树直径"></a>树直径</h3><pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">int</span> fail<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>d<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> a<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> road<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>cnt<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token keyword">void</span> <span class="token function">dfs</span><span class="token punctuation">(</span><span class="token keyword">int</span> u<span class="token punctuation">,</span><span class="token keyword">int</span> fa<span class="token punctuation">,</span><span class="token keyword">int</span> <span class="token operator">&amp;</span>last<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    fail<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">=</span>fa<span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> v<span class="token operator">:</span>a<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>v<span class="token operator">!=</span>fa<span class="token punctuation">)</span><span class="token punctuation">{</span>
-            d<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token operator">=</span>d<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>d<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token operator">></span>d<span class="token punctuation">[</span>last<span class="token punctuation">]</span><span class="token punctuation">)</span>  last<span class="token operator">=</span>v<span class="token punctuation">;</span>
-            <span class="token function">dfs</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span>u<span class="token punctuation">,</span>last<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">//使用：</span>
-cnt<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> begin<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>end<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-d<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token function">dfs</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>begin<span class="token punctuation">)</span><span class="token punctuation">;</span>
-d<span class="token punctuation">[</span>begin<span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token function">dfs</span><span class="token punctuation">(</span>begin<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>end<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h2 id="树">树</h2>
+<h3 id="树直径">树直径</h3>
+<pre class=" language-language-cpp"><code class="language-language-cpp">int fail[N],d[N];
+vector<int> a[N];
+int road[N],cnt=0;
+void dfs(int u,int fa,int &last){
+    fail[u]=fa;
+    for(int v:a[u]){
+        if(v!=fa){
+            d[v]=d[u]+1;
+            if(d[v]>d[last])  last=v;
+            dfs(v,u,last);
+        }
+    }
+}
+//使用：
+cnt=0;
+int begin=0,end=0;
+d[1]=0,dfs(1,0,begin);
+d[begin]=0;dfs(begin,0,end);
 
-<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span>end<span class="token punctuation">;</span>i<span class="token punctuation">;</span>i<span class="token operator">=</span>fail<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    road<span class="token punctuation">[</span>cnt<span class="token operator">++</span><span class="token punctuation">]</span><span class="token operator">=</span>i<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+for(int i=end;i;i=fail[i]){
+    road[cnt++]=i;
+}
 </code></pre>
 
                 
@@ -1164,7 +1170,7 @@ d<span class="token punctuation">[</span>begin<span class="token punctuation">]<
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.webp" class="responsive-img" alt="字符串板子">
+                        <img src="/medias/featureimages/16.webp" class="responsive-img" alt="字符串板子">
                         
                         <span class="card-title">字符串板子</span>
                     </div>
