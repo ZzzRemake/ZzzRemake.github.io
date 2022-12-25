@@ -7,10 +7,7 @@
 <!-- hexo injector head_begin end -->
     <meta charset="utf-8">
     <meta name="keywords" content="Modern CryptoⅡ Perfect Encryption, ZzzRemake">
-    <meta name="description" content="Something ahead
-概率论啊嗯，但确实不用多少相关知识，概率论一二两章学学就行。
-条件概率公式：$Pr[B|A]=Pr[A\land B]/Pr[AB]$。
-贝叶斯公式：$Pr[B|A]=\frac{Pr[A|B]\cdot P">
+    <meta name="description" content="现代密码学的完美加密章节。下一章进入私钥安全性。">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -706,13 +703,13 @@ $$Pr[Priv_{\mathcal{A}\prod}^{eav}=1]=\frac{1}{2}$$</p>
 <p>加密过程：<br>
 设长度为$l\in N,\mathcal{M}=\mathcal{K}=\mathcal{C}={0,1}^l$.<br>
 $Gen-&gt;k\in\mathcal{K}$,uniformly at random<br>
-$Enc_k(m)=m\oplus k,Dec_k©=c\oplus k$<br>
+$Enc_k(m)=m\oplus k,Dec_k ( c ) =c\oplus k$<br>
 其为Perfect secret。证明过程：</p>
 <p>$Pr[Enc_k(m)=c]=Pr[m\oplus k=c]=Pr[k=c\oplus m]=|\mathcal{K}|^{-1}=2^{-l}$</p>
 <p>当然你也可以用群的方式写写。</p>
 <p>需要特别指出的是，这里的密钥、明文、密文的长度都是等长的，因此生成密钥、加密过程以及泄露消息等都有一些缺憾。OTP并不是好用的加密方案。<br>
 并且，OTP不能够复用密钥。一旦复用，攻击者可以通过</p>
-<p>$$Enc_k{m}\oplus Enc_k{m’}=m\oplus m’$$的方式去除密钥，使密钥丧失作用而暴露明文的相关信息，OTP便失去作用。</p>
+<p>$$Enc_k(m)\oplus Enc_k(m’)=m\oplus m’$$的方式去除密钥，使密钥丧失作用而暴露明文的相关信息，OTP便失去作用。</p>
 <h2 id="Limitations">Limitations</h2>
 <div class="admonition info"><p class="admonition-title">Theorem
 </p><p>若加密方案为完美加密，那么密钥空间大小必须大于明文空间大小。</p>
@@ -726,9 +723,8 @@ $Enc_k(m)=m\oplus k,Dec_k©=c\oplus k$<br>
 <li>$\forall k\in\mathcal{K},Pr(k~is~~chosen)=\frac{1}{|\mathcal{K}|}$</li>
 <li>$\forall m\in\mathcal{M},c\in\mathcal{C}，\exists k(unique)\in \mathcal{K},Enc_k(m)=c$</li>
 </ol>
+<p>那么这个加密方案为Perfect secret。这是充要条件。</p>
 </div>
-<pre><code>那么这个加密方案为Perfect secret。这是充要条件。
-</code></pre>
 
                 
             </div>
@@ -1107,48 +1103,54 @@ $Enc_k(m)=m\oplus k,Dec_k©=c\oplus k$<br>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2022/12/02/modern-cryptoii-perfect-encryption/">
+                <a href="/2022/12/25/devops-chu-tan-bu-cheng-gong-de-yi-ci-zhao-xin-jing-li/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.webp" class="responsive-img" alt="Modern CryptoⅡ Perfect Encryption">
+                        <img src="/medias/featureimages/23.webp" class="responsive-img" alt="DevOps初探--不成功的一次招新经历">
                         
-                        <span class="card-title">Modern CryptoⅡ Perfect Encryption</span>
+                        <span class="card-title">DevOps初探--不成功的一次招新经历</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            星辰2022 DevOps招新笔试题
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-02
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-12-25
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Crypto/" class="post-category">
-                                    Crypto
+                            <a href="/categories/DevOps/" class="post-category">
+                                    DevOps
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/One-pad-encryption/">
-                        <span class="chip bg-color">One-pad encryption</span>
+                    <a href="/tags/docker/">
+                        <span class="chip bg-color">docker</span>
+                    </a>
+                    
+                    <a href="/tags/CI-CD/">
+                        <span class="chip bg-color">CI/CD</span>
+                    </a>
+                    
+                    <a href="/tags/GitLab/">
+                        <span class="chip bg-color">GitLab</span>
                     </a>
                     
                 </div>
@@ -1174,7 +1176,7 @@ $Enc_k(m)=m\oplus k,Dec_k©=c\oplus k$<br>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            现代密码学：导论部分，介绍基本概念和模型。\
+                            现代密码学：导论部分，介绍基本概念和模型。
                         
                     </div>
                     <div class="publish-info">
