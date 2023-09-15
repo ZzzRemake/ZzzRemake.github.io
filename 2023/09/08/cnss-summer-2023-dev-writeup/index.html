@@ -1,0 +1,2115 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/bilicard.css">
+<!-- hexo injector head_begin end -->
+    <meta charset="utf-8">
+    <meta name="keywords" content="CNSS Summer 2023 Dev writeup, ZzzRemake">
+    <meta name="description" content="2023CNSS夏令营 Dev writeup">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>CNSS Summer 2023 Dev writeup | ZzzRemake</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/medias/favicon.webp">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+
+
+    <link rel="stylesheet" href="/libs/prism/prism.css">
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+    <style type="text/css" lang="css">
+    #loading-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-height: 100vh;
+        width: 100vw;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: rgba(33, 33, 33, 0.95);
+        text-align: center;
+        /* loader页面消失采用渐隐的方式*/
+        -webkit-transition: opacity 0.7s ease;
+        -moz-transition: opacity 0.7s ease;
+        -o-transition: opacity 0.7s ease;
+        transition: opacity 0.7s ease;
+    }
+    .loading-image {
+        width: 120px;
+        height: 50px;
+        transform: translate(-50%);
+    }
+
+    .loading-image div:nth-child(2) {
+        -webkit-animation: pacman-balls 0.7s linear 0s infinite;
+        animation: pacman-balls 0.7s linear 0s infinite
+    }
+
+    .loading-image div:nth-child(3) {
+        -webkit-animation: pacman-balls 0.7s linear .33s infinite;
+        animation: pacman-balls 0.7s linear .33s infinite
+    }
+
+    .loading-image div:nth-child(4) {
+        -webkit-animation: pacman-balls 0.7s linear .66s infinite;
+        animation: pacman-balls 0.7s linear .66s infinite
+    }
+
+    .loading-image div:nth-child(5) {
+        -webkit-animation: pacman-balls 0.7s linear .99s infinite;
+        animation: pacman-balls 0.7s linear .99s infinite
+    }
+
+    .loading-image div:first-of-type {
+        width: 0;
+        height: 0;
+        border: 25px solid #49b1f5;
+        border-right-color: transparent;
+        border-radius: 25px;
+        -webkit-animation: rotate_pacman_half_up .5s 0s infinite;
+        animation: rotate_pacman_half_up .5s 0s infinite;
+    }
+
+    .loading-image div:nth-child(2) {
+        width: 0;
+        height: 0;
+        border: 25px solid #49b1f5;
+        border-right-color: transparent;
+        border-radius: 25px;
+        -webkit-animation: rotate_pacman_half_down .5s 0s infinite;
+        animation: rotate_pacman_half_down .5s 0s infinite;
+        margin-top: -50px;
+    }
+
+    @-webkit-keyframes rotate_pacman_half_up {
+        0% {
+            transform: rotate(270deg)
+        }
+
+        50% {
+            transform: rotate(1turn)
+        }
+
+        to {
+            transform: rotate(270deg)
+        }
+    }
+
+    @keyframes rotate_pacman_half_up {
+        0% {
+            transform: rotate(270deg)
+        }
+
+        50% {
+            transform: rotate(1turn)
+        }
+
+        to {
+            transform: rotate(270deg)
+        }
+    }
+
+    @-webkit-keyframes rotate_pacman_half_down {
+        0% {
+            transform: rotate(90deg)
+        }
+
+        50% {
+            transform: rotate(0deg)
+        }
+
+        to {
+            transform: rotate(90deg)
+        }
+    }
+
+    @keyframes rotate_pacman_half_down {
+        0% {
+            transform: rotate(90deg)
+        }
+
+        50% {
+            transform: rotate(0deg)
+        }
+
+        to {
+            transform: rotate(90deg)
+        }
+    }
+
+    @-webkit-keyframes pacman-balls {
+        75% {
+            opacity: .7
+        }
+
+        to {
+            transform: translate(-100px, -6.25px)
+        }
+    }
+
+    @keyframes pacman-balls {
+        75% {
+            opacity: .7
+        }
+
+        to {
+            transform: translate(-100px, -6.25px)
+        }
+    }
+
+    .loading-image div:nth-child(3),
+    .loading-image div:nth-child(4),
+    .loading-image div:nth-child(5),
+    .loading-image div:nth-child(6) {
+        background-color: #49b1f5;
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        margin: 2px;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        transform: translateY(-6.25px);
+        top: 25px;
+        left: 100px;
+    }
+
+    .loading-text {
+        margin-bottom: 20vh;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 2rem;
+        box-sizing: border-box;
+        padding: 0 10px;
+        text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+    }
+
+    @media only screen and (max-width: 500px) {
+        .loading-text {
+            font-size: 1.5rem;
+        }
+    }
+
+    .fadeout {
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+    /* logo出现动画 */
+    @-webkit-keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0)
+        }
+
+        100% {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none
+        }
+    }
+
+    @keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+        }
+    }
+</style>
+<script> (function () {
+        const loaded = function () {
+            setTimeout(function () {
+                const loader = document.getElementById("loading-container");
+                loader.className = "fadeout";//使用渐隐的方法淡出loading page //
+                //document.getElementById("body-wrap").style.display = "flex";
+                setTimeout(function () {
+                    loader.style.display = "none";
+                }, 600);
+            }, 500);//强制显示loading page 0.7s
+        };
+        loaded();
+    })()
+</script>
+ 
+ 
+<body>
+    
+    
+        <div id="loading-container">
+            <p class="loading-text">走～走走～走走走走​🚶‍♂️🚶‍♂️🚶‍♂️ </p>
+            <div class="loading-image">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div> 
+                <div></div>
+            </div> 
+        </div>
+    
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.webp" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">ZzzRemake</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index📕</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags🎧</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categ🧐</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives🤯</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About🤔</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends🤝</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.webp" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">ZzzRemake</div>
+        <div class="logo-desc">
+            
+            Write down what I enjoyed.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index📕
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags🎧
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categ🧐
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives🤯
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About🤔
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends🤝
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/ZzzRemake" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me🥰
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #257afa;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/ZzzRemake" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me🥰" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.webp')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">CNSS Summer 2023 Dev writeup</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/CNSS/">
+                                <span class="chip bg-color">CNSS</span>
+                            </a>
+                        
+                            <a href="/tags/DevOps/">
+                                <span class="chip bg-color">DevOps</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CNSS/" class="post-category">
+                                CNSS
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2023-09-08
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
+                    2023-09-09
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Words Count:&nbsp;&nbsp;
+                    3.1k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="碎碎念">碎碎念</h2>
+<p>呜呜，孩子不会dev，随便打着玩的。</p>
+<h2 id="🧐Dev-is-so-fun…-functional">🧐Dev is so fun… functional!</h2>
+<h3 id="题目描述">题目描述</h3>
+<p>写出和以下<code>scheme</code>代码等价的代码（三种语言）</p>
+<pre class="language-scheme" data-language="scheme"><code class="language-scheme">#lang scheme
+(define (make-withdraw balance)
+  (lambda (amount)
+    (if (&gt;= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds")))
+
+(define W1 (make-withdraw 100))
+(define W2 (make-withdraw 100))
+
+(W1 50)
+; 50
+(W1 30)
+; 20
+(W2 70)
+; 30
+(W2 50)
+; Insufficient funds</code></pre>
+<h3 id="要点">要点</h3>
+<p>哈哈，不会函数式编程捏。<br>
+题目要求的是闭包实现，因此用class实现类似功能是不行的。</p>
+<h3 id="过程">过程</h3>
+<p><s>Javascript根本不会，但用法都能从网上找到</s></p>
+<h4 id="C">C++</h4>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;functional&gt;
+#include &lt;iostream&gt;
+
+std::function&lt;void(int)&gt; make_withdraw(int balance){
+    return [=] (int amount) mutable {
+        if (balance &gt;= amount){
+            balance -=amount;
+            std::cout&lt;&lt;balance&lt;&lt;'\n';
+        } else {
+            std::cout&lt;&lt;"Insufficient funds\n";
+        }
+    };
+}
+
+int main(){
+    auto W1=make_withdraw(100);
+    auto W2=make_withdraw(100);
+    W1(50);
+    W1(30);
+    W2(70);
+    W2(50);
+}</code></pre>
+<h4 id="Python">Python</h4>
+<pre class="language-python" data-language="python"><code class="language-python">def make_withdraw(balance):
+    def kkndlam(amount):
+        nonlocal balance
+        if balance &gt;= amount:
+            balance -= amount
+            print(balance)
+        else:
+            print("Insufficient funds")
+    return kkndlam
+
+W1 = make_withdraw(100)
+W2 = make_withdraw(100)
+
+W1(50)
+W1(30)
+W2(70)
+W2(50)</code></pre>
+<h4 id="Javascript">Javascript</h4>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript">function make_withdraw(balance) {
+    function kkndlam(amount) {
+        if(balance&gt;=amount){
+            balance -= amount;
+            console.log(balance)
+        } else{
+            console.log("Insufficient funds");
+        }
+    };
+    return kkndlam;
+}
+
+var W1 = make_withdraw(100);
+var W2 = make_withdraw(100);
+
+W1(50);
+W1(30);
+W2(70);
+W2(50);</code></pre>
+<h2 id="♊双人成行">♊双人成行</h2>
+<h3 id="题目描述-2">题目描述</h3>
+<p>使用数据并行化实现多机/多卡对<code>CIFAR-10</code>进行分类的神经网络，模型自选，并回答数据并行化的方式</p>
+<h3 id="要点-2">要点</h3>
+<p>CPU+GPU也是双卡😤，pytorch写一下multiprocessing就行。</p>
+<h3 id="过程-2">过程</h3>
+<div class="admonition note"><p class="admonition-title">配置
+</p><ul>
+<li>CPU 略</li>
+<li>GPU NVIDIA GeForce MX450</li>
+<li>机器学习环境 pytorch 2.0.1+cu117 CUDA 11.7</li>
+</ul>
+</div>
+<p>实现：用<s>东拼西凑的</s>ResNet残差网络实现的、以<code>CIFAR-10</code>为数据集的图像分类</p>
+<h4 id="Code">Code</h4>
+<pre class="language-python" data-language="python"><code class="language-python">import os
+import argparse
+
+import torch
+import torchvision
+import torchvision.transforms as transforms
+import torch.nn as nn
+import torch.optim as optim
+from torch.nn import functional as F
+
+import torch.multiprocessing as mp
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel
+
+# some parameter
+kernel_size=3
+num_epochs = 3
+lr = 0.01
+
+# device: cpu, gpu
+device = [torch.device('cpu'), torch.device('cuda')]
+
+# transform origin data： 数据增强等。
+transform = transforms.Compose([
+    transforms.Pad(4), # 填充像素
+    transforms.RandomHorizontalFlip(), # 倒转
+    transforms.RandomCrop(32), # 切片
+    transforms.ToTensor()
+])
+
+# Res block
+class Residual(nn.Module):
+    def __init__(self, input_channels, num_channels,
+                 kernel_size, strides=1, use1x1=False):
+        super().__init__()
+        self.conv1 = nn.Conv2d(input_channels, num_channels,
+                               kernel_size=kernel_size, padding=(kernel_size-1)//2, stride=strides)
+        self.conv2 = nn.Conv2d(num_channels, num_channels,
+                               kernel_size=kernel_size, padding=(kernel_size-1)//2)
+        if use1x1:
+            self.conv3 = nn.Conv2d(input_channels, num_channels, kernel_size=1, stride=strides)
+        else:
+            self.conv3 = None
+        self.bn1 = nn.BatchNorm2d(num_channels)
+        self.bn2 = nn.BatchNorm2d(num_channels)
+
+    def forward(self, X):
+        Y = self.conv1(X)
+        Y = self.bn1(Y)
+        Y = F.relu(Y)
+        Y = self.bn2(self.conv2(Y))
+        if self.conv3:
+            X = self.conv3(X)
+        Y += X
+        return F.relu(Y)
+
+# 总模型
+class ResNet(nn.Module):
+    def _resnet_block(self, input_channels, num_channels, num_residuals, first_block=False):
+        blist=[]
+        for i in range(num_residuals):
+            if i == 0 and not first_block:
+                blist.append(Residual(input_channels, num_channels,kernel_size=kernel_size, use1x1=True))
+            else:
+                blist.append(Residual(num_channels, num_channels, kernel_size=kernel_size))
+        return nn.Sequential(*blist)
+
+    def __init__(self, layers:list, num_classes=10):
+        super().__init__()
+        self.conv1 = nn.Conv2d(3, 16, kernel_size=kernel_size, bias=False)
+        self.bn1 = nn.BatchNorm2d(16)
+        self.relu = nn.ReLU(inplace=True)
+        self.resblk1 = self._resnet_block(16, 16, layers[0], first_block=True)
+        self.resblk2 = self._resnet_block(16,32, layers[1])
+        self.resblk3 = self._resnet_block(32, 64, layers[2])
+        self.avgPool = nn.AdaptiveAvgPool2d((1,1))
+        self.flatten = nn.Flatten()
+        self.fullconn = nn.Linear(64, num_classes)
+
+    def forward(self, x):
+        Y = self.conv1(x)
+        Y = self.bn1(Y)
+        Y = self.relu(Y)
+        Y = self.resblk1(Y)
+        Y = self.resblk2(Y)
+        Y = self.resblk3(Y)
+        Y = self.avgPool(Y)
+        Y = self.flatten(Y)
+        Y = self.fullconn(Y)
+        return Y
+
+def train(rank, args):
+    # 初始化 使用内置的gloo
+    dist.init_process_group("gloo", rank=rank, world_size=args.nodes*args.gpus)
+
+    # 当前进程所用device
+    local_device = device[rank]
+    # print(rank, local_device)
+
+    # 初始化进程
+    model = ResNet([2,2,2]).to(local_device)
+    # 分布！
+    model = DistributedDataParallel(model)
+    #
+    if rank == 0: # 主进程download
+        train_dataset = torchvision.datasets.CIFAR10(root='data/', train=True, transform=transform, download=True)
+    else:
+        dist.barrier()
+        train_dataset = torchvision.datasets.CIFAR10(root='data/', train=True, transform=transform)
+    train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=300, shuffle=True)
+
+    # 等待状态以使进程达到同步。
+    dist.barrier()
+
+    # 交叉熵损失函数， Adam优化器
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=lr)
+
+    for epoch in range(num_epochs):
+        # print(epoch)
+        for images, labels in train_loader:
+            images = images.to(local_device)
+            labels = labels.to(local_device)
+
+            optimizer.zero_grad()
+            out = model(images)
+            loss = criterion(out, labels)
+            loss.backward()
+            optimizer.step()
+
+    dist.barrier()
+
+    # 存下参数
+    if rank == 0:
+        torch.save(model.state_dict(), "./resnet.pth")
+
+    # 关闭所有进程
+    dist.destroy_process_group()
+
+if __name__ == "__main__":
+    os.environ["MASTER_ADDR"] = "127.0.0.1"
+    os.environ["MASTER_PORT"] = "11451"
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-n', '--nodes', default=1, type=int)
+    parser.add_argument('-g', '--gpus', default=len(device), type=int)
+    args = parser.parse_args()
+    mp.spawn(train, nprocs=args.gpus, args=(args,))</code></pre>
+<h4 id="数据并行化">数据并行化</h4>
+<p>code中为多进程Ring ALLReduce方式，通过环式的通信提升了通信效率。</p>
+<p>另外，诸如torch的dataparallel就类似于google 的 MapReduce，将任务分派给各个子任务进行reduce，最后在主节点进行整合。</p>
+<h2 id="🆕malloc-怎么是个函数啊">🆕malloc 怎么是个函数啊</h2>
+<h3 id="题目描述-3">题目描述</h3>
+<blockquote>
+<p>推荐linux环境完成</p>
+</blockquote>
+<p>使用C语言造出malloc和free的轮子，并回答相应问题。</p>
+<h3 id="要点-3">要点</h3>
+<p><s>windows很好实现，但会被毙</s><br>
+<s>没试过这样干，可以看看yao的博客</s></p>
+<p>malloc会在分配的内存块前存放信息，从而方便free等操作。</p>
+<h3 id="过程-3">过程</h3>
+<h4 id="Code-2">Code</h4>
+<pre class="language-c" data-language="c"><code class="language-c">#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+
+#define align8(x) (((((x)+7)&gt;&gt;3)&lt;&lt;3))
+
+typedef struct block block;
+typedef struct block* p_block;
+
+// 全局
+p_block begin_heap = NULL, end_heap = NULL;
+
+struct block{
+    p_block next; //下一块地址。
+    p_block prev;// 前一块地址，用于merge。
+    size_t size;// 该块分配了多少字节
+    int free; //该块是否free.
+    char *ptr;// 相当于验证作用？
+    char data[]; //用于实际操作中按字节寻址。
+};
+
+p_block find_block(size_t size){
+    p_block now = begin_heap;
+    while(now &amp;&amp; !(now-&gt;free &amp;&amp; now-&gt;size &gt;= size)){
+        now = now-&gt;next;
+    }
+    return now;
+}
+
+p_block extend(size_t size){
+    p_block now = sbrk(0);
+    if(sbrk(sizeof(block)+size)==(void*)-1){
+        return NULL;
+    }
+    now-&gt;size = size;
+    now-&gt;next = NULL;
+    now-&gt;free = 0;
+    if(end_heap){
+        end_heap-&gt;next = now;
+    } else {
+        begin_heap = now;
+    }
+    now -&gt; prev = end_heap;
+    now -&gt; ptr = now-&gt;data;
+    end_heap = now;
+    return now;
+}
+
+void *mymalloc(size_t size){
+    p_block now;
+    size_t align_size = align8(size);
+    if (begin_heap) {
+        //已有malloc内存后的操作
+        if (now = find_block(align_size)){
+            now -&gt; free = 0;
+        } else {
+            now = extend(align_size);
+            if(now == NULL){
+                return NULL;
+            }
+        }
+    } else {
+        // 初次malloc，进行extend操作
+        now = extend(align_size);
+        if (now == NULL){
+            return NULL;
+        }
+    }
+    return now-&gt;data;
+}
+
+p_block get_block(void *nowptr){
+    //malloc 将信息保存在使用的内存块前，这里获取该metadata地址。
+    return (p_block)((char*)nowptr - sizeof(block));
+}
+
+int is_valid(void *nowptr){
+    if (begin_heap){
+        if ((void*)begin_heap &lt; nowptr &amp;&amp; nowptr &lt; sbrk(0)){
+            return nowptr == get_block(nowptr)-&gt;ptr;
+        }
+    }
+    return 0;
+}
+
+p_block merge_block(p_block now){
+    // avoid fragments(maybe?)
+    if(now-&gt;next &amp;&amp; now-&gt;next-&gt;free){
+        now-&gt;size += sizeof(block) + now-&gt;next-&gt;size;
+        now-&gt;next = now-&gt;next-&gt;next;
+        if(now-&gt;next){
+            now-&gt;next-&gt;prev = now;
+        }
+    }
+    return now;
+}
+
+void myfree(void * nowptr){
+    //merge一下碎片
+    if(is_valid(nowptr)){
+        //free block
+        p_block now = get_block(nowptr);
+        now-&gt;free = 1;
+
+        //merge prev.
+        if(now-&gt;prev&amp;&amp;now-&gt;prev-&gt;free){
+            now = merge_block(now-&gt;prev);
+        }
+
+        if(now-&gt;next == NULL){// update begin and end heap.
+            end_heap = now-&gt;prev;
+            if(end_heap){
+                end_heap-&gt;next = NULL;
+            } else {
+                begin_heap = NULL;
+            }
+            brk(now);
+        } else { //else do merge.
+           merge_block(now); 
+        }
+    } //else : do nothing.
+}
+
+
+int main(){
+    //测测你的
+    printf("sizeof block: %d\n",sizeof(block));
+    printf("ptr   begin_heap: %p, end_heap: %p\n", begin_heap, end_heap);
+    int *a = (int*)mymalloc(sizeof(int)*10);
+    printf("ptr   begin_heap: %p, end_heap: %p\n", begin_heap, end_heap);
+    char *b = (char*)mymalloc(sizeof(char)*100);
+    p_block ta = get_block(a), tb = get_block(b);
+    printf("a: size %d, next %p, prev %p\n",ta-&gt;size, ta-&gt;next, ta-&gt;prev);
+    printf("b: size %d, next %p, prev %p\n",tb-&gt;size, tb-&gt;next, tb-&gt;prev);
+    printf("ptr   begin_heap: %p, end_heap: %p\n", begin_heap, end_heap);
+    myfree(a);
+    printf("free a: ptr   begin_heap: %p, end_heap: %p\n", begin_heap, end_heap);
+    myfree(b);
+    printf("free b: ptr   begin_heap: %p, end_heap: %p\n", begin_heap, end_heap);
+}</code></pre>
+<p>测试截图:<br>
+<img src="/images/CNSS/mymalloc.png" alt="kknd"></p>
+<h4 id="为什么-malloc-size-t-size-需要申请的内存长度，但是-free-void-ptr-不需要已申请的内存长度？">为什么 malloc(size_t size) 需要申请的内存长度，但是 free(void* ptr) 不需要已申请的内存长度？</h4>
+<p>malloc的实现中，会在分配的内存块前储存一小块数据，用于存储关于该次malloc的信息，例如分配的内存字节大小，以及其他信息。free的时候只需要传入指针，程序会在约定好的位置读取信息，便可以进行free操作而不用传入需要释放的内存大小，方便操作。</p>
+<h4 id="OS如何管理内存？">OS如何管理内存？</h4>
+<p>操作系统如何管理内存捏？</p>
+<ol>
+<li>操作系统向进程隐藏了具体的物理内存地址，取而代之的是虚拟的地址空间假象（使用MMU等硬件进行虚拟地址转换）。</li>
+<li>操作系统给每一个进程分配一个页表，用相对较大的页这一单元来储存具体的代码和数据，并使用TLB、多级页表等机制进行速度优化。</li>
+<li>操作系统会将不常用的页从内存储存进磁盘，当需要访问该页时，硬件抛出缺页异常，由软件（操作系统）来调度页。</li>
+</ol>
+<p>需要说明的是，以上的操作系统过程都是透明的，进程无从感知这一切，操作系统用复杂的机制向进程隐藏了这一切。</p>
+<h2 id="🔀Trace-it">🔀Trace it!</h2>
+<p>再造次轮子！</p>
+<h3 id="题目描述-4">题目描述</h3>
+<p>自选语言，实现linux下的traceroute。打印出本机到目的主机之间设备的 IP 地址和 TTL 时间。由于有些中间设备关闭了某些网络服务，所以不能被 trace 到，你只需要给出相应提示即可。</p>
+<h3 id="要点-4">要点</h3>
+<p>虽说traceroute使用的ICMP包已经确定好了类型和代码，但错误的类型和代码仍能得到回应<br>
+<s>和出题人battle后发现出题人写错了类型和代码照样能得到回应</s></p>
+<p>于是只要构造ICMP包就行了。</p>
+<h3 id="过程-4">过程</h3>
+<p>环境</p>
+<blockquote>
+<p>Linux<br>
+Python 3.11.3 + Scapy</p>
+</blockquote>
+<h4 id="原理">原理</h4>
+<p>traceroute 主要通过IP协议和ICMP协议两者共同完成（负载上也有TCP和UDP两种实现，这里只讲UDP实现）</p>
+<p>IP协议中的TTL字段每经一个路由器都会-1， 若-1后为0，路由器将其丢弃，并将向源ip地址（发起方）回复一个ICMP的超时报文，从超时数据报的源IP地址中， 发起方便可获取该路由器的IP地址、</p>
+<p>利用以上原理，traceroute可以在第一次发送<code>TTL=1</code>的UDP（or TCP?）报文，收到超时的回复时再发送<code>TTL=2</code>的报文，如此反复，直到发送到目的IP地址，或达到设定的最高hop数（Linux 中的 <code>traceroute</code> 默认为30 hops），便可得出数据包途经的IP地址。</p>
+<p>需要注意的是，现在的许多路由器开启了防火墙等功能，被配置为了不返回ICMP报文，因此traceroute命令无法获得该路由器的IP地址，在原命令中显示为<code>*</code>。traceroute不会因为遇到该种情况停止，而是继续增加TTL，发出数据包，直到遇到以上所述的情况而停止。</p>
+<hr>
+<p>那么，如何根据ICMP来得出路由器返回的不同情况呢？</p>
+<p>ICMP 提供了type字段以及细分的code字段以区分不同的类型，其中有两个在traceroute中尤其重要：</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Code</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td>0</td>
+<td>TTL expired in transit</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>Destination port unreachable</td>
+</tr>
+</tbody>
+</table>
+<p>Destination port unreachable(目的端口不可达)： traceroute 的目的端口设为&gt;30000(Linux 默认值为33434), 大多数的服务器处理该数据报时会将其视为端口不可达，因此返回特定报文。</p>
+<div class="admonition note"><p class="admonition-title">为什么目的端口设定为大于30000
+</p><p>UDP的实现中保证了0~65535的端口号可用，在RFC文档中并没有限制端口使用。</p>
+<p>man文档中的解释为：探测包需要使用 <code>udp datagrams with so-called "unlikely" destination ports</code>，于是就选择了默认值33434，也许设计者认为33434大伙儿都不会用吧，文档中也说明不保证33434如果有应用用了，traceroute的行为如何。</p>
+<p>至于端口设置为大于30000的说法，也许只是网上的人云亦云？</p>
+</div>
+<p>TTL expired in transit(TTL 超时)：TTL为0时路由器返回的ICMP报文，用于获取该路由器的源IP地址。</p>
+<hr>
+<p>综合来看， traceroute的设计足够巧妙，利用了两个协议的组合使用来达成功能。<br>
+<s>也足够严谨，说明了自己选择目的端口33434会导致未定义行为</s></p>
+<h4 id="Code-3">Code</h4>
+<pre class="language-python" data-language="python"><code class="language-python">import sys
+import socket
+import time
+
+from scapy.all import *
+
+def my_trace_one(dest_ip:str, dest_port:str, ttl:int):
+    begin_time = time.time()
+    # verbose 会输出多余信息，timeout为设定单次请求超时时间1s。
+    # IP段设置目的IP， ttl生存周期， UDP设置源port(这感觉无所谓的)， 目的端口设为不可达(&gt;30000)
+    reply = sr1(IP(dst=dest_ip, ttl=ttl)/UDP(sport=6600, dport=dest_port), timeout=1, verbose=False)
+    end_time = time.time()
+    period=end_time-begin_time
+    try:
+        if reply.getlayer(ICMP).type==11 and reply.getlayer(ICMP).code==0:
+            now_ip = reply.getlayer(IP).src
+            return "TTL expired in transit", now_ip, period
+        elif reply.getlayer(ICMP).type == 3 and reply.getlayer(ICMP).code == 3:
+            now_ip = reply.getlayer(IP).src
+            return "Destination port unreachable", now_ip, period
+    except Exception as e:
+        return None
+    
+
+def my_traceroute(domain:str,ip:str, hops:int=30):
+    print("Destiny : "+f"({domain}) "+ip)
+    hop = 0
+    flag = True
+    # traceroute default port: 33434
+    dest_port=33434
+    while flag and hop&lt;hops:
+        hop += 1
+        dest_port +=1
+        message = str(hop)+" "
+        result = my_trace_one(dest_ip=ip, dest_port=dest_port, ttl=hop)
+        if result is None:
+            message +="\t*"
+        elif result[0]=="TTL expired in transit":
+            message += f"\t{result[1]}\t{result[2]*1000}ms"
+        elif result[0]=="Destination port unreachable":
+            message += f"\t{result[1]}\t{result[2]*1000}ms\nOver!"
+            flag=False
+        print(message)
+
+
+
+if __name__ == "__main__":
+    domain = sys.argv[1]
+    if len(sys.argv)&gt;2:
+        hops = int(sys.argv[2])
+    else:
+        hops=30
+    ip = socket.gethostbyname(domain)
+    my_traceroute(domain, ip, hops)</code></pre>
+<h4 id="Picture">Picture</h4>
+<p>演示：<br>
+<img src="/images/CNSS/mytraceroute.png" alt="kknd"></p>
+<p>看看Linux的<br>
+<img src="/images/CNSS/linux_traceroute.png" alt="linux"></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">ZzzRemake</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://zzzremake.github.io/2023/09/08/cnss-summer-2023-dev-writeup/">https://zzzremake.github.io/2023/09/08/cnss-summer-2023-dev-writeup/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">ZzzRemake</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/CNSS/">
+                                    <span class="chip bg-color">CNSS</span>
+                                </a>
+                            
+                                <a href="/tags/DevOps/">
+                                    <span class="chip bg-color">DevOps</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq" data-wechat-qrcode-helper="<p>Share it!</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/null") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>Comment</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'z3lBwFCxCsMhi2rWaPmplykx-gzGzoHsz',
+        appKey: 'LUfcwR0IjyT4IbU6yq2zqt3Y',
+        serverURLs: '',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just write something'
+    });
+</script>
+
+<!--酷Q推送-->
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href="/2023/09/08/cnss-summer-2023-dev-writeup/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.webp" class="responsive-img" alt="CNSS Summer 2023 Dev writeup">
+                        
+                        <span class="card-title">CNSS Summer 2023 Dev writeup</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            2023CNSS夏令营 Dev writeup
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-09-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CNSS/" class="post-category">
+                                    CNSS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CNSS/">
+                        <span class="chip bg-color">CNSS</span>
+                    </a>
+                    
+                    <a href="/tags/DevOps/">
+                        <span class="chip bg-color">DevOps</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/09/08/cnss-summer-2023-sa-writeup/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.webp" class="responsive-img" alt="CNSS Summer 2023 SA writeup">
+                        
+                        <span class="card-title">CNSS Summer 2023 SA writeup</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            2023CNSS夏令营 writeup
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-09-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CNSS/" class="post-category">
+                                    CNSS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CNSS/">
+                        <span class="chip bg-color">CNSS</span>
+                    </a>
+                    
+                    <a href="/tags/DevOps/">
+                        <span class="chip bg-color">DevOps</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: ZzzRemake<br />'
+            + 'Author: ZzzRemake<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+    
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom:  0 px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2023</span>
+            
+            <a href="/about" target="_blank">ZzzRemake</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">41.8k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/ZzzRemake" class="tooltipped" target="_blank" data-tooltip="Visit my github👀" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:remake114514@outlook.com" class="tooltipped" target="_blank" data-tooltip="Email me❤" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+    <a href="https://space.bilibili.com/321210983" class="tooltipped" target="_blank" data-tooltip="Visit my Bilibili!😎" data-position="top" data-delay="50">
+        <i class="fa-brands fa-bilibili"></i>
+    </a>
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+<script src="/libs/prism/prism.js" async></script>
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(3e2, function () {
+                $(this).remove()
+            })
+            }, 1000)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa-solid fa-plane-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          if (window.mermaid) {
+            mermaid.initialize({theme: 'forest'});
+          }
+        </script>
+    
+
+    
+        
+        <script type="text/javascript">
+            // 只在桌面版网页启用动态标题
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/js/dynamic-title.js"><\/script>');
+            }
+        </script>
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+</body>
+
+</html>
