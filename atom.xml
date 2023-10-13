@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ZzzRemake</title>
+  
+  <subtitle>Hey,bro!</subtitle>
+  <link href="https://zzzremake.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://zzzremake.github.io/"/>
+  <updated>2023-09-09T11:54:27.056Z</updated>
+  <id>https://zzzremake.github.io/</id>
+  
+  <author>
+    <name>ZzzRemake</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CNSS Summer 2023 Dev writeup</title>
+    <link href="https://zzzremake.github.io/2023/09/08/cnss-summer-2023-dev-writeup/"/>
+    <id>https://zzzremake.github.io/2023/09/08/cnss-summer-2023-dev-writeup/</id>
+    <published>2023-09-08T00:55:35.000Z</published>
+    <updated>2023-09-09T11:54:27.056Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;碎碎念&quot;&gt;碎碎念&lt;/h2&gt;
+&lt;p&gt;呜呜，孩子不会dev，随便打着玩的</summary>
+        
+      
+    
+    
+    
+    <category term="CNSS" scheme="https://zzzremake.github.io/categories/CNSS/"/>
+    
+    
+    <category term="CNSS" scheme="https://zzzremake.github.io/tags/CNSS/"/>
+    
+    <category term="DevOps" scheme="https://zzzremake.github.io/tags/DevOps/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CNSS Summer 2023 SA writeup</title>
+    <link href="https://zzzremake.github.io/2023/09/08/cnss-summer-2023-sa-writeup/"/>
+    <id>https://zzzremake.github.io/2023/09/08/cnss-summer-2023-sa-writeup/</id>
+    <published>2023-09-08T00:55:08.000Z</published>
+    <updated>2023-09-15T17:12:02.674Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;早知道，还得是SA。&lt;/p&gt;
+&lt;p&gt;以下做题过程中，环境包括：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Windows&lt;/li&gt;
+&lt;li&gt;Ubuntu 20.04&lt;/li&gt;
+&lt;li&gt;CentOS 7&lt;/li&gt;
+&lt;li&gt;Arch… 当时最新版本。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;唉，linux太多了</summary>
+        
+      
+    
+    
+    
+    <category term="CNSS" scheme="https://zzzremake.github.io/categories/CNSS/"/>
+    
+    
+    <category term="CNSS" scheme="https://zzzremake.github.io/tags/CNSS/"/>
+    
+    <category term="DevOps" scheme="https://zzzremake.github.io/tags/DevOps/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>综合课程设计：令人感叹</title>
+    <link href="https://zzzremake.github.io/2023/04/27/zong-he-ke-cheng-she-ji-ling-ren-gan-tan/"/>
+    <id>https://zzzremake.github.io/2023/04/27/zong-he-ke-cheng-she-ji-ling-ren-gan-tan/</id>
+    <published>2023-04-27T09:13:27.000Z</published>
+    <updated>2023-06-18T07:35:20.252Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;课设过程没有记录时间线，因此该博客少了点条理性。&lt;br&gt;
+第一次写这种稍微大一点的项目，过程还是值得记录下的。&lt;/p&gt;
+&lt;h2 id=&quot;开始&quot;&gt;开始&lt;/h2&gt;
+&lt;p&gt;综合课程设计刚开始选题的时候，定位到负责我们这一块的申杰老师项目列表，所有项目几乎都和CV，机器学习相关，唯独一个文件加密传输十分显眼。5难度，刚好上学期上过密码学。不觉得很酷吗？很符合我对分数的想象</summary>
+        
+      
+    
+    
+    
+    <category term="随想" scheme="https://zzzremake.github.io/categories/%E9%9A%8F%E6%83%B3/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+    <category term="随想" scheme="https://zzzremake.github.io/tags/%E9%9A%8F%E6%83%B3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern-CryptoⅫ-Digital-Signature</title>
+    <link href="https://zzzremake.github.io/2023/03/03/modern-cryptoxii-digital-signature/"/>
+    <id>https://zzzremake.github.io/2023/03/03/modern-cryptoxii-digital-signature/</id>
+    <published>2023-03-03T11:54:17.000Z</published>
+    <updated>2023-03-03T13:46:07.599Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;公钥语境下的认证可以认为是加密方案的“逆操作”。在公钥加密方案中，发送者可以对消息用公钥加密，接收者用唯一一把私钥进行解密，从而保证消息的Secrecy。而认证方案，也就是接下来要介绍的数字签名中，发送者用私钥进行加密，接收者用公钥解密，这样便可以验证发送者的身份</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+    <category term="Public key" scheme="https://zzzremake.github.io/tags/Public-key/"/>
+    
+    <category term="Digital Signature" scheme="https://zzzremake.github.io/tags/Digital-Signature/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern CryptoⅪ Public-key-Encryption</title>
+    <link href="https://zzzremake.github.io/2023/02/24/modern-cryptoxi-public-key-encryption/"/>
+    <id>https://zzzremake.github.io/2023/02/24/modern-cryptoxi-public-key-encryption/</id>
+    <published>2023-02-24T10:52:22.000Z</published>
+    <updated>2023-03-03T11:51:27.760Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;上章讲了公钥密码的优点，这里来点缺点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;公钥密码不能指定发送者。公钥是公开的，那么任何人都可以发送给持有私钥的接收者信息。&lt;/li&gt;
+&lt;li&gt;最主要的还是效率，公钥密码的时间复杂度比私钥密码高出2-3个数量级</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+    <category term="Public key" scheme="https://zzzremake.github.io/tags/Public-key/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern-CryptoⅩ Key management and public key revolution</title>
+    <link href="https://zzzremake.github.io/2023/02/16/modern-cryptox-key-management-and-public-key-revolution/"/>
+    <id>https://zzzremake.github.io/2023/02/16/modern-cryptox-key-management-and-public-key-revolution/</id>
+    <published>2023-02-16T03:13:04.000Z</published>
+    <updated>2023-02-20T06:04:10.389Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;在此之前，我们讨论了私钥密码学的安全性，但没有解决一点：如何分发密钥？&lt;/p&gt;
+&lt;p&gt;Perfect Secret中的OTP可以采用线下的交换密钥，但如今的网络无法这样做。同时，私钥密码还需要保证密钥管理的安全性，并且也不适用于开放的系统中安全通信的需求</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+    <category term="Public key" scheme="https://zzzremake.github.io/tags/Public-key/"/>
+    
+    <category term="Key management" scheme="https://zzzremake.github.io/tags/Key-management/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern-CryptoⅨ Public key and Pre knowledge</title>
+    <link href="https://zzzremake.github.io/2023/02/13/modern-cryptoix-public-key-and-pre-knowledge/"/>
+    <id>https://zzzremake.github.io/2023/02/13/modern-cryptoix-public-key-and-pre-knowledge/</id>
+    <published>2023-02-13T01:48:59.000Z</published>
+    <updated>2023-02-23T15:16:08.664Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;信安数学爷们可以跳过这章（&lt;/p&gt;
+&lt;p&gt;同时，这章只是为了稍微有点数论基础的人恶补一下所需知识，没有接触过数论的还是稍微学学再来（&lt;/p&gt;
+&lt;h2 id=&quot;math&quot;&gt;math&lt;/h2&gt;
+&lt;h3 id=&quot;Integers-mod-N&quot;&gt;Integers mod N&lt;/h3&gt;
+&lt;p&gt;gcd，以及$&#92;xi(N)$(欧拉函数)</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+    <category term="Number theory" scheme="https://zzzremake.github.io/tags/Number-theory/"/>
+    
+    <category term="Public key" scheme="https://zzzremake.github.io/tags/Public-key/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern-CryptoⅧ Practical Construction of symmetric key primitives</title>
+    <link href="https://zzzremake.github.io/2023/02/13/modern-cryptoviii-practical-construction-of-symmetric-key-primitives/"/>
+    <id>https://zzzremake.github.io/2023/02/13/modern-cryptoviii-practical-construction-of-symmetric-key-primitives/</id>
+    <published>2023-02-13T01:46:59.000Z</published>
+    <updated>2023-02-23T14:48:07.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本节所探讨的一系列问题许多都是基于启发式的，也就是无法基于任何较弱的假设证明安全性。但若假设成立，例如大整数因式分解、AES是伪随机排列等，可以通过理论证明和实践证明来表明其安全性。&lt;/p&gt;
+&lt;p&gt;另外，本节不进行过多的对加密方案细节的描述</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern-CryptoⅦ Cryptographic Hash Functions</title>
+    <link href="https://zzzremake.github.io/2023/02/09/modern-cryptovii-cryptographic-hash-functions/"/>
+    <id>https://zzzremake.github.io/2023/02/09/modern-cryptovii-cryptographic-hash-functions/</id>
+    <published>2023-02-09T01:20:59.000Z</published>
+    <updated>2023-02-23T14:34:37.345Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;计算机科学上到处都是哈希函数，得益于哈希函数可以作为一种“压缩”的方式，进行诸如哈希表的构建。密码学上的哈希函数则要满足更多的性质</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+    <category term="hash" scheme="https://zzzremake.github.io/tags/hash/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern-CryptoⅥ CCA-Security＆Authenticated Encryption</title>
+    <link href="https://zzzremake.github.io/2023/02/05/modern-cryptovi-cca-security-authenticated-encryption/"/>
+    <id>https://zzzremake.github.io/2023/02/05/modern-cryptovi-cca-security-authenticated-encryption/</id>
+    <published>2023-02-05T07:26:56.000Z</published>
+    <updated>2023-02-16T08:49:25.571Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Chosen-ciphertext-attacks-CCA&quot;&gt;Chosen ciphertext attacks(CCA)&lt;/h2&gt;
+&lt;p&gt;本章之前所讨论的都是CPA、EAV等敌手</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+    <category term="CCA" scheme="https://zzzremake.github.io/tags/CCA/"/>
+    
+    <category term="AE" scheme="https://zzzremake.github.io/tags/AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern-CryptoⅤ Secret-Key Authentication:Message Authentication Codes</title>
+    <link href="https://zzzremake.github.io/2023/02/02/modern-cryptov-secret-key-authentication-message-authentication-codes/"/>
+    <id>https://zzzremake.github.io/2023/02/02/modern-cryptov-secret-key-authentication-message-authentication-codes/</id>
+    <published>2023-02-02T06:59:34.000Z</published>
+    <updated>2023-02-18T01:54:37.626Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;消息认证&quot;&gt;消息认证&lt;/h2&gt;
+&lt;p&gt;至今为止，我们所讨论的安全都是secrecy，即保证EAV、CPA下不泄露任何除明文长度外的明文信息。本章要讨论的便是另一方面的安全：消息认证。即：保证消息的完整性，或保证消息来源身份的可靠性。&lt;/p&gt;
+&lt;p&gt;之前在群里和群友讨论过这类话题，群友似乎认为MAC（消息认证码）能够加密信息）所以说加密和认证是十分容易搞混的</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+    <category term="MAC" scheme="https://zzzremake.github.io/tags/MAC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern-CryptoⅣ Private key Encryption</title>
+    <link href="https://zzzremake.github.io/2023/01/31/modern-cryptoiv-private-key-encryption/"/>
+    <id>https://zzzremake.github.io/2023/01/31/modern-cryptoiv-private-key-encryption/</id>
+    <published>2023-01-31T07:54:43.000Z</published>
+    <updated>2023-02-23T14:12:21.451Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;对上节的补充说明&quot;&gt;对上节的补充说明&lt;/h2&gt;
+&lt;p&gt;上接 &lt;a href=&quot;https://zzzremake.github.io/2023/01/03/modern-cryptoiii-computational-security/#Stronger-security-notions-CPA-Security&quot;&gt;Ⅲ&lt;/a&gt;</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+    <category term="操作模式" scheme="https://zzzremake.github.io/tags/%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F/"/>
+    
+    <category term="随机数" scheme="https://zzzremake.github.io/tags/%E9%9A%8F%E6%9C%BA%E6%95%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern-CryptoⅢ  Computational Security</title>
+    <link href="https://zzzremake.github.io/2023/01/03/modern-cryptoiii-computational-security/"/>
+    <id>https://zzzremake.github.io/2023/01/03/modern-cryptoiii-computational-security/</id>
+    <published>2023-01-03T04:48:18.000Z</published>
+    <updated>2023-02-16T08:45:32.967Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Computational-Security&quot;&gt;Computational Security&lt;/h2&gt;
+&lt;p&gt;Perfect Security在拥有无限算力的eav窃听者情况下是可证明安全的，不会泄露任何有关明文的信息，因此被称为&lt;strong&gt;信息论安全&lt;/strong&gt;。然而，该方法具有密钥长度必须和明文长度等长、密钥不能复用，且加密方案有着不必要的强安全性</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DevOps初探--一次不成功的招新经历</title>
+    <link href="https://zzzremake.github.io/2022/12/25/devops-chu-tan-yi-ci-bu-cheng-gong-de-zhao-xin-jing-li/"/>
+    <id>https://zzzremake.github.io/2022/12/25/devops-chu-tan-yi-ci-bu-cheng-gong-de-zhao-xin-jing-li/</id>
+    <published>2022-12-25T07:48:00.000Z</published>
+    <updated>2023-09-09T12:14:42.294Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;无项目经历者不得入星辰DevOps。&lt;br&gt;
+半开玩笑，虽然笔试完成的自认为还行，但可能还有缺陷，这里就放下等之后有项目经历了来品鉴一下这坨答辩吧。DevOps看重项目经历当然是很正常的，但我没想到的是面试基本上只问这一点。评判标准明确了那被薄纱也是合情合理</summary>
+        
+      
+    
+    
+    
+    <category term="DevOps" scheme="https://zzzremake.github.io/categories/DevOps/"/>
+    
+    
+    <category term="DevOps" scheme="https://zzzremake.github.io/tags/DevOps/"/>
+    
+    <category term="docker" scheme="https://zzzremake.github.io/tags/docker/"/>
+    
+    <category term="CI/CD" scheme="https://zzzremake.github.io/tags/CI-CD/"/>
+    
+    <category term="GitLab" scheme="https://zzzremake.github.io/tags/GitLab/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern CryptoⅡ Perfect Encryption</title>
+    <link href="https://zzzremake.github.io/2022/12/02/modern-cryptoii-perfect-encryption/"/>
+    <id>https://zzzremake.github.io/2022/12/02/modern-cryptoii-perfect-encryption/</id>
+    <published>2022-12-02T13:41:16.000Z</published>
+    <updated>2023-02-23T13:49:36.757Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Something-ahead&quot;&gt;Something ahead&lt;/h2&gt;
+&lt;p&gt;概率论啊嗯，但确实不用多少相关知识，概率论一二两章学学就行。&lt;/p&gt;
+&lt;p&gt;条件概率公式：$Pr[B|A]=Pr[A&#92;land B]/Pr[AB]$</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern CryptoⅠ Introduction</title>
+    <link href="https://zzzremake.github.io/2022/11/26/modern-cryptoi-introduction/"/>
+    <id>https://zzzremake.github.io/2022/11/26/modern-cryptoi-introduction/</id>
+    <published>2022-11-26T02:38:42.000Z</published>
+    <updated>2023-02-16T08:59:48.566Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;该博客。。大约是学校课程的一个小小的复习。&lt;/p&gt;
+&lt;p&gt;另有本博客附加说明：&lt;/p&gt;
+&lt;div class=&quot;admonition info&quot;&gt;&lt;p class=&quot;admonition-title&quot;&gt;说明框
+&lt;/p&gt;&lt;p&gt;这种格式一般而言是对性质、构造等的说明</summary>
+        
+      
+    
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/categories/Crypto/"/>
+    
+    
+    <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker_first:基本指令</title>
+    <link href="https://zzzremake.github.io/2022/11/04/docker-first-ji-ben-zhi-ling/"/>
+    <id>https://zzzremake.github.io/2022/11/04/docker-first-ji-ben-zhi-ling/</id>
+    <published>2022-11-03T16:14:08.000Z</published>
+    <updated>2023-09-15T17:07:46.813Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本文记录指令信息供之后查询</summary>
+        
+      
+    
+    
+    
+    <category term="DevOps" scheme="https://zzzremake.github.io/categories/DevOps/"/>
+    
+    
+    <category term="docker" scheme="https://zzzremake.github.io/tags/docker/"/>
+    
+    <category term="primary" scheme="https://zzzremake.github.io/tags/primary/"/>
+    
+    <category term="DevOpswork" scheme="https://zzzremake.github.io/tags/DevOpswork/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>dp技巧1：四边形不等式</title>
+    <link href="https://zzzremake.github.io/2022/10/22/dp-ji-qiao-1-si-bian-xing-bu-deng-shi/"/>
+    <id>https://zzzremake.github.io/2022/10/22/dp-ji-qiao-1-si-bian-xing-bu-deng-shi/</id>
+    <published>2022-10-22T14:28:30.000Z</published>
+    <updated>2022-10-22T15:22:50.414Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;区间dp中，我们可以见到以下式子：&lt;/p&gt;
+&lt;p&gt;$dp(i,j)=min_{i&#92;leq k&amp;lt; j}(dp(i,k)+dp(k+1,j)+~&lt;s&gt;w(i,j)&lt;/s&gt;~)$&lt;/p&gt;
+&lt;p&gt;那么，对于这个 $w$ ，如果满足单调性：&lt;/p&gt;
+&lt;p&gt;$$(l&#92;leq l’&#92;leq r’&#92;leq r)~~~w(l’,r’)&#92;leq w(l,r)$$&lt;/p&gt;
+&lt;p&gt;满足四边形不等式：&lt;/p&gt;
+</summary>
+        
+      
+    
+    
+    
+    <category term="ACM" scheme="https://zzzremake.github.io/categories/ACM/"/>
+    
+    
+    <category term="区间dp" scheme="https://zzzremake.github.io/tags/%E5%8C%BA%E9%97%B4dp/"/>
+    
+    <category term="优化" scheme="https://zzzremake.github.io/tags/%E4%BC%98%E5%8C%96/"/>
+    
+    <category term="Math" scheme="https://zzzremake.github.io/tags/Math/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据结构板子</title>
+    <link href="https://zzzremake.github.io/2022/10/22/shu-ju-jie-gou-ban-zi/"/>
+    <id>https://zzzremake.github.io/2022/10/22/shu-ju-jie-gou-ban-zi/</id>
+    <published>2022-10-22T14:25:48.000Z</published>
+    <updated>2022-10-22T14:27:09.080Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;并查集&quot;&gt;并查集&lt;/h2&gt;
+&lt;p&gt;判断集合，合并集合，比如图论中的kruskal，连通分支等</summary>
+        
+      
+    
+    
+    
+    <category term="ACM" scheme="https://zzzremake.github.io/categories/ACM/"/>
+    
+    
+    <category term="板子" scheme="https://zzzremake.github.io/tags/%E6%9D%BF%E5%AD%90/"/>
+    
+    <category term="Data Structure" scheme="https://zzzremake.github.io/tags/Data-Structure/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>字符串板子</title>
+    <link href="https://zzzremake.github.io/2022/10/22/zi-fu-chuan-ban-zi/"/>
+    <id>https://zzzremake.github.io/2022/10/22/zi-fu-chuan-ban-zi/</id>
+    <published>2022-10-22T14:23:34.000Z</published>
+    <updated>2022-10-22T14:25:09.041Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;字典树&quot;&gt;字典树&lt;/h2&gt;
+&lt;pre class=&quot;language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;struct trie{
+    int nxt[N][26], cnt = 0;
+    bool vis[N]={0};//该节点结尾的字符串是否存在
+    //int repeat[N] = {0};
+</summary>
+        
+      
+    
+    
+    
+    <category term="ACM" scheme="https://zzzremake.github.io/categories/ACM/"/>
+    
+    
+    <category term="板子" scheme="https://zzzremake.github.io/tags/%E6%9D%BF%E5%AD%90/"/>
+    
+    <category term="String" scheme="https://zzzremake.github.io/tags/String/"/>
+    
+  </entry>
+  
+</feed>
