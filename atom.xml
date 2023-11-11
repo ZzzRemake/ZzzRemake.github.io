@@ -6,7 +6,7 @@
   <link href="https://zzzremake.github.io/atom.xml" rel="self"/>
   
   <link href="https://zzzremake.github.io/"/>
-  <updated>2023-09-09T11:54:27.056Z</updated>
+  <updated>2023-11-11T13:31:57.376Z</updated>
   <id>https://zzzremake.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MIT 6.S081 Lab1-3 begin xv6</title>
+    <link href="https://zzzremake.github.io/2023/11/09/mit-6.s081-lab1-3-begin-xv6/"/>
+    <id>https://zzzremake.github.io/2023/11/09/mit-6.s081-lab1-3-begin-xv6/</id>
+    <published>2023-11-09T02:38:42.000Z</published>
+    <updated>2023-11-11T13:31:57.376Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;去年这个时候我刚开始写现代密码学的博客，过了一年开了个这个，令人感叹。&lt;/p&gt;
+&lt;h2 id=&quot;配环境&quot;&gt;配环境&lt;/h2&gt;
+&lt;p&gt;第一次配环境的时候wsl给我搞崩了，可能是wsl的Ubuntu版本不同，导致源和官方文档不太一样</summary>
+        
+      
+    
+    
+    
+    <category term="OS" scheme="https://zzzremake.github.io/categories/OS/"/>
+    
+    
+    <category term="OS" scheme="https://zzzremake.github.io/tags/OS/"/>
+    
+  </entry>
   
   <entry>
     <title>CNSS Summer 2023 Dev writeup</title>
@@ -574,38 +601,6 @@
     <category term="板子" scheme="https://zzzremake.github.io/tags/%E6%9D%BF%E5%AD%90/"/>
     
     <category term="Data Structure" scheme="https://zzzremake.github.io/tags/Data-Structure/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>字符串板子</title>
-    <link href="https://zzzremake.github.io/2022/10/22/zi-fu-chuan-ban-zi/"/>
-    <id>https://zzzremake.github.io/2022/10/22/zi-fu-chuan-ban-zi/</id>
-    <published>2022-10-22T14:23:34.000Z</published>
-    <updated>2022-10-22T14:25:09.041Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;字典树&quot;&gt;字典树&lt;/h2&gt;
-&lt;pre class=&quot;language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;struct trie{
-    int nxt[N][26], cnt = 0;
-    bool vis[N]={0};//该节点结尾的字符串是否存在
-    //int repeat[N] = {0};
-</summary>
-        
-      
-    
-    
-    
-    <category term="ACM" scheme="https://zzzremake.github.io/categories/ACM/"/>
-    
-    
-    <category term="板子" scheme="https://zzzremake.github.io/tags/%E6%9D%BF%E5%AD%90/"/>
-    
-    <category term="String" scheme="https://zzzremake.github.io/tags/String/"/>
     
   </entry>
   

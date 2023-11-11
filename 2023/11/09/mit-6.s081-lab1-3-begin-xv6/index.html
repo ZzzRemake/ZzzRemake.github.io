@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="/css/bilicard.css">
 <!-- hexo injector head_begin end -->
     <meta charset="utf-8">
-    <meta name="keywords" content="Modern CryptoⅪ Public-key-Encryption, ZzzRemake">
-    <meta name="description" content="公钥密码加密方案的构造，混合加密方案以及RSA等方案改造。">
+    <meta name="keywords" content="MIT 6.S081 Lab1-3 begin xv6, ZzzRemake">
+    <meta name="description" content="MIT 操作系统课程6.S081 第一部分：Lab1-3，对应接口、系统调用和页表三章。">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Modern CryptoⅪ Public-key-Encryption | ZzzRemake</title>
+    <title>MIT 6.S081 Lab1-3 begin xv6 | ZzzRemake</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="/medias/favicon.webp">
     
@@ -550,12 +550,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.webp')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.webp')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Modern CryptoⅪ Public-key-Encryption</h1>
+                    <h1 class="description center-align post-title">MIT 6.S081 Lab1-3 begin xv6</h1>
                 </div>
             </div>
         </div>
@@ -579,12 +579,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Crypto/">
-                                <span class="chip bg-color">Crypto</span>
-                            </a>
-                        
-                            <a href="/tags/Public-key/">
-                                <span class="chip bg-color">Public key</span>
+                            <a href="/tags/OS/">
+                                <span class="chip bg-color">OS</span>
                             </a>
                         
                     </div>
@@ -595,8 +591,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Crypto/" class="post-category">
-                                Crypto
+                            <a href="/categories/OS/" class="post-category">
+                                OS
                             </a>
                         
                     </div>
@@ -608,21 +604,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2023-02-24
+                    2023-11-09
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-03-03
+                    2023-11-11
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Words Count:&nbsp;&nbsp;
-                    1.9k
+                    4.1k
                 </div>
                 
 
@@ -642,139 +638,638 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>上章讲了公钥密码的优点，这里来点缺点：</p>
+                <p>去年这个时候我刚开始写现代密码学的博客，过了一年开了个这个，令人感叹。</p>
+<h2 id="配环境">配环境</h2>
+<p>第一次配环境的时候wsl给我搞崩了，可能是wsl的Ubuntu版本不同，导致源和官方文档不太一样。反正没什么重要东西，卸载重装！</p>
+<p>具体方法详见<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.828/2021/tools.html">官方文档</a>，我自己的环境配置为：</p>
+<blockquote>
+<p>wsl2+Ubuntu20.04<br>
+具体环境及配置命令同官方文档。</p>
+</blockquote>
+<h3 id="一些命令">一些命令</h3>
 <ol>
-<li>公钥密码不能指定发送者。公钥是公开的，那么任何人都可以发送给持有私钥的接收者信息。</li>
-<li>最主要的还是效率，公钥密码的时间复杂度比私钥密码高出2-3个数量级。</li>
+<li>
+<p><code>make qemu</code> 启动qemu以及xv6。<br>
+课程评测文件<code>grade-lab-util</code>是py文件，所以既可以用<code>./grade-lab-util xxxx</code>评测，也可以加个python启动。</p>
+</li>
+<li>
+<p><code>echo "add-auto-load-safe-path /home/remake/remake_dev/xv6-labs-2021/.gdbinit" &gt;&gt; ~/.gdbinit</code> 让<code>gdb-multiarch</code>可以调试xv6程序。调试时需要注意make qemu的flag添加（</p>
+</li>
 </ol>
-<h2 id="Security-distribution-of-public-keys">Security distribution of public keys</h2>
-<p>到目前为止，我们对公钥密码的讨论仅限于被动（EAV）敌手。若敌手能够截获所有信息，并且通信双方没有在此之前共享密钥，则无法实现secrecy。</p>
-<p>因此，在本章有一个很重要的假设：发送者能够直接获得接收者的公钥（安全密钥分发）。该假设的原因是因为存在有其他方式能够抵御主动攻击，因此将密钥分发和公钥加密的安全性分开讨论是合理的。</p>
-<h2 id="CPA-attacks">CPA attacks</h2>
-<h3 id="EAV-Security">EAV Security?</h3>
+<h2 id="Lab-1-Util">Lab 1 Util</h2>
+<p>主要通过类POSIX接口实现用户的一些功能。</p>
+<h3 id="课程">课程</h3>
+<p>大体其实和普通的OS差不多，但6.S081的一大特点是上来就讲代码，因此很多操作系统课不会讲的代码具体实现在课程里会详细介绍。</p>
+<p>除了xv6代码的细节，例如程序必须exit(0)退出，exec载入elf格式文件等，值得讲的就是fork和exec的I/O和File的descriptors，一切似乎都是水到渠成。</p>
 <hr>
-<p>$PubK_{\mathcal{A},\prod}^{\mathbf{eav}}$ expriment</p>
+<p>file descriptor作为一种流的抽象，被广泛应用于UNIX的各个部分（除了network，虽然有类似实现但又存在不同），诸如管道等。</p>
+<p>fork在普通OS课程中只会用变量等例子来展示"子进程是父进程的复制"，但不仅于此。fork在复制程序本身的情况下还复制了父进程的文件描述符表，而exec虽然改变了程序（通过load的image），但不会对文件描述符表进行改变。</p>
+<p>因此，父进程可以通过临时改变文件描述符来操作子进程的描述符，子进程只知道描述符本身，而不知道描述符后面代表的是文件，设备、或者管道。</p>
+<p>另外，fork虽然复制了描述符表，但每个描述符下的偏移量是独立的。因此，两个进程的描述符下可能是同一个东西，共享同一个偏移量。</p>
+<hr>
+<p>既然介绍了这么多，那么pipe也就水到渠成了。父进程和子进程共享一个descriptor。在实际的操作中，一端操作需要对另一端进行关闭，否则便会一直阻塞。pipe的语义中，read返回需要：</p>
 <ol>
-<li>敌手预言机事先给定安全参数n。</li>
-<li>预言机:$(pk,sk)\leftarrow Gen(1^n),b\leftarrow \{0,1\}$，并将公钥返回给攻击者。</li>
-<li>攻击者$\mathcal{A}$ 发送$(m_0,m_1)$,预言机返回$c’\leftarrow Enc_{pk}(m_b)$</li>
-<li>攻击者返回$b’$，若$b=b’$ 返回1，否则0.</li>
+<li>write字节</li>
+<li>写入端关闭</li>
 </ol>
+<p>因此，需要按需关闭pipe。</p>
 <hr>
-<div class="admonition warning"><p class="admonition-title">EAV Security
-</p><p>A public-key encryption scheme $\prod =(Gen, Enc, Dec)$ has indistinguishable encryption in the presence of an eavesdropper if for all probabilistic polynomial-time adversary $\mathcal{A}$ there is a negligible function $negl$ such that
-$Pr[PubK_{\mathcal{A},\prod}^{\mathbf{eav}}(n)=1]\leq 1/2+negl(n)$</p>
-</div>
-<h3 id="Public-key-definition">Public key definition</h3>
-<p>$Gen(1^n)$生成公钥$pk$,私钥$sk$.<br>
-$Enc_{pk}( m)\rightarrow c$，其中m从消息空间$\mathcal{M}$中获取。<br>
-$Dec_{sk}( c)\rightarrow m\quad or\quad<br>
-\bot$</p>
-<p>需要注意的是，公钥密码允许有可忽略的概率使得<br>
-$Dec_{sk}(Enc_{pk}(m))=m$不成立。<br>
-因此，Enc可以是确定性或概率性的，Dec允许Perfectly Correct，但也允许以可忽略概率失败。</p>
-<p>需要注意的是，每一个公钥密码的实例中，消息空间都是隐含着与公钥$pk$有关，可能是某些代数结构中的元素。因此，消息m可能需要转换。</p>
-<h3 id="Some-Theorem">Some Theorem</h3>
-<div class="admonition info"><p class="admonition-title">CPA-Secure
-</p><p>若公钥加密方案保证EAV安全，那么其也是IND-CPA-Secure（IND= indistinguishable）</p>
-</div>
-<p>这条很好说明，公钥的公开使任何人都可以加密信息，相当于获得了$Enc$预言机。</p>
-<div class="admonition info"><p class="admonition-title">Perfect secret
-</p><p>没有任何公钥加密方案能保证完美加密。</p>
-</div>
-<p>不做证明（之后看看能不能补上）</p>
-<div class="admonition info"><p class="admonition-title">Deterministic encryption scheme
-</p><p>没有确定性的公钥加密方案满足IND-CPA-Secure</p>
-</div>
-<p>在实践中，我们想让同一条公钥pk去加密多条消息，于是有：</p>
-<div class="admonition warning"><p class="admonition-title">Multiple Encryption
-</p><p>若公钥加密方案满足IND-CPA-secure，那么其也满足multiple encryption的不可区分性。</p>
-</div>
-<h2 id="Arbitrary-long-messages">Arbitrary long messages</h2>
-<p>由上文对多消息加密的安全性，可以构造一个加密方案，其基于最初的公钥加密：每一块都来个加密然后发送。该方案是IND-CPA-secure的。</p>
-<p>然而，这不够高效，于是有混合加密方案：</p>
-<p>公钥加密只加密私钥加密的密钥，私钥加密整条信息连带着公钥加密的密钥一同发送。</p>
-<h3 id="CCA-attacks">CCA attacks</h3>
-<hr>
-<p>CCA attack experiment</p>
+<p>最后一个可以关注的点便是shell内置命令。Unix时代经常把mkdir等命令内置，但Unix将其作为可执行程序，从PATH中寻找。但cd命令不同，如果用传统的fork-exec来进行，改变的只有子进程的工作目录，shell并不会关注子进程的这一信息。</p>
+<h3 id="Sleep-easy">Sleep (easy)</h3>
+<p>简单的系统调用。</p>
+<pre class="language-c" data-language="c"><code class="language-c">#include "kernel/types.h"
+#include &lt;user/user.h&gt;
+
+void my_sleep(const char* argument){
+    int sleep_second = atoi(argument);
+    sleep(sleep_second);
+}
+
+int main(int argc, char const *argv[]){
+    if(argc &lt;= 1){
+        fprintf(2, "usage: sleep need number(second).\n");
+        exit(1);
+    }
+    if(argc &gt;=3){
+        fprintf(2, "error: too many argument.(sleep)\n");
+    }
+
+    my_sleep(argv[1]);
+
+    exit(0);
+}</code></pre>
+<h3 id="pingpong-easy">pingpong (easy)</h3>
+<p>简单的进程间通信，理解了pipe和fork的关系就行。</p>
+<pre class="language-c" data-language="c"><code class="language-c">//Simple pingpong: pipe.
+
+#include &lt;kernel/types.h&gt;
+#include &lt;user/user.h&gt;
+
+int main(int argc, char const *argv[]) {
+    int p[2];
+    char buf[2];
+    
+    if(pipe(p)&lt;0){
+        fprintf(2, "error: pipe exit(pingpong)\n");
+        exit(1);
+    }
+
+    int pid = fork();
+    if(pid == 0){
+        //child
+        int read_bytes = read(p[0], buf, 1);
+        close(p[0]);
+        if(read_bytes&gt;0){
+            int now_pid = getpid();
+            printf("%d: received ping\n", now_pid);
+            write(p[1], buf, 1);
+            close(p[1]);
+        } else {
+            exit(1);
+        }
+
+    } else if(pid&gt;0){
+        //parent
+        char *buf="y";
+        char* buf_test="y";
+        write(p[1], buf, 1);
+        close(p[1]);
+        int read_bytes = read(p[0], buf, 1);
+        close(p[0]);
+        if(read_bytes&gt;0){
+            int now_pid = getpid();
+            if(strcmp(buf, buf_test)){
+                printf("%d: received pong\n", now_pid);               
+            }
+        }
+    } else {
+        fprintf(2, "error: fork(pingpong)\n");
+    }
+    return 0;
+}</code></pre>
+<h3 id="primes-moderate-hard">primes (moderate)/(hard)</h3>
+<p>抽象起来了。</p>
+<p>问题在于理解下面这张图：</p>
+<p><img src="https://swtch.com/~rsc/thread/sieve.gif" alt="primes"></p>
+<p>可以看到，主进程fork完后，便一直向子进程发送递增数据，而子程序接受数据后，需要视情况fork，然后传递数据。</p>
+<p>其主要伪代码为：</p>
+<pre class="language-python" data-language="python"><code class="language-python">p = get a number from left neighbor
+print p
+loop:
+    n = get a number from left neighbor
+    if (p does not divide n)
+        send n to right neighbor</code></pre>
+<pre class="language-c" data-language="c"><code class="language-c">#include &lt;kernel/types.h&gt;
+#include &lt;user/user.h&gt;
+
+void prime(int*fd){
+    int p, d;
+    close(fd[1]);
+
+    if(read(fd[0], &amp;p, 4)==0){
+        exit(0);
+    }
+    printf("prime %d\n", p);
+    if (read(fd[0], (void *)&amp;d, sizeof(d))){
+        int fd1[2];
+        pipe(fd1);
+        if (fork() == 0){
+            prime(fd1);
+        }else{
+            // 关闭读
+            close(fd1[0]);
+            do{
+                if (d % p != 0){
+                    write(fd1[1], (void *)&amp;d, sizeof(d));
+                }
+            }while(read(fd[0], (void *)&amp;d, sizeof(d)));
+            // 关闭读
+            close(fd[0]);
+            // 关闭写
+            close(fd1[1]);
+            wait(0);
+        }
+    }
+    exit(0);
+}
+
+int main(int argc, char const *argv[]) {
+    int p[2];
+    pipe(p);
+    int pid=fork();
+
+    if(pid==0){
+        prime(p);
+    } else if(pid&gt;0){
+        close(p[0]);
+        for(int i = 2;i&lt;=35;++i){
+            write(p[1], &amp;i, 4);
+        }
+        close(p[1]);
+        wait((int*)0);
+    } else {
+        fprintf(2, "error: fork(prime).\n");
+    }
+    exit(0);
+}</code></pre>
+<p>当时犯了两错误。</p>
 <ol>
-<li>事先给定n，</li>
-<li>预言机:$(pk,sk)\leftarrow Gen(1^n),b\leftarrow \{0,1\}$，并将公钥返回给攻击者。</li>
-<li>攻击者发送密文$c_i$,预言机返回$Dec_{sk}(c_i)$</li>
-<li>可进行多次第三步，之后敌手发送$m_0,m_1$,预言机返回$c’$<br>
-之后还可以多次进行第三步，但无法对$c’$进行Dec。</li>
-<li>敌手发送b’,之后和其他定义一样。</li>
+<li>题目一眼用函数递归实现，但当时钻了牛角尖非得在main函数实现，甚至打算用goto了。</li>
+<li>函数顺序应该是<code>read -- read -- fork</code> ，这样第二个read便可以成为停止条件；而我当时理解成了 <code>read -- fork -- read</code> 这会导致一个进程一直在等待信息，从而无法退出程序。</li>
 </ol>
+<h3 id="xargs-moderate">xargs (moderate)</h3>
+<p>注意读题（</p>
+<p>本题并没有什么难度，但做的时候读错题意导致后面代码可读性很差，最后还是参考了别人，令人感叹。</p>
+<p>注意要用exec实现，第一次实现的时候虽然过了但并不是exec实现。</p>
+<pre class="language-c" data-language="c"><code class="language-c">#include &lt;kernel/types.h&gt;
+#include &lt;kernel/param.h&gt;
+#include &lt;user/user.h&gt;
+
+void copy(char **p1, char *p2){
+    *p1 = malloc(strlen(p2) + 1);
+    strcpy(*p1, p2);
+}
+
+
+int readline(char** parm, int begin){
+    char buf[512];
+    
+    int i = 0;
+    while(read(0, buf+i, 1)){
+        if(buf[i]=='\n'){
+            buf[i]=0;
+            break;
+        }
+        ++i;
+    }
+    if(i==0){
+        return 0;
+    }
+    int j = 0;
+    while(j&lt;i){
+        if(begin&gt;MAXARG){
+            fprintf(2, "too many parameters!(xargs)\n");
+            exit(1);
+        }
+        int temp = j;
+        while((j&lt;i)&amp;&amp;(buf[j]!=' ')){
+            ++j;
+        }
+        buf[j++] = 0;
+        copy(&amp;parm[i], buf+temp);
+    }
+    return begin;
+}
+
+int main(int argc, char *argv[])
+{
+    if(argc&lt;2){
+        fprintf(2, "Please enter more parameters.(xargs)\n");
+        exit(1);
+    }
+    char*pars[MAXARG];
+    for(int i = 1;i&lt;argc;++i){
+        copy(&amp;pars[i-1], argv[i]);
+    }
+    int end;
+    end=readline(pars, argc-1);
+    while(end){
+        pars[end]=0;
+        if(fork()==0){
+            for(int i =0;i&lt;end;++i){
+                printf("%s\n", pars[i]);
+            }
+            //exec(pars[0], pars);
+            exit(1);
+        } else {
+            wait(0);
+        }
+        end=readline(pars, argc-1);
+    }
+    exit(0);
+}</code></pre>
+<h2 id="Lab-2-system-calls">Lab 2 system calls</h2>
+<h3 id="课程-2">课程</h3>
+<p>似乎从lab2开始，便深入xv6细节，而不关注UNIX等其他系统的接口了（但xv6还是类UNIX嘛）</p>
 <hr>
-<div class="admonition warning"><p class="admonition-title">CCA-secure
-</p><p>对任意PPT敌手$\mathcal{A}$,若满足以下性质，则满足CCA-secure：
-$$Pr[PubK_{\mathcal{A},\prod}^{\mathbf{cca}}=1]\leq 1/2+negl(n)$$</p>
+<div class="admonition info"><p class="admonition-title">misc
+</p><p>qemu模拟器模拟了ROM, RAM, Disk和 serial connection to 用户的屏幕/键盘。</p>
+<p>RISC-V具有三个模式：machine supervisor和user mode，一般的特权指令是指supervisor mode，user space要调用系统调用的时候，需要在寄存器先设置好参数，再通过ecall指令到特权模式，通过sret退出。</p>
 </div>
-<h2 id="Key-encapsulation-machanism-KEM">Key-encapsulation machanism(KEM)</h2>
-<p>KEM定义为$Gen,Encaps,Decaps$</p>
-<p>$Gen(1^n)\rightarrow (pk,sk)$<br>
-$Encaps(1^n,pk)\rightarrow (c,k),k\in\{0,1\}^{p(n)}$<br>
-$Decaps(sk,c)\rightarrow k$</p>
-<p>同样也要求存在可忽略的概率不成功（公钥啊嗯）</p>
+<p>xv6的地址空间为39bit，而xv6只用其中的38bit。逻辑空间最大值MAXVA=$2^{38}-1$。<br>
+进程抽象为proc结构，其中存储着诸如pagetable等成员。同时，进程维护着两个堆栈，用户堆栈和内核堆栈kstack，内核堆栈在进入特权模式下使用且独立，因此进程破坏的时候，kernel仍然能在kstack中执行。</p>
 <hr>
-<p>KEM experiment</p>
+<p>xv6的启动过程中：</p>
 <ol>
-<li>事先给定n。</li>
-<li>预言机$Gen(1^n)\rightarrow (pk,sk),Encaps_{pk}(1^n)\rightarrow (c’,k)$,随机选择$b\leftarrow\{0,1\}$，若b=0，k’=k，否则k从$\{0,1\}^n$随机获取，返回敌手$(pk,(c’,k’))$</li>
-<li>敌手返回b’，剩余和其他预言机定义相同。</li>
+<li>首先在bootloader（ROM）读取引导程序，引导程序将xv6 kernel载入内存在_entry中（entry.S）：</li>
 </ol>
+<pre class="language-risc-v" data-language="risc-v"><code class="language-risc-v">.section .text
+.global _entry
+_entry:
+        # set up a stack for C.
+        # stack0 is declared in start.c,
+        # with a 4096-byte stack per CPU.
+        # sp = stack0 + (hartid * 4096)
+        la sp, stack0
+        li a0, 1024*4
+        csrr a1, mhartid
+        addi a1, a1, 1
+        mul a0, a0, a1
+        add sp, sp, a0
+        # jump to start() in start.c
+        call start
+spin:
+        j spin</code></pre>
+<p>RISC-V（此时为machine mode）启动的时候禁用了分页硬件，因此程序的虚拟地址直接映射入物理地址。</p>
+<p>loader直接将kernel映射入物理地址0x80000000，这也是qemu的入口地址。0到80000000的这一部分则是IO设备。</p>
+<ol start="2">
+<li>entry.S创建了C代码所需的栈stack0，并启动了start function(start.c)</li>
+<li>start.c将mode转为supervisor（通过mret）并载入main函数地址（mepc）以及其他必要设置，如委托中断和异常给supervisor mode，启动clock等，最后将pc转为main函数。</li>
+<li>main函数启动必要的配置，在userinit里创建第一个进程。</li>
+<li>进程执行initcode.S汇编程序，invoke exec 系统调用，转变为/init。当kernel执行exec完毕，将会返回/init 进程，该进程会执行诸如打开标准文件描述符和启动shell等任务。</li>
+</ol>
+<div class="admonition note"><p class="admonition-title">main函数干了什么？
+</p><p>kinit：设置page allocator
+kvminit：设置虚拟内存
+kvminitstart：打开页表
+processinit：设置初始进程
+trapinit：设置user/kernel mode转换代码
+plicinit：中断控制器
+binit：buffer cache
+fileinit：文件系统
+virtio_disk_init：初始化磁盘
+userinit：启动第一个进程</p>
+</div>
+<h3 id="System-call-tracing-moderate">System call tracing (moderate)</h3>
+<p>还是读题问题。英语太差是这样的。</p>
+<p>这题讲明了需要在proc结构里增加变量来实现tracing。因此，系统调用trace只需要改变调用进程的mask，fork的子进程便会继承mask(修改fork实现)。</p>
+<p>当进行系统调用的时候，syscall函数便会检查mask，默认0，其他情况便可以检查来打印具体函数。</p>
 <hr>
-<div class="admonition warning"><p class="admonition-title">warning</p><p>对任意PPT敌手$\mathcal{A}$,若满足以下性质则有CPA-secure：
-$$Pr[KEM_{\mathcal{A},\prod}^{\mathbf{pa}}=1]\leq 1/2+negl(n)$$</p>
-</div>
-<p>用先前构造的公钥密码方案（IND-CPA/IND-CCA）可以很容易构造KEM(IND-CPA/IND-CCA)，构造方法略（懒），把加密的消息换成k就行了。</p>
-<p>需要注意的是，由于k本身需要“随机”选择，因此消息空间需要具有合适的“min-entropy”。</p>
-<p>当然，专门的KEM算法效率肯定比这种构造的效率要高。</p>
-<h3 id="Hybrid-Encryption">Hybrid Encryption</h3>
-<p>有了KEM，就可以构造更高效的（混合）公钥加密。</p>
-<p>设$\prod=(Gen,Encaps,Decaps),\prod’=(Gen’,Enc’,Dec’)$,构造$\prod^{hy}=(Gen^{hy},Enc^{hy},Dec^{hy})$</p>
-<p>$Gen^{hy}:(pk,sk)\leftarrow Gen(1^n)$<br>
-$Enc^{hy}:c’ \leftarrow Enc_k’(m)$<br>
-output:$(c,c’)$<br>
-$Dec^{hy}:k=Decaps_{sk}©,m=Dec_k’(c’)$</p>
-<div class="admonition info"><p class="admonition-title">info</p><p>若$\prod$ 是CPA-secure KEM，$\prod'$私钥密码是EAV下安全，则$\prod^{hy}$是CPA-secure的。</p>
-</div>
-<div class="admonition info"><p class="admonition-title">info</p><p>若$\prod$ 是CCA-secure KEM，$\prod'$私钥密码是CCA-secure，则$\prod^{hy}$是CCA-secure的。</p>
-</div>
-<h2 id="EIGamal-Encryption">EIGamal Encryption</h2>
-<p>基本思路：<br>
-利用DH problem，接收者选择$a\leftarrow \mathbb{Z}_q$作为私钥，而把群$(G,q,g)$和$g^a$作为公钥公开，那么任何人可以指定b，传输$g^b，K\cdot M$给接收者，则接收者运行$K\leftarrow(g^b)^a$,从而解密，并共享密钥。</p>
-<h3 id="scheme">scheme</h3>
-<p>$Gen(1^n):Run(G,q,g)\leftarrow\mathbb{G}(1^n)$随机选择$x\leftarrow\mathbb{Z}_q$,计算$y=g^x$<br>
-$$(sk,pk)=((G,q,g,x)(G,q,g,y))$$<br>
-$Enc(m,pk):$对于输入m，随机选择$r\leftarrow\mathbb{Z}_q,$<br>
-$$C=(g^r,m\cdot y^r)$$<br>
-$Dec(C,sk):C=(C_1,C_2),$<br>
-$$m=C_2\cdot(C_1^x)^{-1}$$</p>
-<p>在这里可以认为$(G,q,g)$为安全参数。</p>
-<h3 id="Security">Security</h3>
-<div class="admonition warning"><p class="admonition-title">lemma EIGamal
-</p><p>设$G$为有限群，$m\in G$任意，随机选择的$k\in G$和设置的$k'=k\cdot m$具有相同的分布，即对任意的$g'\in G$
-$$Pr[k\cdot m=g']=1/G$$</p>
-</div>
-<p>上方的lemma中，可以看到类似于私钥密码中的一次一密定义，那么由此，可以设想出另外一种"EIGamal"的加密方式：</p>
-<p>随机选择$g^z$,让密文$C=(g^r,m\cdot g^z)$</p>
-<p>因此， $g^z$ 对敌手是未知的，则其能够满足信息论安全（即完美加密）</p>
-<p>EIGamal的安全性证明便基于此类的不可区分性小于$1/2+negl(n)$,而其证明又依赖于DDH assumption。</p>
-<p>安全证明就略了。（😋）</p>
-<h2 id="RSA-attacks">RSA attacks</h2>
-<p>回顾一下“课本”上的RSA：</p>
-<p>$Gen()$:选择两个大素数p，q，N=pq，均匀选择e，$1&lt;e&lt;\phi(N)$且$gcd(e,\phi(N))=1$.计算$d,ed=1\quad \phi(N)$<br>
-$Enc(pk,m): c=m^e\quad mod N$<br>
-$Dec(sk,c): m=c^d \quad mod N$</p>
-<div class="admonition missing"><p class="admonition-title">RSA in our class
-</p><p>课本上的RSA是不能够直接使用的。</p>
-</div>
-<p>RSA假设中，m是随机均匀选择的，但其本质上而言，消息并不满足这一条件。同时，RSA加密过程是确定性的，因此必定不是安全的。</p>
-<p>具体攻击方法略。反正很容易构造捏。</p>
+<ol>
+<li>proc结构里增加mask字段来记录要trace的系统调用。</li>
+<li><code>kernel/syscall.c</code>改为：</li>
+</ol>
+<pre class="language-c" data-language="c"><code class="language-c">void syscall(void)
+{
+  int num;
+  struct proc *p = myproc();
+
+  num = p-&gt;trapframe-&gt;a7; // 记录系统调用
+  if(num &gt; 0 &amp;&amp; num &lt; NELEM(syscalls) &amp;&amp; syscalls[num]) {
+    p-&gt;trapframe-&gt;a0 = syscalls[num](); //返回值记录a0
+    if((1 &lt;&lt; num) &amp; p-&gt;mask){
+      printf("%d: syscall %s -&gt; %d\n",
+        p-&gt;pid, sysnames[num], p-&gt;trapframe-&gt;a0);
+    }
+  } else {
+    printf("%d %s: unknown sys call %d\n",
+            p-&gt;pid, p-&gt;name, num);
+    p-&gt;trapframe-&gt;a0 = -1;
+  }
+}</code></pre>
+<ol start="3">
+<li><code>kernel/sysproc.c</code> 添加：</li>
+</ol>
+<pre class="language-c" data-language="c"><code class="language-c">uint64 sys_trace(void)
+{ 
+  uint64 mask;
+  if(argaddr(0, &amp;mask)&lt;0)
+    return -1;
+  myproc()-&gt;mask = mask;
+  return 0;
+}</code></pre>
+<p>剩余的诸如修改fork和头文件等略。</p>
+<h3 id="Sysinfo-moderate">Sysinfo (moderate)</h3>
+<p>具体函数用法需要看具体的用例。lab已经给出用法：在<code>kernel/file.c</code>里头。</p>
+<p>重要的就是<code>arg</code>函数以及<code>copyout</code>函数使用。</p>
 <hr>
-<p>由上，RSA在实际使用过程中需要进行预处理等过程，才能够真正作为加密算法进行公钥加密。</p>
-<p>RSA-OAEP便用了哈希函数，使得RSA-OAEP是CCA Secure的（证明过程中用到了随机函数，其用SHA-256进行实例化。）</p>
+<ol>
+<li><code>kernel/kalloc.c</code>里增加：</li>
+</ol>
+<pre class="language-c" data-language="c"><code class="language-c">uint64 get_memory_count(void){
+  uint64 count=0;
+  struct run*r = kmem.freelist;
+  while(r){
+    count+=PGSIZE;
+    r = r-&gt;next;
+  }
+  return count;
+}</code></pre>
+<ol start="2">
+<li><code>kernel/proc.c</code>增加：</li>
+</ol>
+<pre class="language-c" data-language="c"><code class="language-c">int get_process_count(void){
+  int count = 0;
+  struct proc* p;
+  for(p = proc; p &lt; &amp;proc[NPROC]; p++) {
+      if(p-&gt;state != UNUSED){
+        count++;
+      }
+  }
+  return count;
+}</code></pre>
+<ol start="3">
+<li><code>kernel/sysproc.c</code> 增加系统调用：</li>
+</ol>
+<pre class="language-c" data-language="c"><code class="language-c">uint64 sys_sysinfo(void)
+{
+  uint64 info;
+
+  struct sysinfo nowinfo;
+  if(argaddr(0, &amp;info) &lt; 0)
+    return -1;
+  nowinfo.freemem = get_memory_count();
+  nowinfo.nproc = get_process_count();
+  
+  struct proc *p = myproc();
+  if(copyout(p-&gt;pagetable, info, (char*)&amp;nowinfo, sizeof(nowinfo))&lt;0)
+    return -1;
+  return 0;
+}</code></pre>
+<p>其他修改同trace。</p>
+<h2 id="Lab-3">Lab 3</h2>
+<h3 id="课程-3">课程</h3>
+<p>这里试图对xv6的内核页表挂载流程进行梳理。</p>
+<h4 id="pre">pre</h4>
+<p>xv6在c代码中写明了具体的过程。在这之前，先看看用到的结构：</p>
+<pre class="language-c" data-language="c"><code class="language-c">//链表结构
+struct run {
+  struct run *next;
+};
+
+//lock并发+freelist结构
+struct {
+  struct spinlock lock;
+  struct run *freelist;
+} kmem;//匿名结构：kmem管理内核页表</code></pre>
+<p>main函数中关于内核页表的内容有：</p>
+<pre class="language-c" data-language="c"><code class="language-c">kinit();         // physical page allocator
+kvminit();       // create kernel page table
+kvminithart();   // turn on paging</code></pre>
+<p>下面内容主要为kalloc.c。</p>
+<h4 id="kinit">kinit</h4>
+<p>首先看看kinit：初始化lock和内核页表，将内核页表挂载到物理内存中</p>
+<pre class="language-c" data-language="c"><code class="language-c">void kinit()
+{
+  initlock(&amp;kmem.lock, "kmem");
+  freerange(end, (void*)PHYSTOP);
+}
+//end在kalloc.c声明为`extern char []`，实际上的end在kernel.ld出现，其代表内核后的第一个地址.
+//PHYSTOP 为宏定义：
+#define KERNBASE 0x80000000
+#define PHYSTOP (KERNBASE + 128*1024*1024)
+//其代表 内存空间为128M.</code></pre>
+<p>kernel的逻辑地址和物理地址如下所示：</p>
+<p><img src="../images/OS/xv6_kernel.png" alt="xv6 logical address to physical address"></p>
+<p>内核挂载在逻辑地址0x8000000（KERNBASE）,内核空间到PHYSTOP。由于kinit的时候还未有页表结构，此时的逻辑地址是直接映射到物理空间的。</p>
+<p>freerange如下：</p>
+<pre class="language-c" data-language="c"><code class="language-c">#define PGSIZE 4096
+#define PGROUNDUP(sz) (((sz)+PGSIZE-1) &amp; ~(PGSIZE-1))
+
+//这里的输入为物理地址
+void
+freerange(void *pa_start, void *pa_end)
+{
+  char *p;
+  p = (char*)PGROUNDUP((uint64)pa_start);
+  for(; p + PGSIZE &lt;= (char*)pa_end; p += PGSIZE)
+    kfree(p);
+}</code></pre>
+<p>可以看到，以上过程中对pa_start到pa_end的所有空间进行kfree(即初始化)。<br>
+xv6中每页长度固定为4096，PGROUNDUP操作的含义是页表首地址往上取整，例如输入（页表0）0000则返回（页表0）0000，若输入（页表0）0001则返回（页表1）0000。</p>
+<p>end是kernel后的第一个地址，因此可能没有进行内存对齐。PGROUNDUP则将内核页表的每个页进行内存对齐，内核和内核页表间存在空闲空间。对齐的意义不用多说，其可以简化许多操作，上过计组的都知道罢。</p>
+<p>kfree操作如下所示：</p>
+<pre class="language-c" data-language="c"><code class="language-c">void kfree(void *pa)
+{
+  struct run *r;
+
+  if(((uint64)pa % PGSIZE) != 0 || (char*)pa &lt; end || (uint64)pa &gt;= PHYSTOP)
+    panic("kfree");
+
+  // Fill with junk to catch dangling refs.
+  memset(pa, 1, PGSIZE);
+
+  r = (struct run*)pa;
+
+  acquire(&amp;kmem.lock);
+  r-&gt;next = kmem.freelist;
+  kmem.freelist = r;
+  release(&amp;kmem.lock);
+}</code></pre>
+<p>kfree 对数据进行必要检查后，memset为1（若错误访问，memset为1期望能够更快地引发异常，终止过程），然后填充链表。</p>
+<p>连带着，解释以下kalloc：</p>
+<pre class="language-c" data-language="c"><code class="language-c">void * kalloc(void)
+{
+  struct run *r;
+
+  acquire(&amp;kmem.lock);
+  r = kmem.freelist;
+  if(r)
+    kmem.freelist = r-&gt;next;
+  release(&amp;kmem.lock);
+
+  if(r)
+    memset((char*)r, 5, PGSIZE); // fill with junk
+  return (void*)r;
+}</code></pre>
+<p>kalloc 将free链表的表头去掉free后，初始化内存并返回物理地址（kernel）</p>
+<h4 id="kvminit">kvminit</h4>
+<p>kvminit紧接着kinit的初始化，开始分配内核页表。</p>
+<p>其内部为：</p>
+<pre class="language-c" data-language="c"><code class="language-c">// the kernel's page table.
+pagetable_t kernel_pagetable;
+void kvminit(void)
+{
+  kernel_pagetable = kvmmake();
+}
+
+pagetable_t kvmmake(void)
+{
+  pagetable_t kpgtbl;
+
+  kpgtbl = (pagetable_t) kalloc();
+  memset(kpgtbl, 0, PGSIZE);
+
+  // uart registers
+  kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);
+
+  // virtio mmio disk interface
+  kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);
+
+  // PLIC
+  kvmmap(kpgtbl, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
+
+  // map kernel text executable and read-only.
+  kvmmap(kpgtbl, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X);
+
+  // map kernel data and the physical RAM we'll make use of.
+  kvmmap(kpgtbl, (uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_R | PTE_W);
+
+  // map the trampoline for trap entry/exit to
+  // the highest virtual address in the kernel.
+  kvmmap(kpgtbl, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);
+
+  // map kernel stacks
+  proc_mapstacks(kpgtbl);
+  
+  return kpgtbl;
+}</code></pre>
+<p>kvminit调用kvmmake，而kvmmake对每一段进行具体的分配。为什么要这么分配？见上图。</p>
+<p>kvmmake:</p>
+<pre class="language-c" data-language="c"><code class="language-c">void kvmmap(pagetable_t kpgtbl, uint64 va, uint64 pa, uint64 sz, int perm)
+{
+  if(mappages(kpgtbl, va, sz, pa, perm) != 0)
+    panic("kvmmap");
+}</code></pre>
+<p>kvmmap 调用mappages来分配va到pa的满足size=sz的PTE页表项。</p>
+<h4 id="mappages">mappages</h4>
+<p>mappages如下所示：</p>
+<pre class="language-c" data-language="c"><code class="language-c">#define PGROUNDDOWN(a) (((a)) &amp; ~(PGSIZE-1))
+// Create PTEs for virtual addresses starting at va that refer to
+// physical addresses starting at pa. va and size might not
+// be page-aligned. Returns 0 on success, -1 if walk() couldn't
+// allocate a needed page-table page.
+int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
+{
+  uint64 a, last;
+  pte_t *pte;
+
+  if(size == 0)
+    panic("mappages: size");
+  
+  a = PGROUNDDOWN(va);
+  last = PGROUNDDOWN(va + size - 1);
+  for(;;){
+    if((pte = walk(pagetable, a, 1)) == 0)
+      return -1;
+    if(*pte &amp; PTE_V)
+      panic("mappages: remap");
+    *pte = PA2PTE(pa) | perm | PTE_V;
+    if(a == last)
+      break;
+    a += PGSIZE;
+    pa += PGSIZE;
+  }
+  return 0;
+}</code></pre>
+<p>mappages 通过walk获得分配后的页表项地址，进行一系列检查后持续进行，直到满足size要求。size和va不必进行对齐，函数内部通过PGROUNDDOWN 进行页表项地址向下对齐。</p>
+<h4 id="walk">walk</h4>
+<p>walk用到的宏比较多，这里列出：</p>
+<pre class="language-c" data-language="c"><code class="language-c">#define MAXVA (1L &lt;&lt; (9 + 9 + 9 + 12 - 1))
+
+#define PXMASK          0x1FF // 9 bits
+#define PXSHIFT(level)  (PGSHIFT+(9*(level)))
+#define PX(level, va) ((((uint64) (va)) &gt;&gt; PXSHIFT(level)) &amp; PXMASK)
+
+#define PTE2PA(pte) (((pte) &gt;&gt; 10) &lt;&lt; 12)
+#define PA2PTE(pa) ((((uint64)pa) &gt;&gt; 12) &lt;&lt; 10)</code></pre>
+<ol>
+<li>MAXVA就是xv6的最高地址，这里分拆来写，maybe让人明白页表和页内偏移的位数吧。</li>
+<li>PX部分通过level和虚拟地址来获得第level级页表项的index。</li>
+<li>PTE2PA的两个组是进行页表项和物理地址的互转。</li>
+</ol>
+<p>walk 代码如下：</p>
+<pre class="language-c" data-language="c"><code class="language-c">// Return the address of the PTE in page table pagetable
+// that corresponds to virtual address va.  If alloc!=0,
+// create any required page-table pages.
+//
+// The risc-v Sv39 scheme has three levels of page-table
+// pages. A page-table page contains 512 64-bit PTEs.
+// A 64-bit virtual address is split into five fields:
+//   39..63 -- must be zero.
+//   30..38 -- 9 bits of level-2 index.
+//   21..29 -- 9 bits of level-1 index.
+//   12..20 -- 9 bits of level-0 index.
+//    0..11 -- 12 bits of byte offset within the page.
+pte_t *
+walk(pagetable_t pagetable, uint64 va, int alloc)
+{
+  if(va &gt;= MAXVA)
+    panic("walk");
+
+  for(int level = 2; level &gt; 0; level--) {
+    pte_t *pte = &amp;pagetable[PX(level, va)];
+    if(*pte &amp; PTE_V) {
+      pagetable = (pagetable_t)PTE2PA(*pte);
+    } else {
+      if(!alloc || (pagetable = (pde_t*)kalloc()) == 0)
+        return 0;
+      memset(pagetable, 0, PGSIZE);
+      *pte = PA2PTE(pagetable) | PTE_V;
+    }
+  }
+  return &amp;pagetable[PX(0, va)];
+}</code></pre>
+<p>可以看到，以上过程中相当于模拟了页表的寻址过程。通过三级的页表方式来分配页表，并返回PTE的address。</p>
+<h4 id="proc-mapstacks">proc_mapstacks</h4>
+<pre class="language-c" data-language="c"><code class="language-c">// Allocate a page for each process's kernel stack.
+// Map it high in memory, followed by an invalid
+// guard page.
+void
+proc_mapstacks(pagetable_t kpgtbl) {
+  struct proc *p;
+  
+  for(p = proc; p &lt; &amp;proc[NPROC]; p++) {
+    char *pa = kalloc();
+    if(pa == 0)
+      panic("kalloc");
+    uint64 va = KSTACK((int) (p - proc));
+    kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+  }
+}</code></pre>
+<p>为每一个proc（proc的内容都是事先分配的）分配一个KSTACK。<br>
+KSTACK如下所示：</p>
+<pre class="language-c" data-language="c"><code class="language-c">#define KSTACK(p) (TRAMPOLINE - (p)*2*PGSIZE - 3*PGSIZE)</code></pre>
+<p>分配KSTACK的时候需要在trampoline下（顶层），每个STACK都要有两个guard pages来保护，若访问了超出KSTACK的部分，有效位会引发异常。</p>
+<h4 id="kvminitstart">kvminitstart</h4>
+<pre class="language-c" data-language="c"><code class="language-c">void
+kvminithart(){
+  w_satp(MAKE_SATP(kernel_pagetable));
+  sfence_vma();
+}</code></pre>
+<p>执行内存屏障，刷新TLB。</p>
+<h3 id="code">code</h3>
+<p>待续</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
                 
             </div>
@@ -801,7 +1296,7 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zzzremake.github.io/2023/02/24/modern-cryptoxi-public-key-encryption/">https://zzzremake.github.io/2023/02/24/modern-cryptoxi-public-key-encryption/</a>
+                    <a href="https://zzzremake.github.io/2023/11/09/mit-6.s081-lab1-3-begin-xv6/">https://zzzremake.github.io/2023/11/09/mit-6.s081-lab1-3-begin-xv6/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -839,12 +1334,8 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Crypto/">
-                                    <span class="chip bg-color">Crypto</span>
-                                </a>
-                            
-                                <a href="/tags/Public-key/">
-                                    <span class="chip bg-color">Public key</span>
+                                <a href="/tags/OS/">
+                                    <span class="chip bg-color">OS</span>
                                 </a>
                             
                         </div>
@@ -1157,54 +1648,48 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2023/03/03/modern-cryptoxii-digital-signature/">
+                <a href="/2023/11/09/mit-6.s081-lab1-3-begin-xv6/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.webp" class="responsive-img" alt="Modern-CryptoⅫ-Digital-Signature">
+                        <img src="/medias/featureimages/11.webp" class="responsive-img" alt="MIT 6.S081 Lab1-3 begin xv6">
                         
-                        <span class="card-title">Modern-CryptoⅫ-Digital-Signature</span>
+                        <span class="card-title">MIT 6.S081 Lab1-3 begin xv6</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            公钥加密最后一章，公钥语境下的认证性：数字签名
+                            MIT 操作系统课程6.S081 第一部分：Lab1-3，对应接口、系统调用和页表三章。
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-09
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Crypto/" class="post-category">
-                                    Crypto
+                            <a href="/categories/OS/" class="post-category">
+                                    OS
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
-                    </a>
-                    
-                    <a href="/tags/Public-key/">
-                        <span class="chip bg-color">Public key</span>
-                    </a>
-                    
-                    <a href="/tags/Digital-Signature/">
-                        <span class="chip bg-color">Digital Signature</span>
+                    <a href="/tags/OS/">
+                        <span class="chip bg-color">OS</span>
                     </a>
                     
                 </div>
@@ -1218,31 +1703,31 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/02/16/modern-cryptox-key-management-and-public-key-revolution/">
+                <a href="/2023/09/08/cnss-summer-2023-dev-writeup/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.webp" class="responsive-img" alt="Modern-CryptoⅩ Key management and public key revolution">
+                        <img src="/medias/featureimages/8.webp" class="responsive-img" alt="CNSS Summer 2023 Dev writeup">
                         
-                        <span class="card-title">Modern-CryptoⅩ Key management and public key revolution</span>
+                        <span class="card-title">CNSS Summer 2023 Dev writeup</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            公钥密码学的正式开端，以及密钥管理。
+                            2023CNSS夏令营 Dev writeup
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-09-08
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Crypto/" class="post-category">
-                                    Crypto
+                            <a href="/categories/CNSS/" class="post-category">
+                                    CNSS
                                 </a>
                             
                             
@@ -1252,16 +1737,12 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
+                    <a href="/tags/CNSS/">
+                        <span class="chip bg-color">CNSS</span>
                     </a>
                     
-                    <a href="/tags/Public-key/">
-                        <span class="chip bg-color">Public key</span>
-                    </a>
-                    
-                    <a href="/tags/Key-management/">
-                        <span class="chip bg-color">Key management</span>
+                    <a href="/tags/DevOps/">
+                        <span class="chip bg-color">DevOps</span>
                     </a>
                     
                 </div>
