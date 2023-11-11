@@ -1060,7 +1060,7 @@ kvminithart();   // turn on paging</code></pre>
 #define PHYSTOP (KERNBASE + 128*1024*1024)
 //其代表 内存空间为128M.</code></pre>
 <p>kernel的逻辑地址和物理地址如下所示：</p>
-<p><img src="../images/OS/xv6_kernel.png" alt="xv6 logical address to physical address"></p>
+<p><img src="/images/OS/xv6_kernel.png" alt="xv6 logical address to physical address"></p>
 <p>内核挂载在逻辑地址0x8000000（KERNBASE）,内核空间到PHYSTOP。由于kinit的时候还未有页表结构，此时的逻辑地址是直接映射到物理空间的。</p>
 <p>freerange如下：</p>
 <pre class="language-c" data-language="c"><code class="language-c">#define PGSIZE 4096
