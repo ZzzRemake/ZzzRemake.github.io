@@ -611,14 +611,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-11-11
+                    2023-11-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Words Count:&nbsp;&nbsp;
-                    4.1k
+                    5.1k
                 </div>
                 
 
@@ -1269,7 +1269,218 @@ kvminithart(){
 }</code></pre>
 <p>执行内存屏障，刷新TLB。</p>
 <h3 id="code">code</h3>
-<p>待续</p>
+<p>2021及之后的6.S081把一些lab改了，怎么回事呢？</p>
+<h4 id="Speed-up-system-calls-easy">Speed up system calls (easy)</h4>
+<p>本题需要将用户空间（VA）的USYSCALL处映射到内核中的某一处，这样用户便可以从USYCALL处获得必要信息（本题为pid）。</p>
+<p>具体实现中：修改proc结构：</p>
+<p><code>kernel/proc.h</code></p>
+<pre class="language-c" data-language="c"><code class="language-c">struct proc {
+  struct spinlock lock;
+
+  // p-&gt;lock must be held when using these:
+  enum procstate state;        // Process state
+  void *chan;                  // If non-zero, sleeping on chan
+  int killed;                  // If non-zero, have been killed
+  int xstate;                  // Exit status to be returned to parent's wait
+  int pid;                     // Process ID
+
+  // wait_lock must be held when using this:
+  struct proc *parent;         // Parent process
+
+  // these are private to the process, so p-&gt;lock need not be held.
+  uint64 kstack;               // Virtual address of kernel stack
+  uint64 sz;                   // Size of process memory (bytes)
+  pagetable_t pagetable;       // User page table
+  struct trapframe *trapframe; // data page for trampoline.S
+  struct context context;      // swtch() here to run process
+  struct file *ofile[NOFILE];  // Open files
+  struct inode *cwd;           // Current directory
+  char name[16];               // Process name (debugging)
+  #ifdef LAB_PGTBL
+  struct usyscall * usyscall;
+  #endif
+};</code></pre>
+<p><code>kernel/proc.c</code>:</p>
+<pre class="language-c" data-language="c"><code class="language-c">static struct proc*
+allocproc(void)
+{
+  // ......
+found:
+  p-&gt;pid = allocpid();
+  p-&gt;state = USED;
+
+  // Allocate a trapframe page.
+  if((p-&gt;trapframe = (struct trapframe *)kalloc()) == 0){
+    freeproc(p);
+    release(&amp;p-&gt;lock);
+    return 0;
+  }
+
+  #ifdef LAB_PGTBL
+  if((p-&gt;usyscall = (struct usyscall*)kalloc()) == 0){
+    freeproc(p);
+    release(&amp;p-&gt;lock);
+    return 0;
+  }
+  p-&gt;usyscall-&gt;pid = p-&gt;pid;
+  #endif
+
+  // An empty user page table.
+  p-&gt;pagetable = proc_pagetable(p);
+  if(p-&gt;pagetable == 0){
+    freeproc(p);
+    release(&amp;p-&gt;lock);
+    return 0;
+  }
+  //.......
+}
+
+static void
+freeproc(struct proc *p)
+{
+  if(p-&gt;trapframe)
+    kfree((void*)p-&gt;trapframe);
+  #ifdef LAB_PGTBL
+  if(p-&gt;usyscall)
+    kfree((void*)p-&gt;usyscall);
+  p-&gt;usyscall = 0;
+  #endif
+  //.....
+}
+
+pagetable_t
+proc_pagetable(struct proc *p)
+{
+  //....
+  // map the trapframe just below TRAMPOLINE, for trampoline.S.
+  if(mappages(pagetable, TRAPFRAME, PGSIZE,
+              (uint64)(p-&gt;trapframe), PTE_R | PTE_W) &lt; 0){
+    uvmunmap(pagetable, TRAMPOLINE, 1, 0);
+    uvmfree(pagetable, 0);
+    return 0;
+  }
+
+#ifdef LAB_PGTBL
+  if(mappages(pagetable, USYSCALL, PGSIZE,
+              (uint64)(p-&gt;usyscall), PTE_R | PTE_U)&lt;0){
+    uvmunmap(pagetable, TRAMPOLINE, 1, 0);
+    uvmunmap(pagetable, TRAPFRAME, 1, 0);
+    uvmfree(pagetable, 0);
+    return 0;
+              }
+
+#endif
+  return pagetable;
+}
+
+// Free a process's page table, and free the
+// physical memory it refers to.
+void
+proc_freepagetable(pagetable_t pagetable, uint64 sz)
+{
+  uvmunmap(pagetable, TRAMPOLINE, 1, 0);
+  uvmunmap(pagetable, TRAPFRAME, 1, 0);
+  #ifdef LAB_PGTBL
+  uvmunmap(pagetable, USYSCALL, 1, 0);
+  #endif
+  uvmfree(pagetable, sz);
+}</code></pre>
+<p>本题的坑在于proc_freepagetable这里。</p>
+<p>其余部分的修改均有提示，但proc_freepagetable没有。若未修改proc_freepagetable，则freewalk函数会触发panic：</p>
+<p>以下为freewalk（<code>kernel/vm.c</code>）代码：</p>
+<pre class="language-c" data-language="c"><code class="language-c">// Recursively free page-table pages.
+// All leaf mappings must already have been removed.
+void
+freewalk(pagetable_t pagetable)
+{
+  // there are 2^9 = 512 PTEs in a page table.
+  for(int i = 0; i &lt; 512; i++){
+    pte_t pte = pagetable[i];
+    if((pte &amp; PTE_V) &amp;&amp; (pte &amp; (PTE_R|PTE_W|PTE_X)) == 0){
+      // this PTE points to a lower-level page table.
+      uint64 child = PTE2PA(pte);
+      freewalk((pagetable_t)child);
+      pagetable[i] = 0;
+    } else if(pte &amp; PTE_V){
+      panic("freewalk: leaf");
+    }
+  }
+  kfree((void*)pagetable);
+}</code></pre>
+<p>可以看到，若panic，则对应的pte的PTE_R,W,X均有效，即该pte没有释放。因此，需要在proc_freepagetable处unmap了。</p>
+<p>发现方法：（呃呃，我搜了，确实不会gdb）<br>
+gdb设置freewalk断点，continue后通过backtrace找函数调用栈可以发现。</p>
+<h4 id="Print-a-page-table-easy">Print a page table (easy)</h4>
+<p>没什么好说的，对着提示写递归就行。</p>
+<pre class="language-c" data-language="c"><code class="language-c">void _vmprint_level(pagetable_t pagetable, int level){
+  if(level&gt;2){
+    return;
+  }
+  // there are 2^9 = 512 PTEs in a page table.
+  for(int i = 0; i &lt; 512; i++){
+    
+    pte_t pte = pagetable[i];
+    if(pte &amp; PTE_V){
+      // this PTE points to a lower-level page table.
+      for(int i = 0;i &lt;= level;++i){
+          printf(" ..");
+      }
+      uint64 child = PTE2PA(pte);
+      
+      printf("%d: pte %p pa %p\n", i, pte, child);
+      _vmprint_level((pagetable_t)child, level+1);
+    }
+  }
+}
+
+void vmprint(pagetable_t pagetable){
+  printf("page table %p\n", pagetable);
+  _vmprint_level(pagetable, 0);
+}</code></pre>
+<p>坑点在于不能先写这个再写speed up…</p>
+<p>speed up会创建必要的内核页表映射，若没有写speed up部分，print会缺少一页，也就是speed up创建的USYSCALL映射页。</p>
+<h4 id="Detecting-which-pages-have-been-accessed-hard">Detecting which pages have been accessed (hard)</h4>
+<p>这题需要跨文件来使用walk函数，但walk函数已经被封装而不能直接使用，因此封装了一下写了mywalk函数：</p>
+<p><code>kernel/vm.c</code></p>
+<pre class="language-c" data-language="c"><code class="language-c">pte_t *
+my_walk(pagetable_t pagetable, uint64 va, int alloc){
+  return walk(pagetable, va, alloc);
+}</code></pre>
+<p><code>kernel/sysproc.c</code></p>
+<pre class="language-c" data-language="c"><code class="language-c">#ifdef LAB_PGTBL
+void my_pgacess_walk(uint64 va, int num, int* buf){
+  struct proc* p = myproc();
+  vmprint(p-&gt;pagetable);
+  for(int i =0;i&lt;num;++i){
+    pte_t* pte = my_walk(p-&gt;pagetable, va, 0);
+    if(*pte &amp; PTE_A){
+      (*buf) |=(1&lt;&lt;i);
+      (*pte) &amp;= ~(PTE_A);
+      printf("pte: %p\n", *pte);
+    }
+    va+=PGSIZE;
+  }
+}
+
+int
+sys_pgaccess(void)
+{
+
+  uint64 va, buf;
+  int num;
+  int tempbuf = 0;
+  if(argaddr(0, &amp;va) &lt; 0 || argint(1, &amp;num) &lt;0 || argaddr(2, &amp;buf) &lt;0)
+    return -1;
+  struct proc* p = myproc();
+  my_pgacess_walk(va, num, &amp;tempbuf);
+  printf("buf: %p\n", (uint64)tempbuf);
+  if(copyout(p-&gt;pagetable, buf, (char*)&amp;tempbuf, sizeof(tempbuf))&lt;0){
+    return -1;
+  }
+  
+  return 0;
+}
+#endif</code></pre>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
                 
             </div>
@@ -1932,7 +2143,7 @@ kvminithart(){
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">46k</span>
+                        class="white-color">46.9k</span>
             
             
             
