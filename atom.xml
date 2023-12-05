@@ -6,7 +6,7 @@
   <link href="https://zzzremake.github.io/atom.xml" rel="self"/>
   
   <link href="https://zzzremake.github.io/"/>
-  <updated>2023-11-13T03:03:37.323Z</updated>
+  <updated>2023-12-05T09:00:25.205Z</updated>
   <id>https://zzzremake.github.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MIT 6.S081 Lab trap &amp; Lazy</title>
+    <link href="https://zzzremake.github.io/2023/12/05/mit-6.s081-lab-trap-lazy/"/>
+    <id>https://zzzremake.github.io/2023/12/05/mit-6.s081-lab-trap-lazy/</id>
+    <published>2023-12-05T08:20:45.000Z</published>
+    <updated>2023-12-05T09:00:25.205Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;这下大鸽子了，隔了一个月才写了这点。但不会完全鸽的。尽量在寒假前完成绝大部分lab。&lt;/p&gt;
+&lt;p&gt;或许我也想稍微摆点烂，因此把2021删掉的lab lazy也拿来做做&lt;s&gt;拖时间&lt;/s&gt;&lt;/p&gt;
+&lt;h2 id=&quot;Lab-Trap-2021&quot;&gt;Lab Trap(2021)&lt;/h2&gt;
+&lt;h3 id=&quot;课程&quot;&gt;课程&lt;/h3&gt;
+&lt;p&gt;&lt;s&gt;咕咕咕&lt;/s&gt; 这部分还是有些重要，后面补</summary>
+        
+      
+    
+    
+    
+    <category term="OS" scheme="https://zzzremake.github.io/categories/OS/"/>
+    
+    
+    <category term="OS" scheme="https://zzzremake.github.io/tags/OS/"/>
+    
+  </entry>
   
   <entry>
     <title>MIT 6.S081 Lab1-3 begin xv6</title>
@@ -573,34 +602,6 @@
     <category term="优化" scheme="https://zzzremake.github.io/tags/%E4%BC%98%E5%8C%96/"/>
     
     <category term="Math" scheme="https://zzzremake.github.io/tags/Math/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数据结构板子</title>
-    <link href="https://zzzremake.github.io/2022/10/22/shu-ju-jie-gou-ban-zi/"/>
-    <id>https://zzzremake.github.io/2022/10/22/shu-ju-jie-gou-ban-zi/</id>
-    <published>2022-10-22T14:25:48.000Z</published>
-    <updated>2022-10-22T14:27:09.080Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;并查集&quot;&gt;并查集&lt;/h2&gt;
-&lt;p&gt;判断集合，合并集合，比如图论中的kruskal，连通分支等</summary>
-        
-      
-    
-    
-    
-    <category term="ACM" scheme="https://zzzremake.github.io/categories/ACM/"/>
-    
-    
-    <category term="板子" scheme="https://zzzremake.github.io/tags/%E6%9D%BF%E5%AD%90/"/>
-    
-    <category term="Data Structure" scheme="https://zzzremake.github.io/tags/Data-Structure/"/>
     
   </entry>
   

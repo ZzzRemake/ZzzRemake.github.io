@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="/css/bilicard.css">
 <!-- hexo injector head_begin end -->
     <meta charset="utf-8">
-    <meta name="keywords" content="Modern-CryptoⅫ-Digital-Signature, ZzzRemake">
-    <meta name="description" content="公钥加密最后一章，公钥语境下的认证性：数字签名">
+    <meta name="keywords" content="MIT 6.S081 Lab trap &amp; Lazy, ZzzRemake">
+    <meta name="description" content="MIT 操作系统课程6.S081 第二部分：Trap(2021)以及Lazy(2020)的Lab，对应">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Modern-CryptoⅫ-Digital-Signature | ZzzRemake</title>
+    <title>MIT 6.S081 Lab trap &amp; Lazy | ZzzRemake</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="/medias/favicon.webp">
     
@@ -550,12 +550,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.webp')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.webp')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Modern-CryptoⅫ-Digital-Signature</h1>
+                    <h1 class="description center-align post-title">MIT 6.S081 Lab trap &amp; Lazy</h1>
                 </div>
             </div>
         </div>
@@ -579,16 +579,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Crypto/">
-                                <span class="chip bg-color">Crypto</span>
-                            </a>
-                        
-                            <a href="/tags/Public-key/">
-                                <span class="chip bg-color">Public key</span>
-                            </a>
-                        
-                            <a href="/tags/Digital-Signature/">
-                                <span class="chip bg-color">Digital Signature</span>
+                            <a href="/tags/OS/">
+                                <span class="chip bg-color">OS</span>
                             </a>
                         
                     </div>
@@ -599,8 +591,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Crypto/" class="post-category">
-                                Crypto
+                            <a href="/categories/OS/" class="post-category">
+                                OS
                             </a>
                         
                     </div>
@@ -612,21 +604,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2023-03-03
+                    2023-12-05
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-03-03
+                    2023-12-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Words Count:&nbsp;&nbsp;
-                    2.1k
+                    1.7k
                 </div>
                 
 
@@ -646,110 +638,251 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>公钥语境下的认证可以认为是加密方案的“逆操作”。在公钥加密方案中，发送者可以对消息用公钥加密，接收者用唯一一把私钥进行解密，从而保证消息的Secrecy。而认证方案，也就是接下来要介绍的数字签名中，发送者用私钥进行加密，接收者用公钥解密，这样便可以验证发送者的身份。</p>
-<p>实际上，数字签名（公钥语境下的MAC）需要保证以下性质：</p>
-<ol>
-<li>Integrity protection：任何对一个被签名的消息的修改都会被发现。</li>
-<li>Source authenticity 发送该消息的人身份得以验证。</li>
-<li>Non-repudiation 发送者无法抵赖他发送了这条信息。</li>
-</ol>
-<h2 id="Definition">Definition</h2>
-<p>一个数字签名方案可看作PPT 三元组$(Gen,Sig,Vrfy)$</p>
-<p>$Gen(1^n)\rightarrow (pk,sk)$<br>
-$Sig_{sk}(m)\rightarrow$ 签名 $\sigma$。需要注意的是这里的m也和公钥加密方案一样被密钥制定消息空间。<br>
-$Vrfy_{pk}(m,\sigma)\rightarrow b$</p>
-<p>特别的，数字签名允许以下Vrfy过程的可忽略概率的失败：</p>
-<p>$Vrfy_{pk}(m,Sig_{sk}(m))=1$</p>
-<p>$Vrfy$是确定性的，其可以具有“可忽略概率的失败”性质，也可以解密完全成功。<br>
-而$Sig$可确定可概率性，也可以无状态或者有状态，在实际过程中，无状态为实践做法。</p>
-<p>上述过程中，我们构造了一个有限长度的数字签名方案，后续会介绍任意长度的方案。</p>
-<h2 id="Formal-security-notions">Formal security notions</h2>
-<p>数字签名需要新的威胁模型和安全目标。</p>
-<h3 id="Attack-model">Attack model</h3>
-<ol>
-<li><strong>No-message attack (NMA)</strong>: 攻击者只能获取密钥信息。</li>
-<li><strong>Random message attack (RMA)</strong>: 攻击者只能看到随机的信息流，其中包含数字签名。即类似于EAV的被动攻击。</li>
-<li><strong>Non-adaptive chosen message attack (naCMA)</strong>: 攻击者可以主动构造一系列信息，并获得签名（构造的过程需在获得密钥之前）。</li>
-<li>攻击者可以任意选择信息，并获得签名（无需考虑顺序）</li>
-</ol>
-<h3 id="Goal-of-an-adversary">Goal of an adversary</h3>
-<p>攻击者的目标反过来就是安全目标（逃</p>
-<ol>
-<li><strong>Universal forgery(UF)</strong>: 攻击者需要对任意消息输出一个合法的signature。</li>
-<li><strong>Existential forgery (EF)</strong>: 攻击者可对自己选定的消息输出合法signature。</li>
-</ol>
-<hr>
-<p>因此，我们尽量选择最强的敌手能力，在此之下来保证其不能满足最弱的目标，作为我们的安全目标。</p>
-<p>于是有EUF-CMA： existential unforgeability under chosen message attacks.</p>
-<h3 id="EUF-CMA-Security">EUF-CMA Security</h3>
-<p>略。定义方式和MAC的存在不可为造性极其相似，不想写了属于是。</p>
-<p>需要注意的是，signature分为one-time（一次性）和many-time signatures，并且还有weak signature和strong（对于查询过的$m$，生成不一样但有效的$\sigma$）signature的区别。</p>
-<h2 id="RSA-signatures">RSA signatures</h2>
-<h3 id="“Textbook”-RSA">“Textbook” RSA</h3>
-<p>这里的方案和课本上的RSA加密过程极其相似，不过是公钥和私钥作用的位置互换。</p>
-<p>然而，RSA只能保证一次性的安全性，于是有一下攻击：</p>
-<p><strong>NMA</strong>: $(m’,\sigma’)=(1,1)$，则必有$1^d=1\pmod N$<br>
-<strong>EUF-CMA</strong>: 任意$(m_1,\sigma_1),(m_2,\sigma_2)$，都能构造新的一对：$(m’,\sigma’)=(m_1\cdot m_2\pmod N,\sigma_1\cdot\sigma_2\pmod N)$,其为合法数字签名。</p>
-<h3 id="Hash-and-Sign">Hash-and-Sign</h3>
-<p>理论上而言，使用定长的数字签名方案，重复多次也能够起到加密任意长信息的效果。然而，这并不能满足对高效率的需求。</p>
-<p>很自然的便有了使用Hash再签名的方案。需要注意的是哈希函数$H$的值域也需要满足数字签名的消息空间要求。</p>
-<p>于是有以下构造：$\Sigma=(Gen,Sig,Vrfy)$作为长度$k(n)$的定长数字签名方案，设$\Gamma=(Gen_H,H)$作为输出长度$k(n)$的哈希方案，则构造任意长度数字签名方案$\Sigma’=(Gen’,Sig’,Vrfy’)$</p>
-<p>$Gen’: Gen(1^n)\rightarrow (pk,sk)，Gen_H(1^n)\rightarrow s$，公钥为$(pk,s)$,私钥为$(sk,s)$.<br>
-$Sig’: Sig_{sk}(H(s,m))\rightarrow$ 签名 $\sigma$。<br>
-$Vrfy’: Vrfy_{pk}(H(s,m),\sigma)\rightarrow b$</p>
-<p>可以看到，这里添加了哈希函数的密钥s。</p>
-<div class="admonition warning"><p class="admonition-title">Arbitrary long signature scheme
-</p><p>若$\Sigma$为安全定长数字签名，$\Gamma$为抗碰撞，则$\Sigma'$为任意长度的安全数字签名。</p>
+                <p>这下大鸽子了，隔了一个月才写了这点。但不会完全鸽的。尽量在寒假前完成绝大部分lab。</p>
+<p>或许我也想稍微摆点烂，因此把2021删掉的lab lazy也拿来做做<s>拖时间</s></p>
+<h2 id="Lab-Trap-2021">Lab Trap(2021)</h2>
+<h3 id="课程">课程</h3>
+<p><s>咕咕咕</s> 这部分还是有些重要，后面补。</p>
+<h3 id="RISC-V-assembly-easy">RISC-V assembly (easy)</h3>
+<p>这部分是简单的对着代码进行分析，让学生熟悉RISC-V的。但xv6的RISC-V并不用完整写一个程序，所以我这种完全不会RISC-V的也可以上手。</p>
+<p>摆一张图：</p>
+<p><img src="https://906337931-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-MHZoT2b_bcLghjAOPsJ%2F-MM-XjiGboAFe-3YvZfT%2F-MM0rYc4eVnR9nOesAAv%2Fimage.png?alt=media&amp;token=f30ebac8-8dc0-4b5d-8aa7-b241a10b43b3" alt="RISC-V registers"></p>
+<p><s>用别人图床不也挺好吗</s></p>
+<p>分析的代码部分：</p>
+<pre class="language-c" data-language="c"><code class="language-c">user/_call:     file format elf64-littleriscv
+
+Disassembly of section .text:
+
+0000000000000000 &lt;g&gt;:
+#include "kernel/param.h"
+#include "kernel/types.h"
+#include "kernel/stat.h"
+#include "user/user.h"
+
+int g(int x) {
+   0:	1141                	addi	sp,sp,-16
+   2:	e422                	sd	s0,8(sp)
+   4:	0800                	addi	s0,sp,16
+  return x+3;
+}
+   6:	250d                	addiw	a0,a0,3
+   8:	6422                	ld	s0,8(sp)
+   a:	0141                	addi	sp,sp,16
+   c:	8082                	ret
+
+000000000000000e &lt;f&gt;:
+
+int f(int x) {
+   e:	1141                	addi	sp,sp,-16
+  10:	e422                	sd	s0,8(sp)
+  12:	0800                	addi	s0,sp,16
+  return g(x);
+}
+  14:	250d                	addiw	a0,a0,3
+  16:	6422                	ld	s0,8(sp)
+  18:	0141                	addi	sp,sp,16
+  1a:	8082                	ret
+
+000000000000001c &lt;main&gt;:
+
+void main(void) {
+  1c:	1141                	addi	sp,sp,-16
+  1e:	e406                	sd	ra,8(sp)
+  20:	e022                	sd	s0,0(sp)
+  22:	0800                	addi	s0,sp,16
+  printf("%d %d\n", f(8)+1, 13);
+  24:	4635                	li	a2,13
+  26:	45b1                	li	a1,12
+  28:	00000517          	auipc	a0,0x0
+  2c:	7c050513          	addi	a0,a0,1984 # 7e8 &lt;malloc+0xea&gt;
+  30:	00000097          	auipc	ra,0x0
+  34:	610080e7          	jalr	1552(ra) # 640 &lt;printf&gt;
+  exit(0);
+  38:	4501                	li	a0,0
+  3a:	00000097          	auipc	ra,0x0
+  3e:	27e080e7          	jalr	638(ra) # 2b8 &lt;exit&gt;</code></pre>
+<p>这里是解答部分：</p>
+<div class="admonition info"><p class="admonition-title">Question 1
+</p><p>Which registers contain arguments to functions? For example, which register holds 13 in main's call to printf?</p>
 </div>
-<h2 id="Some-construct-scheme">Some construct scheme</h2>
-<h3 id="RSA-FDH">RSA FDH</h3>
-<p>若将普通RSA版本改为上方的Hash-and-Sign方式，则满足EUF-CMA性质，其证明用到了随机预言机。</p>
-<h3 id="Scheme-based-on-DL-problem">Scheme based on DL problem</h3>
-<p>接下来介绍的两方案本质上是一种无交互的零知识证明下使用DL problem的方案。</p>
-<h3 id="Schnorr">Schnorr</h3>
-<p>$Gen：\mathcal{G}(1^n)\rightarrow(G,q,g)$，均匀选择$x\leftarrow \mathbb{Z}_q,y=g^x$，则公钥为$(G,q,g,y)$,私钥为$x$。同时，选择$H:\{0,1\}‘\rightarrow \mathbb{Z}_q$<br>
-$Sign:m\in \{0,1\}’$，均匀选择$k\leftarrow \mathbb{Z}_q,I=g^k$，计算 $r=H(I,m),s=rx+k\pmod q $,最后输出$\sigma=(r,s)$.<br>
-$Vrfy:$ 计算 $I=g^s\cdot y^{-r}$，验证$r$是否等于$H(I,m)$</p>
-<p>Correctness:$g^s\cdot y^{-r}=g^{rx+k}\cdot g^{-xr}=g^r=I$</p>
-<div class="admonition warning"><p class="admonition-title">Schnorr
-</p><p>若H为随机预言机，则该问题基于DL problem下满足EUF-CMA secure。</p>
+<p>a0------a7. 13 存储在a2.</p>
+<div class="admonition info"><p class="admonition-title">Question 2
+</p><p>Where is the call to function f in the assembly code for main? Where is the call to g? (Hint: the compiler may inline functions.)</p>
 </div>
-<h3 id="DSA-ECDSA">DSA/ECDSA</h3>
-<p>这里只介绍DSA（因为不会椭圆曲线<s>最重要的原因是PPT没有</s>）</p>
-<p>$Gen：\mathcal{G}(1^n)\rightarrow(G,q,g)$，均匀选择$x\leftarrow \mathbb{Z}_q,y=g^x$，则公钥为$(G,q,g,y)$,私钥为$x$。同时，选择$H:\{0,1\}‘\rightarrow \mathbb{Z}_q$和函数$F:G\rightarrow \mathbb{Z}_q$<br>
-$Sign:m\in \{0,1\}’$，均匀选择$k\leftarrow \mathbb{Z}_q,r=F(g^k)$，则计算$s=k^{-1}(H(m)+rx)\pmod q $。若 $r,k,s$任意一个为0，则重新开始，选择全新的k。最后输出$\sigma=(r,s)$。<br>
-$Vrfy:$ 计算 $u=s^{-1} \pmod q$，验证$r$是否等于$F(g^{H(m)u}y^{ru})$</p>
-<p>Correctness类似上方，化简下就出来了。</p>
-<p>DSA工作在素数 $q$ 阶群，并且$F(I)=I \pmod q$,ECDSA类似。</p>
-<div class="admonition warning"><p class="admonition-title">DSA/ECDSA
-</p><p>若$H,F$为随机预言机，那么该方案的EUF-CMA 基于DL问题。</p>
+<p>编译器优化直接内联展开了。</p>
+<div class="admonition info"><p class="admonition-title">Question 3
+</p><p>At what address is the function printf located?</p>
 </div>
-<hr>
-<p>需要注意的是，这两个方案并不是完全安全的。</p>
-<h3 id="One-time-signatures">One-time signatures</h3>
-<p>$Gen：\mathcal{G}(1^n)\rightarrow(G,q,g)$，均匀选择$x，y\leftarrow \mathbb{Z}_q,h=g^x,c=g^y$，则公钥为$(G,q,g,h,c)$,私钥为$(x,y)$。<br>
-$Sign:m\in \{0,1\}'$,计算$\sigma=(y-m)x^{-1} \pmod q$<br>
-$Vrfy:$ 计算 $u=s^{-1} \pmod q$，验证$c=g^mh^\sigma$</p>
-<p>Correctness: $g^m,c^\sigma=g^{m+x\sigma}=g^{m+x(y-m)/x}=g^y=c$</p>
-<div class="admonition warning"><p class="admonition-title">One-time signatures
-</p><p>该方案基于DL problem 满足 EUF-1-naCMA安全性。</p>
+<p><code>0000000000000630 &lt;printf&gt;</code>。</p>
+<div class="admonition info"><p class="admonition-title">Question 4
+</p><p>What value is in the register ra just after the jalr to printf in main?</p>
 </div>
-<h2 id="杂项">杂项</h2>
-<h3 id="Generic-compilers-for-strong-security">Generic compilers for strong security</h3>
-<ol>
-<li><strong>CMA from RSA</strong> 任意的RMA方案（消息空间 $k,q(k)$）都能构造出$q(k)$消息空间的CMA 方案。<br>
-具体而言，对消息$m\in\{0,1\}^*$，随机选择$m_L\rightarrow \{0,1\}^q$，计算$m_R=m_L\oplus m$则有$m=m_L\oplus m_R$,两个都具有随机性。<br>
-随机选择$r\leftarrow\{0,1\}^k$,则$r||m_L,r||m_R$分别可作为独立的$sk_L,sk_R$。</li>
-<li><strong>CMA from naCMA</strong>,通过使用一次性的naCMA方案生成消息的数字签名，并使用长期的naCMA方案来对一次性naCMA方案签名，即可构造CMA。</li>
-</ol>
-<h3 id="CA">CA</h3>
-<p>略。</p>
-<h3 id="碎碎念">碎碎念</h3>
-<p>啊哈哈，终于在紧赶慢赶，摸鱼摆烂中写完了这个密码学博客，原本作为考试复习的博客后面发现写了太多太花时间，结果忽略了最后公钥加密的章节，在开始考试的时候我还没有写11章，12章博客，现在我密码学分数已经出来了，93，在大题炸了的情况下还算能够接受。</p>
-<p><s>但我其他科目炸了</s></p>
-<p>本博客糟糕的文笔（很多地方都是纯记流水账）使这个博客可读性大大降低。我尽力使这博客看起来“对新手友好”，但一千个读者有一万个yy顶针，如果因为本博客的糟糕体验（迫真）而使你失去了对现代密码学这门课的兴趣，万分抱歉😭。</p>
-<p>原著<code>Introduction to MODERN CRYPTOGRAPHY</code>的条理性以及知识点补充是极强的，还是来看看远处的原著吧家人们。</p>
-<p>开始写这个博客的时候还是去年11月26号，现在3月3号我才写完这博客，即使花了这么长时间<s>从寒假才开始认真学这密码学</s>，我还是没法克服自己摆烂摸鱼的习惯，有趣的证明我几乎一个没写，而让我对密码学有兴趣的一大原因恰恰就是证明部分，限于精力和时间等因素没有办法完成，不能不说是一种遗憾。</p>
+<p>返回的地址ra是main里头的对应行数的地址。</p>
+<div class="admonition info"><p class="admonition-title">Question 5
+</p><p>Run the following code. What is the output?
+The output depends on that fact that the RISC-V is little-endian. If the RISC-V were instead big-endian what would you set i to in order to yield the same output? Would you need to change 57616 to a different value?</p>
+</div>
+<pre class="language-c" data-language="c"><code class="language-c">unsigned int i = 0x00646c72;
+printf("H%x Wo%s", 57616, &amp;i);</code></pre>
+<p>大端小端的问题。。。计组都搞过了，不回答😤😤😤</p>
+<div class="admonition info"><p class="admonition-title">Question 6
+</p><p>In the following code, what is going to be printed after 'y='? (note: the answer is not a specific value.) Why does this happen?</p>
+</div>
+<pre class="language-c" data-language="c"><code class="language-c">printf("x=%d y=%d", 3);</code></pre>
+<p>未定义行为，当前的a2寄存器不知道是什么值，因此输出也是未知的。</p>
+<h3 id="Backtrace-moderate">Backtrace (moderate)</h3>
+<p>实现一个回溯的Backtrace。</p>
+<p>还是很简单的一道题，用指针就行了，我还在想用什么riscv指令来访问物理内存。自己做这些题还是容易舍近求远。</p>
+<p>本题目需要理解下图：</p>
+<p><img src="/images/OS/xv6-stack.png" alt="xv6 Stack"></p>
+<p>在每一层的堆栈中，return address位于frame pointer的offset(-8)位置，二上一个frame pointer的在当前frame pointer offset(-16)位置，因此若要存取上一个堆栈信息，可以直接用指针的加减来获得。</p>
+<p>首先在<code>kernel/defs.h</code>等地方加上必要的配置，例如函数声明等。</p>
+<p>其次在<code>kernel/riscv.h</code>里增加以下函数声明：</p>
+<pre class="language-c" data-language="c"><code class="language-c">static inline uint64
+r_fp()
+{
+  uint64 x;
+  asm volatile("mv %0, s0" : "=r" (x) );
+  return x;
+}</code></pre>
+<p>该函数可以获取当前帧指针<code>s0</code>的值。</p>
+<p>在<code>kernel/printf.c</code>里增加以下内容：</p>
+<pre class="language-c" data-language="c"><code class="language-c">void backtrace(){
+  printf("backtrace:\n");
+  uint64 fp = r_fp();
+  uint64 start = PGROUNDUP(fp), end = PGROUNDDOWN(fp);
+  while(end&lt;=fp&amp;&amp;fp&lt;=start){
+    printf("%p\n", *(uint64*)(fp-8));
+    fp = *(uint64*)(fp-16);
+  }
+}</code></pre>
+<p>其中的start和end变量是为了防止fp的无限回溯超出界限。xv6会将每一个stack都分配一个page，因此用PGROUNDUP等宏即可获取上下限。</p>
+<h3 id="Alarm-hard">Alarm (hard)</h3>
+<p>按照他的步骤来就算简单。</p>
+<p>本题要求增加两个系统调用：sigalarm和sigreturn。</p>
+<p>除了增加系统调用所必要的修改外，其他修改如下：</p>
+<p>由于跳转函数会破坏寄存器的值，因此需要在proc结构里保存寄存器的值。这里的实现是有些偷懒的，只根据alarmtest.asm里的所需值增加了所需要的寄存器：sp，pc，s0-s1, ra以及a0-a7，但实际上无从知道编译器会用哪些用户寄存器，因此在实际使用的时候应该将32个寄存器全部存储。</p>
+<pre class="language-c" data-language="c"><code class="language-c">struct proc {
+  //...
+  uint64 ticks; //时间间隔
+  uint64 func; //执行的函数指针
+  uint64 count; //经过多长时间
+  uint64 alarm_epc; //保存的pc寄存器
+  uint64 in_handler; //是否有return
+
+  // 保存的寄存器
+  uint64 sp;
+  uint64 s0;
+  uint64 s1;
+  uint64 ra;
+  uint64 a0;
+  uint64 a1;
+  uint64 a2;
+  uint64 a3;
+  uint64 a4;
+  uint64 a5;
+  uint64 a6;
+  uint64 a7;
+};</code></pre>
+<p><code>kernel/proc.c</code> 的<code>allocproc</code>函数里也增加初始化内容：</p>
+<pre class="language-c" data-language="c"><code class="language-c">static struct proc*
+allocproc(void)
+{
+
+found:
+    //.....
+  p-&gt;count = 0;
+  p-&gt;ticks = 0;
+  p-&gt;func = 0;
+  p-&gt;alarm_epc = 0;
+  p-&gt;in_handler = 0;
+  p-&gt;a0 = p-&gt;a1 = p-&gt;a2 = p-&gt;a3 = p-&gt;a4 = p-&gt;a5 = p-&gt;a6 = p-&gt;a7 =0;
+  p-&gt;sp = p-&gt;ra = p-&gt;s0 = p-&gt;s1 = 0;
+  return p;
+}</code></pre>
+<p>两系统调用：</p>
+<pre class="language-c" data-language="c"><code class="language-c">uint64
+sys_sigalarm(void){
+  int ticks;
+  uint64 func;
+  if(argint(0, &amp;ticks) &lt; 0 &amp;&amp; argaddr(1, &amp;func)&lt;0){
+    return -1;
+  }
+  struct proc *p = myproc();
+  func = p-&gt;trapframe-&gt;a1;
+  printf("%p\n", func);
+  if(ticks == 0 &amp;&amp; func == 0){
+    p-&gt;ticks = p-&gt;func = p-&gt;count = 0;
+    return 0;
+  }
+
+  p-&gt;ticks = ticks;
+  p-&gt;func = func;
+  p-&gt;count = 0;
+
+  return 0;
+}
+uint64
+sys_sigreturn(void){
+  struct proc *p = myproc();
+  if (p-&gt;in_handler){
+    p-&gt;trapframe-&gt;epc  = p-&gt;alarm_epc;
+    p-&gt;count = 0;
+    p-&gt;in_handler = 0;
+
+    p-&gt;trapframe-&gt;a0 = p-&gt;a0;
+    p-&gt;trapframe-&gt;a1 = p-&gt;a1;
+    p-&gt;trapframe-&gt;a2 = p-&gt;a2;
+    p-&gt;trapframe-&gt;a3 = p-&gt;a3;
+    p-&gt;trapframe-&gt;a4 = p-&gt;a4;
+    p-&gt;trapframe-&gt;a5 = p-&gt;a5;
+    p-&gt;trapframe-&gt;a6 = p-&gt;a6;
+    p-&gt;trapframe-&gt;a7 = p-&gt;a7;
+
+    p-&gt;trapframe-&gt;sp = p-&gt;sp;
+    p-&gt;trapframe-&gt;s0 = p-&gt;s0;
+    p-&gt;trapframe-&gt;s1 = p-&gt;s1;
+    p-&gt;trapframe-&gt;ra = p-&gt;ra;
+  }
+  return 0;
+}</code></pre>
+<p><code>kernel/trap.c</code>:</p>
+<pre class="language-c" data-language="c"><code class="language-c">void
+usertrap(void)
+{   
+  // ...
+  // give up the CPU if this is a timer interrupt.
+  if(which_dev == 2){
+    if (p-&gt;func||p-&gt;ticks){
+      p-&gt;count++;
+      if (p-&gt;count==p-&gt;ticks){
+        p-&gt;in_handler = 1;
+        p-&gt;alarm_epc = p-&gt;trapframe-&gt;epc;
+        p-&gt;trapframe-&gt;epc = p-&gt;func;
+
+        p-&gt;a0 = p-&gt;trapframe-&gt;a0;
+        p-&gt;a1 = p-&gt;trapframe-&gt;a1;
+        p-&gt;a2 = p-&gt;trapframe-&gt;a2;
+        p-&gt;a3 = p-&gt;trapframe-&gt;a3;
+        p-&gt;a4 = p-&gt;trapframe-&gt;a4;
+        p-&gt;a5 = p-&gt;trapframe-&gt;a5;
+        p-&gt;a6 = p-&gt;trapframe-&gt;a6;
+        p-&gt;a7 = p-&gt;trapframe-&gt;a7;
+        p-&gt;sp = p-&gt;trapframe-&gt;sp;
+        p-&gt;s0 = p-&gt;trapframe-&gt;s0;
+        p-&gt;s1 = p-&gt;trapframe-&gt;s1;
+        p-&gt;ra = p-&gt;trapframe-&gt;ra;
+      }
+    }
+    yield();
+  }
+  usertrapret();
+}
+</code></pre>
+<h3 id="Option">Option</h3>
+<p>Optional Challenge是要在backtrace里打印出name而不是地址，这部分。。。网上找不到，我也不会。大概的思路就是像gdb一样从可执行文件里读symbol然后输出，可问题是怎么获得呢？不会捏。</p>
+<h2 id="Lab-Lazy">Lab Lazy</h2>
+<p>咕咕咕。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
                 
             </div>
@@ -776,7 +909,7 @@ $Vrfy:$ 计算 $u=s^{-1} \pmod q$，验证$c=g^mh^\sigma$</p>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zzzremake.github.io/2023/03/03/modern-cryptoxii-digital-signature/">https://zzzremake.github.io/2023/03/03/modern-cryptoxii-digital-signature/</a>
+                    <a href="https://zzzremake.github.io/2023/12/05/mit-6.s081-lab-trap-lazy/">https://zzzremake.github.io/2023/12/05/mit-6.s081-lab-trap-lazy/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -814,16 +947,8 @@ $Vrfy:$ 计算 $u=s^{-1} \pmod q$，验证$c=g^mh^\sigma$</p>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Crypto/">
-                                    <span class="chip bg-color">Crypto</span>
-                                </a>
-                            
-                                <a href="/tags/Public-key/">
-                                    <span class="chip bg-color">Public key</span>
-                                </a>
-                            
-                                <a href="/tags/Digital-Signature/">
-                                    <span class="chip bg-color">Digital Signature</span>
+                                <a href="/tags/OS/">
+                                    <span class="chip bg-color">OS</span>
                                 </a>
                             
                         </div>
@@ -1136,50 +1261,48 @@ $Vrfy:$ 计算 $u=s^{-1} \pmod q$，验证$c=g^mh^\sigma$</p>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2023/04/27/zong-he-ke-cheng-she-ji-ling-ren-gan-tan/">
+                <a href="/2023/12/05/mit-6.s081-lab-trap-lazy/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.webp" class="responsive-img" alt="综合课程设计：令人感叹">
+                        <img src="/medias/featureimages/19.webp" class="responsive-img" alt="MIT 6.S081 Lab trap &amp; Lazy">
                         
-                        <span class="card-title">综合课程设计：令人感叹</span>
+                        <span class="card-title">MIT 6.S081 Lab trap &amp; Lazy</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            记一次十分折磨的课设过程
+                            MIT 操作系统课程6.S081 第二部分：Trap(2021)以及Lazy(2020)的Lab，对应
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-05
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E9%9A%8F%E6%83%B3/" class="post-category">
-                                    随想
+                            <a href="/categories/OS/" class="post-category">
+                                    OS
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
-                    </a>
-                    
-                    <a href="/tags/%E9%9A%8F%E6%83%B3/">
-                        <span class="chip bg-color">随想</span>
+                    <a href="/tags/OS/">
+                        <span class="chip bg-color">OS</span>
                     </a>
                     
                 </div>
@@ -1193,31 +1316,31 @@ $Vrfy:$ 计算 $u=s^{-1} \pmod q$，验证$c=g^mh^\sigma$</p>
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/02/24/modern-cryptoxi-public-key-encryption/">
+                <a href="/2023/11/09/mit-6.s081-lab1-3-begin-xv6/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.webp" class="responsive-img" alt="Modern CryptoⅪ Public-key-Encryption">
+                        <img src="/medias/featureimages/11.webp" class="responsive-img" alt="MIT 6.S081 Lab1-3 begin xv6">
                         
-                        <span class="card-title">Modern CryptoⅪ Public-key-Encryption</span>
+                        <span class="card-title">MIT 6.S081 Lab1-3 begin xv6</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            公钥密码加密方案的构造，混合加密方案以及RSA等方案改造。
+                            MIT 操作系统课程6.S081 第一部分：Lab1-3，对应接口、系统调用和页表三章。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-09
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Crypto/" class="post-category">
-                                    Crypto
+                            <a href="/categories/OS/" class="post-category">
+                                    OS
                                 </a>
                             
                             
@@ -1227,12 +1350,8 @@ $Vrfy:$ 计算 $u=s^{-1} \pmod q$，验证$c=g^mh^\sigma$</p>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
-                    </a>
-                    
-                    <a href="/tags/Public-key/">
-                        <span class="chip bg-color">Public key</span>
+                    <a href="/tags/OS/">
+                        <span class="chip bg-color">OS</span>
                     </a>
                     
                 </div>
