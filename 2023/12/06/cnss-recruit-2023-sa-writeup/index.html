@@ -1,0 +1,2398 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/bilicard.css">
+<!-- hexo injector head_begin end -->
+    <meta charset="utf-8">
+    <meta name="keywords" content="CNSS Recruit 2023 SA writeup, ZzzRemake">
+    <meta name="description" content="突然发现忘写了这个，记录一下罢。">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>CNSS Recruit 2023 SA writeup | ZzzRemake</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/medias/favicon.webp">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+
+
+    <link rel="stylesheet" href="/libs/prism/prism.css">
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="ZzzRemake" type="application/atom+xml">
+</head>
+
+
+
+    <style type="text/css" lang="css">
+    #loading-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-height: 100vh;
+        width: 100vw;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: rgba(33, 33, 33, 0.95);
+        text-align: center;
+        /* loader页面消失采用渐隐的方式*/
+        -webkit-transition: opacity 0.7s ease;
+        -moz-transition: opacity 0.7s ease;
+        -o-transition: opacity 0.7s ease;
+        transition: opacity 0.7s ease;
+    }
+    .loading-image {
+        width: 120px;
+        height: 50px;
+        transform: translate(-50%);
+    }
+
+    .loading-image div:nth-child(2) {
+        -webkit-animation: pacman-balls 0.7s linear 0s infinite;
+        animation: pacman-balls 0.7s linear 0s infinite
+    }
+
+    .loading-image div:nth-child(3) {
+        -webkit-animation: pacman-balls 0.7s linear .33s infinite;
+        animation: pacman-balls 0.7s linear .33s infinite
+    }
+
+    .loading-image div:nth-child(4) {
+        -webkit-animation: pacman-balls 0.7s linear .66s infinite;
+        animation: pacman-balls 0.7s linear .66s infinite
+    }
+
+    .loading-image div:nth-child(5) {
+        -webkit-animation: pacman-balls 0.7s linear .99s infinite;
+        animation: pacman-balls 0.7s linear .99s infinite
+    }
+
+    .loading-image div:first-of-type {
+        width: 0;
+        height: 0;
+        border: 25px solid #49b1f5;
+        border-right-color: transparent;
+        border-radius: 25px;
+        -webkit-animation: rotate_pacman_half_up .5s 0s infinite;
+        animation: rotate_pacman_half_up .5s 0s infinite;
+    }
+
+    .loading-image div:nth-child(2) {
+        width: 0;
+        height: 0;
+        border: 25px solid #49b1f5;
+        border-right-color: transparent;
+        border-radius: 25px;
+        -webkit-animation: rotate_pacman_half_down .5s 0s infinite;
+        animation: rotate_pacman_half_down .5s 0s infinite;
+        margin-top: -50px;
+    }
+
+    @-webkit-keyframes rotate_pacman_half_up {
+        0% {
+            transform: rotate(270deg)
+        }
+
+        50% {
+            transform: rotate(1turn)
+        }
+
+        to {
+            transform: rotate(270deg)
+        }
+    }
+
+    @keyframes rotate_pacman_half_up {
+        0% {
+            transform: rotate(270deg)
+        }
+
+        50% {
+            transform: rotate(1turn)
+        }
+
+        to {
+            transform: rotate(270deg)
+        }
+    }
+
+    @-webkit-keyframes rotate_pacman_half_down {
+        0% {
+            transform: rotate(90deg)
+        }
+
+        50% {
+            transform: rotate(0deg)
+        }
+
+        to {
+            transform: rotate(90deg)
+        }
+    }
+
+    @keyframes rotate_pacman_half_down {
+        0% {
+            transform: rotate(90deg)
+        }
+
+        50% {
+            transform: rotate(0deg)
+        }
+
+        to {
+            transform: rotate(90deg)
+        }
+    }
+
+    @-webkit-keyframes pacman-balls {
+        75% {
+            opacity: .7
+        }
+
+        to {
+            transform: translate(-100px, -6.25px)
+        }
+    }
+
+    @keyframes pacman-balls {
+        75% {
+            opacity: .7
+        }
+
+        to {
+            transform: translate(-100px, -6.25px)
+        }
+    }
+
+    .loading-image div:nth-child(3),
+    .loading-image div:nth-child(4),
+    .loading-image div:nth-child(5),
+    .loading-image div:nth-child(6) {
+        background-color: #49b1f5;
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        margin: 2px;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        transform: translateY(-6.25px);
+        top: 25px;
+        left: 100px;
+    }
+
+    .loading-text {
+        margin-bottom: 20vh;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 2rem;
+        box-sizing: border-box;
+        padding: 0 10px;
+        text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+    }
+
+    @media only screen and (max-width: 500px) {
+        .loading-text {
+            font-size: 1.5rem;
+        }
+    }
+
+    .fadeout {
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+    /* logo出现动画 */
+    @-webkit-keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0)
+        }
+
+        100% {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none
+        }
+    }
+
+    @keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+        }
+    }
+</style>
+<script> (function () {
+        const loaded = function () {
+            setTimeout(function () {
+                const loader = document.getElementById("loading-container");
+                loader.className = "fadeout";//使用渐隐的方法淡出loading page //
+                //document.getElementById("body-wrap").style.display = "flex";
+                setTimeout(function () {
+                    loader.style.display = "none";
+                }, 600);
+            }, 500);//强制显示loading page 0.7s
+        };
+        loaded();
+    })()
+</script>
+ 
+ 
+<body>
+    
+    
+        <div id="loading-container">
+            <p class="loading-text">走～走走～走走走走​🚶‍♂️🚶‍♂️🚶‍♂️ </p>
+            <div class="loading-image">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div> 
+                <div></div>
+            </div> 
+        </div>
+    
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.webp" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">ZzzRemake</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index📕</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags🎧</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categ🧐</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives🤯</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About🤔</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends🤝</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.webp" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">ZzzRemake</div>
+        <div class="logo-desc">
+            
+            Write down what I enjoyed.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index📕
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags🎧
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categ🧐
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives🤯
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About🤔
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends🤝
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/ZzzRemake" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me🥰
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #257afa;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/ZzzRemake" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me🥰" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.webp')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">CNSS Recruit 2023 SA writeup</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/CNSS/">
+                                <span class="chip bg-color">CNSS</span>
+                            </a>
+                        
+                            <a href="/tags/DevOps/">
+                                <span class="chip bg-color">DevOps</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CNSS/" class="post-category">
+                                CNSS
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2023-12-06
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
+                    2023-12-06
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Words Count:&nbsp;&nbsp;
+                    4.1k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>孩子不会SA，随便打着玩的。<br>
+唉，总是在错误的时间遇到正确的事情。</p>
+<h2 id="Little-Docker">Little Docker</h2>
+<h3 id="基本要求">基本要求</h3>
+<ul>
+<li>安装docker</li>
+<li>利用docker部署一个nginx服务，实现当宿主机请求自身的5000端口时能获取到nginx的欢迎界面</li>
+<li>请你实现当不进入容器的情况下，将nginx的欢迎界面更改成下载链接中的页面(禁用文件复制)</li>
+<li>现使用 centos:latest 镜像创建另一个容器，确保centos容器能以 container:port 的形式访问到点2中的页面</li>
+<li>这两个容器能相互ping通</li>
+</ul>
+<h3 id="过程">过程</h3>
+<p>本题在centos环境中完成。</p>
+<p>安装docker部分：按照<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/centos/">官方文档</a>操作即可。</p>
+<p>docker部署nginx：采用docker compose完成。</p>
+<p>配置文件结构如下：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">.
+├── conf.d
+│   ├── fastcgi.conf
+│   ├── fastcgi.conf.default
+│   ├── fastcgi_params
+│   ├── fastcgi_params.default
+│   ├── koi-utf
+│   ├── koi-win
+│   ├── mime.types
+│   ├── mime.types.default
+│   ├── nginx.conf.default
+│   ├── scgi_params
+│   ├── scgi_params.default
+│   ├── uwsgi_params
+│   ├── uwsgi_params.default
+│   └── win-utf
+├── docker-compose.yml
+├── html
+│   └── index.html
+├── logs
+│   └── access.log
+└── nginx.conf</code></pre>
+<p>nginx.conf如下：</p>
+<pre class="language-nginx" data-language="nginx"><code class="language-nginx">worker_processes  auto;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    sendfile        on;
+    #tcp_nopush     on;
+    server_tokens off;
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    gzip on;
+    gzip_types text/plain application/x-javascript text/css application/xml text/javascript application/javascript image/jpeg image/gif image/png;
+    gzip_vary on;  
+    
+    server {
+        listen       80;
+
+        location / {
+            root   /usr/share/nginx/html;
+            try_files /index.html /index.htm;
+        }
+    }
+}</code></pre>
+<p>docker-compose.yaml如下：</p>
+<pre class="language-yaml" data-language="yaml"><code class="language-yaml">version: '3.9'
+
+services:
+    nginx:
+        image: nginx
+        restart: always
+        ports:
+            - '5000:80'
+        volumes:
+            - ./html:/usr/share/nginx/html
+            - ./nginx.conf:/etc/nginx/nginx.conf
+            - ./conf.d:/etc/nginx/conf.d
+            - ./logs:/var/log/nginx
+        networks:
+            - test
+
+networks:
+    test:
+        driver: bridge</code></pre>
+<p><code>curl 127.0.0.1:5000</code>，如下所示：</p>
+<p><img src="/images/CNSS/curl%201.png" alt="curl"></p>
+<p>创建centos容器：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">sudo docker run --network nginx_test --network-alias centos --name centos -itd centos:latest
+# 进入centos容器
+sudo docker exec -it &lt;centos id&gt; bash</code></pre>
+<p><code>curl</code> 一下，发现docker网络里暴露的不是绑定的端口，而是自身的端口（</p>
+<p><img src="/images/CNSS/curl%202.png" alt="centos curl"></p>
+<p><img src="/images/CNSS/curl%203.png" alt="centos ping"></p>
+<p>nginx容器测试时，由于容器过分精简导致没有<code>ping</code>，所以在容器中输入以下命令（默认root用户）：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">apt update
+apt install inetutils-ping</code></pre>
+<p>结果如下：</p>
+<p><img src="/images/CNSS/curl%204.png" alt="nginx ping"></p>
+<h2 id="RSS-Service">RSS Service</h2>
+<h3 id="题目描述">题目描述</h3>
+<ul>
+<li>使用 Docker 部署 RSSHub，并开放到公网以供查房。</li>
+<li>使用 Docker 部署梯子，并作为 RSSHub 的代理，以访问源站位于墙外的路由（例如 Twitter）</li>
+<li>在同一个 docker-compose 中部署上述两服务</li>
+</ul>
+<h3 id="过程-2">过程</h3>
+<p>其实应该更早做出来这道题的，但我debug找了半天，问了ganqiu才知道是我clash配置文件的问题，改一下<code>allow-lan</code>,将clash从只允许本地环回地址改成允许局域网访问就行。令人感叹。</p>
+<p>本题采用clash作为代理，国内访问以bilibili（无需appkey）为例，国外访问以youtube（需要google key）为例，访问地址：<code>http://82.157.22.75:9981/</code>,经nginx反向代理至rsshub的端口（后面才发现其实根本没必要这样，懒了）</p>
+<p><code>docker-compose.yaml</code>：</p>
+<pre class="language-yaml" data-language="yaml"><code class="language-yaml">version: '3.9'
+
+services:
+    rsshub:
+        # two ways to enable puppeteer:
+        # * comment out marked lines, then use this image instead: diygod/rsshub:chromium-bundled
+        # * (consumes more disk space and memory) leave everything unchanged
+        image: diygod/rsshub
+        restart: always
+        ports:
+            - '1200:1200'
+        environment:
+            NODE_ENV: production
+            CACHE_TYPE: redis
+            REDIS_URL: 'redis://redis:6379/'
+            PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'  # marked
+            PROXY_URI: 'http://clash:7890'
+            YOUTUBE_KEY: 'xxxxxxxxxxxxxxxxxxxxxxxx' # 略
+        depends_on:
+            - clash
+            - redis
+            - browserless  # marked
+
+    browserless:  # marked
+        image: browserless/chrome  # marked
+        restart: always  # marked
+        ulimits:  # marked
+          core:  # marked
+            hard: 0  # marked
+            soft: 0  # marked
+        environment:
+          DEFAULT_LAUNCH_ARGS: '["--window-size=375,820","--proxy-server=http://clash:7890"]' # 代理服务 
+        depends_on:
+          - clash
+    redis:
+        image: redis:alpine
+        restart: always
+        volumes:
+            - redis-data:/data 
+    clash:
+        image: dreamacro/clash
+        restart: always
+        ports:
+          - "7890:7890"
+          - "7891:7891"
+          - "9090:9090"
+        volumes:
+          - /etc/clash:/root/.config/clash
+
+volumes:
+    redis-data:</code></pre>
+<p>命令部分：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"># 创建redis需要的data volume
+sudo docker create volume redis-data
+# RSSHub 启动！
+sudo docker compose up -d</code></pre>
+<p>访问示例：</p>
+<p>[bilibili]:</p>
+<p><img src="/images/CNSS/rss_bilibili.png" alt="Bilibili Cherry"></p>
+<p>[youtube]:</p>
+<p><img src="/images/CNSS/rss_youtube.png" alt="Youtube"></p>
+<h2 id="基础环境建设">基础环境建设</h2>
+<h3 id="题目要求">题目要求</h3>
+<ol>
+<li>
+<p>搭建基础环境，包括以下部分：</p>
+<ul>
+<li>git</li>
+<li>docker</li>
+<li>python 3</li>
+<li>pip3</li>
+<li>curl</li>
+<li>ssh 禁用密码登录</li>
+</ul>
+</li>
+<li>
+<p>加分项</p>
+<ul>
+<li>一键脚本（见下）</li>
+<li>一些奇怪的功能</li>
+</ul>
+</li>
+</ol>
+<h3 id="过程-3">过程</h3>
+<p>本题基于夏令营的脚本基础上进行重构，除了基本要求，新增以下部分：</p>
+<ol>
+<li>多个发行版支持，有：
+<ul>
+<li>Ubuntu (只要源里有就算支持)</li>
+<li>CentOS 7 8（同上）</li>
+<li>Arch Linux~~（这就是滚动更新给我的自信）~~</li>
+</ul>
+</li>
+<li>支持切换安装源<br>
+目前支持阿里云、清华、中科大、网易源，并有交互可以修改。</li>
+<li>一些个人配置<br>
+夏令营的存货，例如vim安装配置，安装zsh切换为默认shell，以及nodejs等等。</li>
+</ol>
+<p>脚本在WSL Ubuntu20.04和CentOS 7测试了一下，<s>不保证正确性</s></p>
+<h3 id="Code">Code</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">#!/bin/bash
+# 重构了下原有的代码，看了下别人代码风格试着模仿了（
+# 只用过Ubuntu CentOS和Arch，就挑这三个发行版了
+
+function identify_the_linux_distribution(){
+    if [[ "$(uname)" == "Linux" ]]; then
+        if [[ "$(type -P apt)" ]]; then
+            PACKAGE_MANAGEMENT_INSTALL='sudo apt-get -y --no-install-recommends install'
+            PACKAGE_MANAGEMENT_UPDATE='sudo apt-get update &amp;&amp; sudo apt-get upgrade -y'
+            PACKAGE_MANAGEMENT_REMOVE='sudo apt-get purge'
+            LINUX_DISTRIBUTION='ubuntu'
+        elif [[ "$(type -P yum)" ]]; then
+            PACKAGE_MANAGEMENT_INSTALL='sudo yum -y install'
+            PACKAGE_MANAGEMENT_UPDATE='sudo yum makecache &amp;&amp; sudo yum -y upgrade'
+            PACKAGE_MANAGEMENT_REMOVE='sudo yum remove'
+            LINUX_DISTRIBUTION='centos'
+        elif [[ "$(type -P pacman)" ]]; then
+            PACKAGE_MANAGEMENT_INSTALL='sudo pacman -Syu --noconfirm'
+            PACKAGE_MANAGEMENT_UPDATE='sudo pacman -Syyu --noconfirm'
+            PACKAGE_MANAGEMENT_REMOVE='sudo pacman -Rsn'
+            LINUX_DISTRIBUTION='arch'
+        else  
+            echo "error: The script does not support the package manager in this operating system." 
+            exit 1
+        fi
+    else
+        echo "error: This OS is not supported."
+        exit 1
+    fi
+}
+
+function is_ip_cn(){
+    COUNTRY=$(curl ipinfo.io | grep "country" | awk '{print $2}')
+    if [ $COUNTRY == '"CN",' ]; then
+        LOCAL_COUNTRY="OTHER"
+    else
+        LOCAL_COUNTRY="CN"
+    fi
+}
+
+function update_software(){
+    $PACKAGE_MANAGEMENT_UPDATE
+    if [[ $PACKAGE_MANAGEMENT_UPDATE ]]; then
+        echo "info: update success."
+    else
+        echo "error: update failed!"
+        exit 1
+    fi
+}
+
+function install_software(){
+    package_name="$1"
+    file_to_detect="$2"
+    type -p "$file_to_detect" &gt; /dev/null 2&gt;&amp;1 &amp;&amp; return
+    if ${PACKAGE_MANAGEMENT_INSTALL} "$package_name"; then
+        echo "info: $package_name is installed."
+    else
+        echo "error: Installation of $package_name failed!"
+        exit 1
+    fi
+}
+
+function change_source() {
+    if [[ $LOCAL_COUNTRY == "CN" ]]; then
+        echo "WARNING: your linux is in CN so that change your source is recommended."
+    fi
+    echo "please choose a mirror:
+    1. aliyun
+    2. tsinghua
+    3. 163
+    4. ustc
+    "
+    
+    read MIRROR_CHOOSE
+    
+    if [ $MIRROR_CHOOSE -ne 1 ] &amp;&amp; [ $MIRROR_CHOOSE -ne 2 ] &amp;&amp; [ $MIRROR_CHOOSE -ne 3 ] &amp;&amp; [ $MIRROR_CHOOSE -ne 4 ]; then
+        echo 'error: input error.'
+        exit 1
+    fi
+
+    if [[ $LINUX_DISTRIBUTION == "ubuntu" ]]; then
+        echo "=========================================="
+        UBUNTU_VERSION=$(cat /etc/os-release | grep VERSION_CODENAME | awk -F "=" '{print $2}')
+        case $MIRROR_CHOOSE in
+            1)
+                UBUNTU_MIRROR_URL='http://mirrors.aliyun.com/ubuntu/'
+            ;;
+            2)
+                UBUNTU_MIRROR_URL='https://mirrors.tuna.tsinghua.edu.cn/ubuntu/'
+            ;;
+            3)
+                UBUNTU_MIRROR_URL='http://mirrors.163.com/ubuntu/'
+            ;;
+            4)
+                UBUNTU_MIRROR_URL='https://mirrors.ustc.edu.cn/ubuntu/'
+            ;;
+        esac
+        echo "==== Ubuntu version: $UBUNTU_VERSION ===="
+        echo "begin change your source($UBUNTU_MIRROR_URL)..."
+
+        sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+        echo "origin source.list is stored in /etc/apt/sources.list.bak"
+
+        
+        echo "# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+deb $UBUNTU_MIRROR_URL $UBUNTU_VERSION main restricted universe multiverse
+# deb-src $UBUNTU_MIRROR_URL $UBUNTU_VERSION main restricted universe multiverse
+deb $UBUNTU_MIRROR_URL $UBUNTU_VERSION-updates main restricted universe multiverse
+# deb-src $UBUNTU_MIRROR_URL $UBUNTU_VERSION-updates main restricted universe multiverse
+deb $UBUNTU_MIRROR_URL $UBUNTU_VERSION-backports main restricted universe multiverse
+# deb-src $UBUNTU_MIRROR_URL $UBUNTU_VERSION-backports main restricted universe multiverse
+# deb $UBUNTU_MIRROR_URL $UBUNTU_VERSION-security main restricted universe multiverse
+# \# deb-src $UBUNTU_MIRROR_URL $UBUNTU_VERSION-security main restricted universe multiverse
+
+deb http://security.ubuntu.com/ubuntu/ $UBUNTU_VERSION-security main restricted universe multiverse
+# deb-src http://security.ubuntu.com/ubuntu/ $UBUNTU_VERSION-security main restricted universe multiverse
+" | sudo tee /etc/apt/sources.list
+
+    elif [[ $LINUX_DISTRIBUTION == "centos" ]]; then
+        REDHAT_RELEASE=$(grep "CentOS" /etc/redhat-release)
+        if  echo "$REDHAT_RELEASE" | grep "release 7" 
+        then
+			CENTOS_VERSION=7
+		elif echo "$REDHAT_RELEASE" | grep "release 8"
+        then
+			CENTOS_VERSION=8
+		else
+			echo "error: only support CentOS 7 and 8"
+            exit 1
+		fi
+        sudo cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
+        echo "origin CentOS-Base.repo is stored in /etc/yum.repos.d/CentOS-Base.repo.bak"
+
+        if [ $CENTOS_VERSION -eq 7 ]
+        then
+            case $MIRROR_CHOOSE in
+                1)
+                wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+                ;;
+                2)
+                sudo sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+         -e 's|^#baseurl=http://mirror.centos.org/centos|baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos|g' \
+         -i.bak \
+         /etc/yum.repos.d/CentOS-*.repo
+                ;;
+                3)
+                sudo wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.163.com/.help/CentOS7-Base-163.repo
+                ;;
+                4)
+                sudo sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+         -e 's|^#baseurl=http://mirror.centos.org/centos|baseurl=https://mirrors.ustc.edu.cn/centos|g' \
+         -i.bak \
+         /etc/yum.repos.d/CentOS-Base.repo
+                ;;
+            esac
+        else
+            case $MIRROR_CHOOSE in
+                1)
+                sudo wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-8.repo 
+                ;;
+                2)
+                sudo sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+         -e 's|^#baseurl=http://mirror.centos.org/$contentdir|baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos|g' \
+         -i.bak \
+         /etc/yum.repos.d/CentOS-*.repo
+                ;;
+                3)
+                sudo wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.163.com/.help/CentOS8-Base-163.repo
+                ;;
+                4)
+                sudo sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+         -e 's|^#baseurl=http://mirror.centos.org/$contentdir|baseurl=https://mirrors.ustc.edu.cn/centos|g' \
+         -i.bak \
+         /etc/yum.repos.d/CentOS-Stream-AppStream.repo \
+         /etc/yum.repos.d/CentOS-Stream-BaseOS.repo \
+         /etc/yum.repos.d/CentOS-Stream-Extras.repo \
+         /etc/yum.repos.d/CentOS-Stream-PowerTools.repo
+                ;;
+            esac
+        fi
+    elif [[ $LINUX_DISTRIBUTION == "arch" ]]; then
+        #reflect 在之前安装arch的时候很不好用，直接略了，这里只安装对应的源，以及社区源、yay。
+        sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+        echo "origin mirrorlist is stored in /etc/pacman.d/mirrorlist.bak"
+
+        case $MIRROR_CHOOSE in
+            1)
+                echo 'Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch'&gt;/etc/pacman.d/mirrorlist
+            ;;
+            2)
+                echo 'Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/$arch/$repo'&gt;/etc/pacman.d/mirrorlist
+            ;;
+            3)
+                echo 'Server = http://mirrors.163.com/archlinux/$repo/os/$arch'&gt;/etc/pacman.d/mirrorlist
+            ;;
+            4)
+                echo 'Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch'&gt;/etc/pacman.d/mirrorlist
+            ;;
+        esac
+
+        echo 'choose a COMMUNITY SOURCE'
+        echo "
+        1. official
+        2. 163
+        3. tsinghua
+        "
+        read COMMUNITY_SOURCE
+        if [ $comm -ne 1 ]&amp;&amp;[ $comm -ne 2 ]; then
+            echo "error: input error."
+            exit 1
+        fi
+        echo "[archlinuxcn]"&gt;&gt;/etc/pacman.conf
+        case $COMMUNITY_SOURCE in
+            1)
+            echo 'Server = http://repo.archlinuxcn.org/$arch'&gt;&gt;/etc/pacman.conf
+            ;;
+            2)
+            echo 'Server = http://mirrors.163.com/archlinux-cn/$arch'&gt;&gt;/etc/pacman.conf
+            ;;
+            3)
+            echo 'Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch'&gt;&gt;/etc/pacman.conf
+            ;;
+        esac
+        install_software 'archlinuxcn-keyring' 'archlinuxcn-keyring'
+        install_software 'yay' 'yay'
+    fi
+    echo "=========================================="
+    echo "SUCCESS change $LINUX_DISTRIBUTION source!"
+}
+
+function install_zsh(){
+    echo "=========================================="
+    echo "begin install zsh..."
+    install_software 'zsh' 'zsh'
+    install_software 'git' 'git'
+    if [ $LOCAL_COUNTRY == "OTHER" ]; then
+        sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    else
+        sh -c "$(curl -fsSL https://gitee.com/shmhlsy/oh-my-zsh-install.sh/raw/master/install.sh)" #国内镜像源
+    fi
+    chsh -s /bin/zsh
+    echo "=========================================="
+    echo "SUCCESS install zsh &amp; oh-my-zsh!"
+}
+
+function change_ssh_config(){
+    echo "=========================================="
+    echo "begin config ssh..."
+    sed -i 's/\(^[\s#]*\)ClientAliveInterval\(.*\)/ClientAliveInterval 60/' 
+    sed -i 's/\(^[\s#]*\)ClientAliveCountMax\(.*\)/ClientAliveCountMax 10/' 
+    sed -i 's/\(^[\s#]*\)PasswordAuthentication\(.*\)/PasswordAuthentication no/'
+    echo "=========================================="
+    echo "SUCCESS config ssh: 10 minutes Alive and no password auth"
+}
+
+function install_git(){
+    echo "=========================================="
+    echo "begin install git..."
+    install_software 'git' 'git'
+    echo -n "Your git name:"
+    read GIT_USERNAME
+    git config --global user.name $GIT_USERNAME
+    echo -n "Your git email:"
+    read GIT_EMAIL
+    git config --global user.email $GIT_EMAIL
+    git config --list
+    echo "=========================================="
+    echo "SUCCESS install git!"
+}
+
+function install_docker(){
+    echo "=========================================="
+    echo "begin install docker..."
+    if [[ "$LINUX_DISTRIBUTION" == "ubuntu" ]]; then
+        for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do
+            $PACKAGE_MANAGEMENT_REMOVE $pkg
+        done
+        install_software ca-certificates ca-certificates
+        install_software curl curl
+        install_software gnupg gnupg
+        sudo install -m 0755 -d /etc/apt/keyrings
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+        sudo chmod a+r /etc/apt/keyrings/docker.gpg
+        echo \
+        "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        "$(. /etc/os-release &amp;&amp; echo "$VERSION_CODENAME")" stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+        
+        update_software
+        for pkg in docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin; do
+            install_software $pkg $pkg
+        done
+        sudo systemctl enable docker
+        sudo systemctl start docker
+
+    elif [[ "$LINUX_DISTRIBUTION" == "centos" ]];then
+        for pkg in docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine; do
+            $PACKAGE_MANAGEMENT_REMOVE $pkg
+        done
+        install 'yum-utils'
+        sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        for pkg in docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin; do
+            install_software $pkg $pkg
+        done
+        sudo systemctl enable docker
+        sudo systemctl start docker
+
+    elif [[ "$LINUX_DISTRIBUTION" == "arch" ]]; then
+        install_software 'docker' 'docker'
+    fi
+
+    if [ $1 = "CN" ]; then
+     echo "{
+  \"registry-mirrors\": [\"https://docker.mirrors.ustc.edu.cn\"]
+}" | sudo tee -a /etc/docker/daemon.json
+    fi
+    sudo service docker restart
+    echo "=========================================="
+    echo "SUCCESS install docker!"
+}
+
+function install_nodejs_new(){
+    echo "=========================================="
+    echo "begin install nodejs..."
+    NOW_PWD=$(pwd)
+    cd /usr/local/src/
+    sudo wget https://nodejs.org/dist/v18.17.0/node-v18.17.0.tar.gz
+    sudo tar -zxvf node-v18.17.0.tar.gz
+    cd node-v18.17.0
+    sudo ./configure
+    sudo make
+    sudo make install
+    cd $NOW_PWD
+
+    if [ $1 = "CN" ]; then
+    npm config set registry https://registry.npm.taobao.org
+    npm config get registry
+    npm install -g cnpm --registry=https://registry.npm.taobao.org
+    fi
+    echo "=========================================="
+    echo "SUCCESS install newest nodejs!"
+}
+
+function install_vim(){
+    install_software 'vim' 'vim'
+    echo "set laststatus=2
+set number
+set noeb
+set ts=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent" | tee ~/.vimrc
+}
+
+function install_python3_pip(){
+    if [[ $LINUX_DISTRIBUTION == "ubuntu" ]]; then
+        install 'python3' 'python3'
+    elif [[ $LINUX_DISTRIBUTION == "centos" ]]; then
+        install 'python3' 'python3'
+    elif [[ $LINUX_DISTRIBUTION == "arch" ]]; then
+        install_software 'python' 'python'
+        echo "WARNING: arch linux doesn't use pip3 to install python package, use 'sudo pacman -S python-xxx' instead."
+    fi
+}
+
+function config_system_proxy(){
+    if [ $LOCAL_COUNTRY == "OTHER" ]; then
+        return 0
+    fi
+    echo "=========================================="
+    echo "begin config your proxy..."
+    echo "Your HTTP PROXY:"
+    read HTTP_PROXY
+    echo "Your HTTPS PROXY?:"
+    read HTTPS_PROXY
+    echo "export HTTP_PROXY=\"$HTTP_PROXY\"" | sudo tee -a /etc/profile.d/proxy.sh
+    echo "export HTTPS_PROXY=\"$HTTPS_PROXY\"" | sudo tee -a /etc/profile.d/proxy.sh
+    sudo chmod u+x /etc/profile.d/proxy.sh
+    source /etc/profile.d/proxy.sh
+    echo "=========================================="
+}
+
+function main(){
+    identify_the_linux_distribution
+    install_software 'curl' 'curl'
+    is_ip_cn
+    change_source
+    # update_software
+
+ 
+    install_git
+    install_docker
+    install_python3_pip
+    install_vim
+    install_zsh
+
+    # 源码编译nodejs过慢，略了
+    # install_nodejs_new 
+}
+
+main
+#config_system_proxy</code></pre>
+<h2 id="萌新也想搭载上……A-引擎！">萌新也想搭载上……A-引擎！</h2>
+<h3 id="题目要求-2">题目要求</h3>
+<p>使用 Apache 实现以下要求：</p>
+<blockquote>
+<ol>
+<li>使用一个 Apache 实例代理 3 个页面，不同的端口号访问到不同的页面</li>
+<li>实现 URL 转发： 当 URI 请求为 /google 时，跳转到谷歌；当 URI 请求为 /github 时，跳转到 GitHub ；当 URI 请求为/cnss或/cnss/xxx 时，xxx 是任意字符串，跳转到 CNSS 招新官网；其余任意请求跳转到静态页面</li>
+<li>搭建一个简易文件下载服务器，访问 /downloads 能够显示文件目录。</li>
+<li>实现一个简单的负载均衡器，当访问同一个 URL 时，按照流量比 1 : 2 : 3 分别访问到 3 个不同的页面.</li>
+<li>syrinka 的朋友圈有很多大佬，为了膜拜这些大佬教他技术，他每天都会“轮询”拜访这些大佬的博客，并制作了一个 “URL 轮询器”来达到目的，访问该 URL 时，轮询跳转到大佬们的博客，请聪明的你也实现一个吧！</li>
+</ol>
+</blockquote>
+<p>完成基本部分，无加分项。</p>
+<h3 id="过程-4">过程</h3>
+<h4 id="环境">环境</h4>
+<blockquote>
+<p>CentOS httpd(Apache服务器的CentOS版本)<br>
+python+flask</p>
+</blockquote>
+<h4 id="其他配置准备">其他配置准备</h4>
+<p>静态文件部分，保存在/var/www下，目录结构如下所示：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">/var/www
+├── cgi-bin
+├── downloads
+│   ├── kknd
+│   └── logo.png
+└── html
+    ├── h1
+    │   └── index.html
+    ├── h2
+    │   └── index.html
+    ├── h3
+    │   └── index.html
+    └── todo
+        ├── index.html
+        ├── script.js
+        └── style.css</code></pre>
+<p>python部分是为了完成URL轮询器。apache不像nginx，负载均衡的默认轮询算法不基于确定顺序(emmm，查不到原因捏)，因此无法像nginx那样通过upstream直接实现，用python+flask实现如下：</p>
+<p><code>app.py</code></p>
+<pre class="language-python" data-language="python"><code class="language-python">from flask import Flask, redirect
+
+app=Flask(__name__)
+
+i=0
+
+url = [
+        'https://www.sh1no.icu/',
+        'https://yaossg.com',
+        'https://www.cnblogs.com/timlzh/',
+        'https://www.skyecho.fun/'
+]
+
+@app.route('/')
+def index():
+        global i
+        true_url=url[i]
+        i+=1
+        i%=len(url)
+        return redirect(true_url)
+
+if __name__ == '__main__':
+        app.run(port=8084)</code></pre>
+<p>另外，本机在<code>/etc/host</code> 添加 <code>127.0.0.1 zzzremake.eu.org</code></p>
+<hr>
+<p>httpd是有分主配置文件<code>/etc/httpd/conf/httpd.conf</code>和其他配置文件<code>/etc/httpd/conf.d/*.conf</code>，主配置文件中，除了Listen的端口修改外，其他保持默认。</p>
+<p>主配置文件<code>/etc/httpd/conf/httpd.conf</code>(部分)</p>
+<pre class="language-apache" data-language="apache"><code class="language-apache">ServerRoot "/etc/httpd"
+
+Listen 8080
+Listen 8081
+Listen 8082
+Listen 8083</code></pre>
+<p>其他配置文件:<br>
+<code>...../conf.d/h1_3.conf</code></p>
+<p>完成 不同的端口号访问到不同的页面 部分。</p>
+<pre class="language-apache" data-language="apache"><code class="language-apache">Define htmlroot "/var/www/html"
+
+&lt;VirtualHost zzzremake.eu.org:8081&gt;
+    DocumentRoot "${htmlroot}/h1"
+    DirectoryIndex index.html
+    ServerName zzzremake.eu.org:8081
+    &lt;Directory "${htmlroot}/h1"&gt;
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    &lt;/Directory&gt;
+
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost zzzremake.eu.org:8082&gt;
+    DocumentRoot "${htmlroot}/h2"
+    DirectoryIndex index.html
+    ServerName zzzremake.eu.org:8082
+    &lt;Directory "${htmlroot}/h2"&gt;
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    &lt;/Directory&gt;
+
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost zzzremake.eu.org:8083&gt;
+    DocumentRoot "${htmlroot}/h3"
+    DirectoryIndex index.html
+    ServerName zzzremake.eu.org:8083
+    &lt;Directory "${htmlroot}/h3"&gt;
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    &lt;/Directory&gt;
+
+&lt;/VirtualHost&gt;</code></pre>
+<p><code>...../conf.d/url_redirect.conf</code></p>
+<pre class="language-apache" data-language="apache"><code class="language-apache">RewriteEngine on
+
+&lt;VirtualHost zzzremake.eu.org:8080&gt;
+    ServerName zzzremake.eu.org:8080
+    DocumentRoot /var/www/html/todo
+    
+    RewriteRule "^/google$" "https://www.google.com" [R=301,L]
+    RewriteRule "^/github$" "https://github.com" [R=301,L]
+    RewriteRule "^/cnss$" "https://recruit.cnss.io" [R=301,L]
+    RewriteRule "^/cnss/.*" "https://recruit.cnss.io" [R=301,L]
+
+    # RewriteRule "^(/downloads)$" "$1/" [L]
+    RewriteRule "^(/visit)$" "http://127.0.0.1:8084" [P,L]
+    
+
+    RewriteCond %{REQUEST_URI} !^/downloads 
+    RewriteRule "^/.+$" "http://127.0.0.1:8080/" [R,L] 
+
+    ProxyRequests off   
+    &lt;Proxy balancer://balance&gt;
+        BalancerMember http://zzzremake.eu.org:8081 loadfactor=1
+        BalancerMember http://zzzremake.eu.org:8082 loadfactor=2
+        BalancerMember http://zzzremake.eu.org:8083 loadfactor=3
+        ProxySet lbmethod=bytraffic
+    &lt;/Proxy&gt;
+    ProxyPass /balance balancer://balance
+    ProxyPassReverse /balance balancer://balance
+
+    Alias /downloads/ /var/www/downloads/
+
+    &lt;Directory "/var/www/html/todo"&gt;
+        Options Indexes FollowSymlinks
+        AllowOverride None
+        Require all granted
+    &lt;/Directory&gt;
+    &lt;Directory "/var/www/downloads"&gt;
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    &lt;/Directory&gt;
+
+&lt;/VirtualHost&gt;</code></pre>
+<h2 id="我要成为组网高手！">我要成为组网高手！</h2>
+<h3 id="题目要求-3">题目要求</h3>
+<p>使用任意网络模拟器（本题选用PacketTracer）完成如下图所示的</p>
+<p><img src="/images/CNSS/network.png" alt="network"></p>
+<p>并完成以下要求：</p>
+<ol>
+<li>
+<p>基本要求</p>
+<ul>
+<li>完成 10.0.10.0/24 与 10.0.20.0/24 网段的搭建，使 PC0 至 PC3 可以互通</li>
+<li>完成 10.0.30.0/24 网段的搭建，并为 Edge_Route 与 Side_Route 配置动态路由协议，在不使用静态路由的前提下，使 PC0 至 PC4 可以互通</li>
+<li>配置 ICP，并为其配置静态路由，使 PC0 至 PC4 可以连通 ICP</li>
+<li>假设 ICP 所在的网段为外网，PC0 至 PC3 所在的网段为内网，为 Edge_Route 配置 NAT</li>
+</ul>
+</li>
+<li>
+<p>加分项</p>
+<ul>
+<li>15% 配置 VLAN，令 PC0 与 PC2 加入 vlan10，PC1 与 PC3 加入 vlan20</li>
+<li>[ ] 25% 将 Edge_Route 替换为防火墙，并配置规则，使：<br>
+PC0-3 能连通 PC4、Edge_Route、ICP<br>
+PC4 能连通 Edge_Route、ICP、不能连通 PC0-3<br>
+ICP 不能连通 PC0-4、Edge_Route</li>
+<li>[ ] 10% 使用 HCL 完成本题（因为它真的要全程用命令行，这是授予明知山有虎偏向虎山行的勇士的奖励）</li>
+</ul>
+</li>
+</ol>
+<h3 id="过程-5">过程</h3>
+<h4 id="基本部分">基本部分</h4>
+<p>网段搭建部分就不提了，这部分只要网关和ip地址对了就行。</p>
+<p>动态路由部分，设置ospf 1和area 0. 需要注意的是ping用的ICMP是一个来回的过程，所以要配双向路由。</p>
+<p>配置静态路由部分，也是一样要注意双向路由都要配置。</p>
+<p>NAT部分，静态NAT无法满足需求，动态NAT也要多IP的pool，采用端口映射PAT。</p>
+<h4 id="加分项部分">加分项部分</h4>
+<p>VLAN配似了，结果出错了（</p>
+<p><img src="/images/CNSS/nishi_.png" alt="某出题人的回答"></p>
+<p>路由器的子端口无法单独配置VLAN ID，因此当出现题目所示的配置时，会因为子网冲突而无法配置单臂路由的网关，到最后只能在一个子接口有对应的ip地址。<br>
+因此，VLAN间无法互通。</p>
+<p><s>但原意似乎就是配trunk和access口就行了</s></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">ZzzRemake</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://zzzremake.github.io/2023/12/06/cnss-recruit-2023-sa-writeup/">https://zzzremake.github.io/2023/12/06/cnss-recruit-2023-sa-writeup/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">ZzzRemake</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/CNSS/">
+                                    <span class="chip bg-color">CNSS</span>
+                                </a>
+                            
+                                <a href="/tags/DevOps/">
+                                    <span class="chip bg-color">DevOps</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq" data-wechat-qrcode-helper="<p>Share it!</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/null") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>Comment</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'z3lBwFCxCsMhi2rWaPmplykx-gzGzoHsz',
+        appKey: 'LUfcwR0IjyT4IbU6yq2zqt3Y',
+        serverURLs: '',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just write something'
+    });
+</script>
+
+<!--酷Q推送-->
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href="/2023/12/06/cnss-recruit-2023-sa-writeup/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.webp" class="responsive-img" alt="CNSS Recruit 2023 SA writeup">
+                        
+                        <span class="card-title">CNSS Recruit 2023 SA writeup</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            突然发现忘写了这个，记录一下罢。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CNSS/" class="post-category">
+                                    CNSS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CNSS/">
+                        <span class="chip bg-color">CNSS</span>
+                    </a>
+                    
+                    <a href="/tags/DevOps/">
+                        <span class="chip bg-color">DevOps</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/12/05/mit-6.s081-lab-trap-lazy/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.webp" class="responsive-img" alt="MIT 6.S081 Lab trap &amp; Lazy">
+                        
+                        <span class="card-title">MIT 6.S081 Lab trap &amp; Lazy</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            MIT 操作系统课程6.S081 第二部分：Trap(2021)以及Lazy(2020)的Lab，对应
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/OS/" class="post-category">
+                                    OS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: ZzzRemake<br />'
+            + 'Author: ZzzRemake<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+    
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom:  0 px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2023</span>
+            
+            <a href="/about" target="_blank">ZzzRemake</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">52.7k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/ZzzRemake" class="tooltipped" target="_blank" data-tooltip="Visit my github👀" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:remake114514@outlook.com" class="tooltipped" target="_blank" data-tooltip="Email me❤" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+    <a href="https://space.bilibili.com/321210983" class="tooltipped" target="_blank" data-tooltip="Visit my Bilibili!😎" data-position="top" data-delay="50">
+        <i class="fa-brands fa-bilibili"></i>
+    </a>
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+<script src="/libs/prism/prism.js" async></script>
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(3e2, function () {
+                $(this).remove()
+            })
+            }, 1000)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa-solid fa-plane-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          if (window.mermaid) {
+            mermaid.initialize({theme: 'forest'});
+          }
+        </script>
+    
+
+    
+        
+        <script type="text/javascript">
+            // 只在桌面版网页启用动态标题
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/js/dynamic-title.js"><\/script>');
+            }
+        </script>
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+</body>
+
+</html>

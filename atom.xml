@@ -6,7 +6,7 @@
   <link href="https://zzzremake.github.io/atom.xml" rel="self"/>
   
   <link href="https://zzzremake.github.io/"/>
-  <updated>2023-12-05T09:00:25.205Z</updated>
+  <updated>2023-12-06T02:56:35.946Z</updated>
   <id>https://zzzremake.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CNSS Recruit 2023 SA writeup</title>
+    <link href="https://zzzremake.github.io/2023/12/06/cnss-recruit-2023-sa-writeup/"/>
+    <id>https://zzzremake.github.io/2023/12/06/cnss-recruit-2023-sa-writeup/</id>
+    <published>2023-12-06T02:23:05.000Z</published>
+    <updated>2023-12-06T02:56:35.946Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;孩子不会SA，随便打着玩的。&lt;br&gt;
+唉，总是在错误的时间遇到正确的事情</summary>
+        
+      
+    
+    
+    
+    <category term="CNSS" scheme="https://zzzremake.github.io/categories/CNSS/"/>
+    
+    
+    <category term="CNSS" scheme="https://zzzremake.github.io/tags/CNSS/"/>
+    
+    <category term="DevOps" scheme="https://zzzremake.github.io/tags/DevOps/"/>
+    
+  </entry>
   
   <entry>
     <title>MIT 6.S081 Lab trap &amp; Lazy</title>
@@ -568,40 +596,6 @@
     <category term="primary" scheme="https://zzzremake.github.io/tags/primary/"/>
     
     <category term="DevOpswork" scheme="https://zzzremake.github.io/tags/DevOpswork/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>dp技巧1：四边形不等式</title>
-    <link href="https://zzzremake.github.io/2022/10/22/dp-ji-qiao-1-si-bian-xing-bu-deng-shi/"/>
-    <id>https://zzzremake.github.io/2022/10/22/dp-ji-qiao-1-si-bian-xing-bu-deng-shi/</id>
-    <published>2022-10-22T14:28:30.000Z</published>
-    <updated>2022-10-22T15:22:50.414Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;区间dp中，我们可以见到以下式子：&lt;/p&gt;
-&lt;p&gt;$dp(i,j)=min_{i&#92;leq k&amp;lt; j}(dp(i,k)+dp(k+1,j)+~&lt;s&gt;w(i,j)&lt;/s&gt;~)$&lt;/p&gt;
-&lt;p&gt;那么，对于这个 $w$ ，如果满足单调性：&lt;/p&gt;
-&lt;p&gt;$$(l&#92;leq l’&#92;leq r’&#92;leq r)~~~w(l’,r’)&#92;leq w(l,r)$$&lt;/p&gt;
-&lt;p&gt;满足四边形不等式：&lt;/p&gt;
-</summary>
-        
-      
-    
-    
-    
-    <category term="ACM" scheme="https://zzzremake.github.io/categories/ACM/"/>
-    
-    
-    <category term="区间dp" scheme="https://zzzremake.github.io/tags/%E5%8C%BA%E9%97%B4dp/"/>
-    
-    <category term="优化" scheme="https://zzzremake.github.io/tags/%E4%BC%98%E5%8C%96/"/>
-    
-    <category term="Math" scheme="https://zzzremake.github.io/tags/Math/"/>
     
   </entry>
   
