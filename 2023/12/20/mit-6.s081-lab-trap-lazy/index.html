@@ -604,21 +604,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2023-12-05
+                    2023-12-20
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-12-05
+                    2023-12-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Words Count:&nbsp;&nbsp;
-                    1.7k
+                    4k
                 </div>
                 
 
@@ -642,7 +642,162 @@
 <p>或许我也想稍微摆点烂，因此把2021删掉的lab lazy也拿来做做<s>拖时间</s></p>
 <h2 id="Lab-Trap-2021">Lab Trap(2021)</h2>
 <h3 id="课程">课程</h3>
-<p><s>咕咕咕</s> 这部分还是有些重要，后面补。</p>
+<h4 id="基本概念">基本概念</h4>
+<ol>
+<li>用户态中，RISC-V有32个用户寄存器以及SATP寄存器（User page table），trap需要将这些寄存器保存，并切换SATP到kernel page table。</li>
+<li>内核态的切换中将会使用以下寄存器</li>
+</ol>
+<ul>
+<li>stvec：trap handler的位置</li>
+<li>sepc：保存用户的pc寄存器，sret等需要用到。</li>
+<li>scause：reason for the trap</li>
+<li>sstatus：其中，SIE bit表示device interrupts的enable；而SPP表示目前处于那个模式。</li>
+</ul>
+<ol start="3">
+<li>基本的trap过程：<br>
+<img src="/images/OS/xv6-trap.png" alt="trap"><br>
++ start executing at the new pc.</li>
+<li>supervisor mode：实际上，supervisor mode可做的事很少。其相比于User mode，可以读写控制寄存器（也就是satp，stvec这些），以及使用PTE_U标志位为0的PTE，除此之外便无法进行，读取地址也只能依靠kernel page table。</li>
+</ol>
+<h4 id="uservec以及之前">uservec以及之前</h4>
+<p>该trap为用户态系统调用等。<br>
+例如，用户态中通过shell调用write的时候会有：</p>
+<p><img src="https://906337931-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-MHZoT2b_bcLghjAOPsJ%2F-ML5OrMSu1sZV8JrCG4C%2F-ML5RUaTjsUrdw2GrcYT%2Fimage.png?alt=media&amp;token=54b07586-6e4d-4304-b399-3696cc0152f6" alt="write riscv"></p>
+<p>其便会在a7寄存器寄存值，调用系统调用；且在其他寄存器配置write的基本参数，ecall进入uservec（trampoline）中。此时，ecall做了三件事：</p>
+<ol>
+<li>user mode-&gt; supervisor mode</li>
+<li>pc-&gt; sepc</li>
+<li>jump to stvec（此处为trampoline的起始地址，也就是uservec）.</li>
+</ol>
+<p>此时，需要uservec做以下事：</p>
+<ol>
+<li>保存32个用户寄存器</li>
+<li>切换kernel page table</li>
+<li>创建或找到kernel stack，改变sp。</li>
+<li>jump to kernel C code（usertrap）</li>
+</ol>
+<p>以上步骤均通过uservec的汇编代码执行。需要注意的是，trampoline和trapframe（用户寄存器以及kernel寄存器保存处）在user 和kernel page table中都是固定的，这防止了因ecall导致的可能的页表错误。</p>
+<p>汇编代码中的sscratch用于移除a0，让接下来的保存寄存器等操作可以通过a0实现。</p>
+<h4 id="usertrap">usertrap</h4>
+<p>该函数如下所示：</p>
+<pre class="language-c" data-language="c"><code class="language-c">void
+usertrap(void)
+{
+  int which_dev = 0;
+  if((r_sstatus() &amp; SSTATUS_SPP) != 0)
+    panic("usertrap: not from user mode");
+
+  // send interrupts and exceptions to kerneltrap(),
+  // since we're now in the kernel.
+  w_stvec((uint64)kernelvec);
+
+  struct proc *p = myproc();
+  
+  // save user program counter.
+  p-&gt;trapframe-&gt;epc = r_sepc();
+  
+  if(r_scause() == 8){
+    // system call
+
+    if(p-&gt;killed)
+      exit(-1);
+
+    // sepc points to the ecall instruction,
+    // but we want to return to the next instruction.
+    p-&gt;trapframe-&gt;epc += 4;
+
+    // an interrupt will change sstatus &amp;c registers,
+    // so don't enable until done with those registers.
+    intr_on();
+
+    syscall();
+  } else if((which_dev = devintr()) != 0){
+    // ok
+  } else {
+    printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p-&gt;pid);
+    printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
+    p-&gt;killed = 1;
+  }
+
+  if(p-&gt;killed)
+    exit(-1);
+
+  // give up the CPU if this is a timer interrupt.
+  if(which_dev == 2)
+    yield();
+
+  usertrapret();
+}</code></pre>
+<p>感觉还是很好理解的。其做了以下事情：</p>
+<ol>
+<li>检查SPP等。</li>
+<li>在内核进行任何操作之前，写入kernelvec，使得若发生kernel trap（一般而言就是exception）跳转到kernelvec。</li>
+<li>保存用户程序计数器（防止切换改变SEPC）</li>
+<li>根据不同情况，进行不同的处理。</li>
+</ol>
+<h4 id="usertrapret">usertrapret</h4>
+<pre class="language-c" data-language="c"><code class="language-c">void
+usertrapret(void)
+{
+  struct proc *p = myproc();
+
+  // we're about to switch the destination of traps from
+  // kerneltrap() to usertrap(), so turn off interrupts until
+  // we're back in user space, where usertrap() is correct.
+  intr_off();
+
+  // send syscalls, interrupts, and exceptions to trampoline.S
+  w_stvec(TRAMPOLINE + (uservec - trampoline));
+
+  // set up trapframe values that uservec will need when
+  // the process next re-enters the kernel.
+  p-&gt;trapframe-&gt;kernel_satp = r_satp();         // kernel page table
+  p-&gt;trapframe-&gt;kernel_sp = p-&gt;kstack + PGSIZE; // process's kernel stack
+  p-&gt;trapframe-&gt;kernel_trap = (uint64)usertrap;
+  p-&gt;trapframe-&gt;kernel_hartid = r_tp();         // hartid for cpuid()
+
+  // set up the registers that trampoline.S's sret will use
+  // to get to user space.
+  
+  // set S Previous Privilege mode to User.
+  unsigned long x = r_sstatus();
+  x &amp;= ~SSTATUS_SPP; // clear SPP to 0 for user mode
+  x |= SSTATUS_SPIE; // enable interrupts in user mode
+  w_sstatus(x);
+
+  // set S Exception Program Counter to the saved user pc.
+  w_sepc(p-&gt;trapframe-&gt;epc);
+
+  // tell trampoline.S the user page table to switch to.
+  uint64 satp = MAKE_SATP(p-&gt;pagetable);
+
+  // jump to trampoline.S at the top of memory, which 
+  // switches to the user page table, restores user registers,
+  // and switches to user mode with sret.
+  uint64 fn = TRAMPOLINE + (userret - trampoline);
+  ((void (*)(uint64,uint64))fn)(TRAPFRAME, satp);
+}</code></pre>
+<p>嗯哼，感觉饥初始写的也很明白（<br>
+这里可以说的就是，trampoline中的SEPC实际上可以不用在usertrap里保存，这里的保存顺序是没有必然联系的。</p>
+<h4 id="userret">userret</h4>
+<p>汇编代码，其做了以下事：</p>
+<ol>
+<li>切换 page table。</li>
+<li>restore user register。</li>
+<li>a0改为return的返回值（sscratch）</li>
+<li>sret</li>
+</ol>
+<p>sret执行以下部分：</p>
+<ol>
+<li>切换回user mode</li>
+<li>SPEC保存至PC寄存器</li>
+<li>重新打开中断</li>
+</ol>
+<hr>
+<p>以上过程中，xv6尽可能地使系统调用看上去像是函数，但实际上是需要一个层级的调用过程。</p>
+<h4 id="kernel-trap">kernel trap</h4>
+<p>该部分。。其实和user trap差不多，但简单一点。</p>
+<p>kernelvec只在栈里保存和恢复寄存器，而kerneltrap处理interrupts（time）和exception。</p>
 <h3 id="RISC-V-assembly-easy">RISC-V assembly (easy)</h3>
 <p>这部分是简单的对着代码进行分析，让学生熟悉RISC-V的。但xv6的RISC-V并不用完整写一个程序，所以我这种完全不会RISC-V的也可以上手。</p>
 <p>摆一张图：</p>
@@ -881,8 +1036,277 @@ usertrap(void)
 </code></pre>
 <h3 id="Option">Option</h3>
 <p>Optional Challenge是要在backtrace里打印出name而不是地址，这部分。。。网上找不到，我也不会。大概的思路就是像gdb一样从可执行文件里读symbol然后输出，可问题是怎么获得呢？不会捏。</p>
-<h2 id="Lab-Lazy">Lab Lazy</h2>
-<p>咕咕咕。</p>
+<h2 id="Lab-Lazy-2020">Lab Lazy(2020)</h2>
+<p>2021课程把这个lab删了。可能是因为课堂上已经把lab的至少一半的内容给泄完了。</p>
+<p>但其实剩下的也是重量级，谁能想得到把panic删了的。</p>
+<h3 id="课程-2">课程</h3>
+<p>课程关于代码的解释都在lab里面，所以这里只稍微提一下原理。</p>
+<p>lazy lab本身需要利用虚拟内存的Page faults来加载page，RV里，Page fault的原因存储在SCAUSE，虚拟内存中的地址存储在STVAL寄存器中：</p>
+<p><img src="https://906337931-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-MHZoT2b_bcLghjAOPsJ%2F-MMD_TK8Ar4GqWE6xfWV%2F-MMNmVfRDZSAOKze10lZ%2Fimage.png?alt=media&amp;token=4bbfdfa6-1491-4ab8-8248-03bd0e36a8e9" alt="RISC-V SCAUSE value"></p>
+<p>以及在TRAPFRAME中存储的用户程序寄存器值。</p>
+<p>因此，我们可以根据以上信息来进行lazy page allocation，替代eager allocation以提高性能。</p>
+<h3 id="Eliminate-allocation-from-sbrk-easy">Eliminate allocation from sbrk() (easy)</h3>
+<p>只要改一下sys_sbrk就行。</p>
+<p><code>sysproc.c</code>:</p>
+<pre class="language-c" data-language="c"><code class="language-c">uint64
+sys_sbrk(void)
+{
+  int addr;
+  int n;
+  struct proc* p;
+  if(argint(0, &amp;n) &lt; 0)
+    return -1;
+  p =  myproc();
+  p-&gt;sz = p-&gt;sz+n;
+  //if(growproc(n) &lt; 0)
+  //  return -1;
+  return addr;
+}</code></pre>
+<p>运行结果大致如下：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">init: starting sh
+$ echo hi
+usertrap(): unexpected scause 0x000000000000000f pid=3
+            sepc=0x0000000000001258 stval=0x0000000000004008
+va=0x0000000000004000 pte=0x0000000000000000
+panic: uvmunmap: not mapped</code></pre>
+<p>可以看到uvmunmap出现了panic，因为这里只改了heap的位置，没有分配真正的内存，因此也没有真正的页表，无法进行unmap操作。</p>
+<h3 id="Lazy-allocation-moderate">Lazy allocation (moderate)</h3>
+<p>lazy allocation的思路是引发page fault（这里只处理load和save类型的page fault）时进行分配。由于物理内存和逻辑内存是全相联的，所以简单的分配给一页就行。</p>
+<p>具体代码见下面整体任务。</p>
+<h3 id="Lazytests-and-Usertests-moderate">Lazytests and Usertests (moderate)</h3>
+<p><code>trap.c</code>:处理Page Fault的分配页表。</p>
+<pre class="language-c" data-language="c"><code class="language-c">void
+usertrap(void)
+{
+  //......
+  if(r_scause() == 8){
+    // system call
+
+    if(p-&gt;killed)
+      exit(-1);
+
+    // sepc points to the ecall instruction,
+    // but we want to return to the next instruction.
+    p-&gt;trapframe-&gt;epc += 4;
+
+    // an interrupt will change sstatus &amp;c registers,
+    // so don't enable until done with those registers.
+    intr_on();
+
+    syscall();
+  } else if (r_scause() == 13 || r_scause() == 15){
+    uint64 va = r_stval();
+    //printf("page fault: %p\n", va);
+    //printf("%p, %p\n", r_stval(), va);
+    if(va &gt;= p-&gt;sz||va&lt;=p-&gt;trapframe-&gt;sp){
+      p-&gt;killed = 1;
+      //printf("usertrap(): error va %p pid=%d\n", va, p-&gt;pid);
+    } else {
+      uint64 ka = (uint64)kalloc();
+      if (ka==0){
+        p-&gt;killed = 1;
+      } else {
+        memset((void*)ka, 0, PGSIZE);
+        va = PGROUNDDOWN(va);
+        if(mappages(p-&gt;pagetable, va, PGSIZE, ka, PTE_W|PTE_U|PTE_R)!=0){
+          kfree((void*)ka);
+          p-&gt;killed = 1;
+        }
+      }      
+    }
+  } else if((which_dev = devintr()) != 0){
+    // ok
+  }
+  //....
+}</code></pre>
+<p>上述代码在load或save page fault进入，首先进行合法性检查，之后开始分配内存。若无内存，就kill内存，否则将内存置0，mappages将其映射到目标用户的页表中。</p>
+<p><code>sysproc.c</code>: 修改sbrk。</p>
+<pre class="language-c" data-language="c"><code class="language-c">uint64
+sys_sbrk(void)
+{
+  int addr;
+  int n;
+  struct proc* p;
+  if(argint(0, &amp;n) &lt; 0)
+    return -1;
+  p =  myproc();
+  addr = p-&gt;sz;
+  p-&gt;sz = p-&gt;sz+n;
+  if (n&lt;0) {
+    uvmdealloc(p-&gt;pagetable, p-&gt;sz-n, p-&gt;sz);
+  }
+
+  //if(growproc(n) &lt; 0)
+  //  return -1;
+  return addr;
+}</code></pre>
+<p>增加了负数的处理。</p>
+<p><code>vm.c</code> 处理fork，copyin（write）和copyout（read）</p>
+<pre class="language-c" data-language="c"><code class="language-c">// 要用到proc结构，引入头文件。
+#include "spinlock.h"
+#include "proc.h"
+
+//该部分的改动实际上就是注释掉两个panic，这谁想得到，或者敢这样做？
+//哎，以后得多试了，这里卡了好久。
+// Remove npages of mappings starting from va. va must be
+// page-aligned. The mappings must exist.
+// Optionally free the physical memory.
+void
+uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
+{
+  uint64 a;
+  pte_t *pte;
+
+  if((va % PGSIZE) != 0)
+    panic("uvmunmap: not aligned");
+
+  for(a = va; a &lt; va + npages*PGSIZE; a += PGSIZE){
+    if((pte = walk(pagetable, a, 0)) == 0){
+      //panic("uvmunmap: walk");
+      continue;
+    }
+
+    if((*pte &amp; PTE_V) == 0)
+      continue;
+      //panic("uvmunmap: not mapped");
+    if(PTE_FLAGS(*pte) == PTE_V)
+      panic("uvmunmap: not a leaf");
+    if(do_free){
+      uint64 pa = PTE2PA(*pte);
+      kfree((void*)pa);
+    }
+    *pte = 0;
+  }
+}
+
+// 同上。fork用的。
+// Given a parent process's page table, copy
+// its memory into a child's page table.
+// Copies both the page table and the
+// physical memory.
+// returns 0 on success, -1 on failure.
+// frees any allocated pages on failure.
+int
+uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
+{
+  pte_t *pte;
+  uint64 pa, i;
+  uint flags;
+  char *mem;
+
+  for(i = 0; i &lt; sz; i += PGSIZE){
+    if((pte = walk(old, i, 0)) == 0)
+      //panic("uvmcopy: pte should exist");
+      continue;
+    if((*pte &amp; PTE_V) == 0)
+      //panic("uvmcopy: page not present");
+      continue;
+    pa = PTE2PA(*pte);
+    flags = PTE_FLAGS(*pte);
+    if((mem = kalloc()) == 0)
+      goto err;
+    memmove(mem, (char*)pa, PGSIZE);
+    if(mappages(new, i, PGSIZE, (uint64)mem, flags) != 0){
+      kfree(mem);
+      goto err;
+    }
+  }
+  return 0;
+
+ err:
+  uvmunmap(new, 0, i / PGSIZE, 1);
+  return -1;
+}
+
+// Copy from kernel to user.
+// Copy len bytes from src to virtual address dstva in a given page table.
+// Return 0 on success, -1 on error.
+int
+copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
+{
+  uint64 n, va0, pa0;
+  struct proc* p = myproc();
+  while(len &gt; 0){
+    va0 = PGROUNDDOWN(dstva);
+    pa0 = walkaddr(pagetable, va0);
+
+    if(pa0 == 0) {
+      if(va0 &gt;= p-&gt;sz||va0&lt;=p-&gt;trapframe-&gt;sp){
+        return -1;
+        //printf("usertrap(): error va %p pid=%d\n", va, p-&gt;pid);
+      } else {
+        pa0 = (uint64)kalloc();
+        if (pa0==0){
+          p-&gt;killed = 1;
+          return -1;
+        } else {
+          memset((void*)pa0, 0, PGSIZE);
+          va0 = PGROUNDDOWN(va0);
+          if(mappages(p-&gt;pagetable, va0, PGSIZE, pa0, PTE_W|PTE_U|PTE_R)!=0){
+            kfree((void*)pa0);
+            p-&gt;killed = 1;
+            return -1;
+          }
+        }      
+      }
+    }
+    n = PGSIZE - (dstva - va0);
+    if(n &gt; len)
+      n = len;
+    memmove((void *)(pa0 + (dstva - va0)), src, n);
+
+    len -= n;
+    src += n;
+    dstva = va0 + PGSIZE;
+  }
+  return 0;
+}
+
+// Copy from user to kernel.
+// Copy len bytes to dst from virtual address srcva in a given page table.
+// Return 0 on success, -1 on error.
+int
+copyin(pagetable_t pagetable, char *dst, uint64 srcva, uint64 len)
+{
+  uint64 n, va0, pa0;
+  struct proc* p = myproc();
+  while(len &gt; 0){
+    va0 = PGROUNDDOWN(srcva);
+    pa0 = walkaddr(pagetable, va0);
+
+    if(pa0 == 0) {
+      if(va0 &gt;= p-&gt;sz||va0&lt;=p-&gt;trapframe-&gt;sp){
+        return -1;
+        //printf("usertrap(): error va %p pid=%d\n", va, p-&gt;pid);
+      } else {
+        pa0 = (uint64)kalloc();
+        if (pa0==0){
+          p-&gt;killed = 1;
+          return -1;
+        } else {
+          memset((void*)pa0, 0, PGSIZE);
+          va0 = PGROUNDDOWN(va0);
+          if(mappages(p-&gt;pagetable, va0, PGSIZE, pa0, PTE_W|PTE_U|PTE_R)!=0){
+            kfree((void*)pa0);
+            p-&gt;killed = 1;
+            return -1;
+          }
+        }      
+      }
+    }
+    n = PGSIZE - (srcva - va0);
+    if(n &gt; len)
+      n = len;
+    memmove(dst, (void *)(pa0 + (srcva - va0)), n);
+
+    len -= n;
+    dst += n;
+    srcva = va0 + PGSIZE;
+  }
+  return 0;
+}</code></pre>
+<hr>
+<p>哎，自己好菜。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
                 
             </div>
@@ -909,7 +1333,7 @@ usertrap(void)
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zzzremake.github.io/2023/12/05/mit-6.s081-lab-trap-lazy/">https://zzzremake.github.io/2023/12/05/mit-6.s081-lab-trap-lazy/</a>
+                    <a href="https://zzzremake.github.io/2023/12/20/mit-6.s081-lab-trap-lazy/">https://zzzremake.github.io/2023/12/20/mit-6.s081-lab-trap-lazy/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1261,9 +1685,60 @@ usertrap(void)
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href="/2023/12/20/mit-6.s081-lab-trap-lazy/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.webp" class="responsive-img" alt="MIT 6.S081 Lab trap &amp; Lazy">
+                        
+                        <span class="card-title">MIT 6.S081 Lab trap &amp; Lazy</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            MIT 操作系统课程6.S081 第二部分：Trap(2021)以及Lazy(2020)的Lab，对应
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/OS/" class="post-category">
+                                    OS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2023/12/06/cnss-recruit-2023-sa-writeup/">
                     <div class="card-image">
@@ -1281,9 +1756,9 @@ usertrap(void)
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-12-06
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1305,55 +1780,6 @@ usertrap(void)
                     
                     <a href="/tags/DevOps/">
                         <span class="chip bg-color">DevOps</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2023/11/09/mit-6.s081-lab1-3-begin-xv6/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/11.webp" class="responsive-img" alt="MIT 6.S081 Lab1-3 begin xv6">
-                        
-                        <span class="card-title">MIT 6.S081 Lab1-3 begin xv6</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            MIT 操作系统课程6.S081 第一部分：Lab1-3，对应接口、系统调用和页表三章。
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-09
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/OS/" class="post-category">
-                                    OS
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/OS/">
-                        <span class="chip bg-color">OS</span>
                     </a>
                     
                 </div>
@@ -1543,7 +1969,7 @@ usertrap(void)
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">52.7k</span>
+                        class="white-color">55k</span>
             
             
             
