@@ -6,7 +6,7 @@
   <link href="https://zzzremake.github.io/atom.xml" rel="self"/>
   
   <link href="https://zzzremake.github.io/"/>
-  <updated>2023-12-20T07:26:13.267Z</updated>
+  <updated>2024-01-30T14:26:20.452Z</updated>
   <id>https://zzzremake.github.io/</id>
   
   <author>
@@ -17,11 +17,40 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>MIT 6.S081 Lab trap &amp; Lazy</title>
-    <link href="https://zzzremake.github.io/2023/12/20/mit-6.s081-lab-trap-lazy/"/>
-    <id>https://zzzremake.github.io/2023/12/20/mit-6.s081-lab-trap-lazy/</id>
-    <published>2023-12-20T07:26:45.000Z</published>
-    <updated>2023-12-20T07:26:13.267Z</updated>
+    <title>MIT 6.S081 Lab7-9 Thread &amp; Network Driver</title>
+    <link href="https://zzzremake.github.io/2024/01/27/mit-6.s081-lab7-9-thread/"/>
+    <id>https://zzzremake.github.io/2024/01/27/mit-6.s081-lab7-9-thread/</id>
+    <published>2024-01-27T07:26:45.000Z</published>
+    <updated>2024-01-30T14:26:20.452Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Lab-Thread&quot;&gt;Lab Thread&lt;/h2&gt;
+&lt;p&gt;哈哈，贼简单，但又脑残了，怎么有人记错了栈的增长方向的，消息了。&lt;/p&gt;
+&lt;h3 id=&quot;课程&quot;&gt;课程&lt;/h3&gt;
+&lt;p&gt;有一说一，课程内容其实就帮你把Lab做一遍了。&lt;/p&gt;
+&lt;p&gt;后面有机会了补罢</summary>
+        
+      
+    
+    
+    
+    <category term="OS" scheme="https://zzzremake.github.io/categories/OS/"/>
+    
+    
+    <category term="OS" scheme="https://zzzremake.github.io/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MIT 6.S081 Lab4-6 trap &amp; Lazy &amp; COW</title>
+    <link href="https://zzzremake.github.io/2024/01/27/mit-6.s081-lab4-6-trap-lazy-cow/"/>
+    <id>https://zzzremake.github.io/2024/01/27/mit-6.s081-lab4-6-trap-lazy-cow/</id>
+    <published>2024-01-27T07:26:40.000Z</published>
+    <updated>2024-01-27T09:47:13.149Z</updated>
     
     
       
@@ -563,35 +592,6 @@
     
     
     <category term="Crypto" scheme="https://zzzremake.github.io/tags/Crypto/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker_first:基本指令</title>
-    <link href="https://zzzremake.github.io/2022/11/04/docker-first-ji-ben-zhi-ling/"/>
-    <id>https://zzzremake.github.io/2022/11/04/docker-first-ji-ben-zhi-ling/</id>
-    <published>2022-11-03T16:14:08.000Z</published>
-    <updated>2023-09-15T17:07:46.813Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;本文记录指令信息供之后查询</summary>
-        
-      
-    
-    
-    
-    <category term="DevOps" scheme="https://zzzremake.github.io/categories/DevOps/"/>
-    
-    
-    <category term="docker" scheme="https://zzzremake.github.io/tags/docker/"/>
-    
-    <category term="primary" scheme="https://zzzremake.github.io/tags/primary/"/>
-    
-    <category term="DevOpswork" scheme="https://zzzremake.github.io/tags/DevOpswork/"/>
     
   </entry>
   

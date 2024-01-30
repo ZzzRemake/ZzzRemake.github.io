@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="/css/bilicard.css">
 <!-- hexo injector head_begin end -->
     <meta charset="utf-8">
-    <meta name="keywords" content="Modern CryptoⅪ Public-key-Encryption, ZzzRemake">
-    <meta name="description" content="公钥密码加密方案的构造，混合加密方案以及RSA等方案改造。">
+    <meta name="keywords" content="MIT 6.S081 Lab4-6 trap &amp; Lazy &amp; COW, ZzzRemake">
+    <meta name="description" content="MIT 操作系统课程6.S081 第二部分：Trap， COW(2021)以及Lazy(2020)的Lab。">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Modern CryptoⅪ Public-key-Encryption | ZzzRemake</title>
+    <title>MIT 6.S081 Lab4-6 trap &amp; Lazy &amp; COW | ZzzRemake</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="/medias/favicon.webp">
     
@@ -550,12 +550,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.webp')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.webp')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Modern CryptoⅪ Public-key-Encryption</h1>
+                    <h1 class="description center-align post-title">MIT 6.S081 Lab4-6 trap &amp; Lazy &amp; COW</h1>
                 </div>
             </div>
         </div>
@@ -579,12 +579,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Crypto/">
-                                <span class="chip bg-color">Crypto</span>
-                            </a>
-                        
-                            <a href="/tags/Public-key/">
-                                <span class="chip bg-color">Public key</span>
+                            <a href="/tags/OS/">
+                                <span class="chip bg-color">OS</span>
                             </a>
                         
                     </div>
@@ -595,8 +591,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Crypto/" class="post-category">
-                                Crypto
+                            <a href="/categories/OS/" class="post-category">
+                                OS
                             </a>
                         
                     </div>
@@ -608,21 +604,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2023-02-24
+                    2024-01-27
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-03-03
+                    2024-01-27
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Words Count:&nbsp;&nbsp;
-                    1.9k
+                    4.9k
                 </div>
                 
 
@@ -642,139 +638,908 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>上章讲了公钥密码的优点，这里来点缺点：</p>
+                <p>这下大鸽子了，隔了一个月才写了这点。但不会完全鸽的。尽量在寒假前完成绝大部分lab。</p>
+<p>或许我也想稍微摆点烂，因此把2021删掉的lab lazy也拿来做做<s>拖时间</s></p>
+<h2 id="Lab-Trap-2021">Lab Trap(2021)</h2>
+<h3 id="课程">课程</h3>
+<h4 id="基本概念">基本概念</h4>
 <ol>
-<li>公钥密码不能指定发送者。公钥是公开的，那么任何人都可以发送给持有私钥的接收者信息。</li>
-<li>最主要的还是效率，公钥密码的时间复杂度比私钥密码高出2-3个数量级。</li>
+<li>用户态中，RISC-V有32个用户寄存器以及SATP寄存器（User page table），trap需要将这些寄存器保存，并切换SATP到kernel page table。</li>
+<li>内核态的切换中将会使用以下寄存器</li>
 </ol>
-<h2 id="Security-distribution-of-public-keys">Security distribution of public keys</h2>
-<p>到目前为止，我们对公钥密码的讨论仅限于被动（EAV）敌手。若敌手能够截获所有信息，并且通信双方没有在此之前共享密钥，则无法实现secrecy。</p>
-<p>因此，在本章有一个很重要的假设：发送者能够直接获得接收者的公钥（安全密钥分发）。该假设的原因是因为存在有其他方式能够抵御主动攻击，因此将密钥分发和公钥加密的安全性分开讨论是合理的。</p>
-<h2 id="CPA-attacks">CPA attacks</h2>
-<h3 id="EAV-Security">EAV Security?</h3>
-<hr>
-<p>$PubK_{\mathcal{A},\prod}^{\mathbf{eav}}$ expriment</p>
+<ul>
+<li>stvec：trap handler的位置</li>
+<li>sepc：保存用户的pc寄存器，sret等需要用到。</li>
+<li>scause：reason for the trap</li>
+<li>sstatus：其中，SIE bit表示device interrupts的enable；而SPP表示目前处于那个模式。</li>
+</ul>
+<ol start="3">
+<li>基本的trap过程：<br>
+<img src="/images/OS/xv6-trap.png" alt="trap"><br>
++ start executing at the new pc.</li>
+<li>supervisor mode：实际上，supervisor mode可做的事很少。其相比于User mode，可以读写控制寄存器（也就是satp，stvec这些），以及使用PTE_U标志位为0的PTE，除此之外便无法进行，读取地址也只能依靠kernel page table。</li>
+</ol>
+<h4 id="uservec以及之前">uservec以及之前</h4>
+<p>该trap为用户态系统调用等。<br>
+例如，用户态中通过shell调用write的时候会有：</p>
+<p><img src="https://906337931-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-MHZoT2b_bcLghjAOPsJ%2F-ML5OrMSu1sZV8JrCG4C%2F-ML5RUaTjsUrdw2GrcYT%2Fimage.png?alt=media&amp;token=54b07586-6e4d-4304-b399-3696cc0152f6" alt="write riscv"></p>
+<p>其便会在a7寄存器寄存值，调用系统调用；且在其他寄存器配置write的基本参数，ecall进入uservec（trampoline）中。此时，ecall做了三件事：</p>
 <ol>
-<li>敌手预言机事先给定安全参数n。</li>
-<li>预言机:$(pk,sk)\leftarrow Gen(1^n),b\leftarrow \{0,1\}$，并将公钥返回给攻击者。</li>
-<li>攻击者$\mathcal{A}$ 发送$(m_0,m_1)$,预言机返回$c’\leftarrow Enc_{pk}(m_b)$</li>
-<li>攻击者返回$b’$，若$b=b’$ 返回1，否则0.</li>
+<li>user mode-&gt; supervisor mode</li>
+<li>pc-&gt; sepc</li>
+<li>jump to stvec（此处为trampoline的起始地址，也就是uservec）.</li>
 </ol>
-<hr>
-<div class="admonition warning"><p class="admonition-title">EAV Security
-</p><p>A public-key encryption scheme $\prod =(Gen, Enc, Dec)$ has indistinguishable encryption in the presence of an eavesdropper if for all probabilistic polynomial-time adversary $\mathcal{A}$ there is a negligible function $negl$ such that
-$Pr[PubK_{\mathcal{A},\prod}^{\mathbf{eav}}(n)=1]\leq 1/2+negl(n)$</p>
-</div>
-<h3 id="Public-key-definition">Public key definition</h3>
-<p>$Gen(1^n)$生成公钥$pk$,私钥$sk$.<br>
-$Enc_{pk}( m)\rightarrow c$，其中m从消息空间$\mathcal{M}$中获取。<br>
-$Dec_{sk}( c)\rightarrow m\quad or\quad<br>
-\bot$</p>
-<p>需要注意的是，公钥密码允许有可忽略的概率使得<br>
-$Dec_{sk}(Enc_{pk}(m))=m$不成立。<br>
-因此，Enc可以是确定性或概率性的，Dec允许Perfectly Correct，但也允许以可忽略概率失败。</p>
-<p>需要注意的是，每一个公钥密码的实例中，消息空间都是隐含着与公钥$pk$有关，可能是某些代数结构中的元素。因此，消息m可能需要转换。</p>
-<h3 id="Some-Theorem">Some Theorem</h3>
-<div class="admonition info"><p class="admonition-title">CPA-Secure
-</p><p>若公钥加密方案保证EAV安全，那么其也是IND-CPA-Secure（IND= indistinguishable）</p>
-</div>
-<p>这条很好说明，公钥的公开使任何人都可以加密信息，相当于获得了$Enc$预言机。</p>
-<div class="admonition info"><p class="admonition-title">Perfect secret
-</p><p>没有任何公钥加密方案能保证完美加密。</p>
-</div>
-<p>不做证明（之后看看能不能补上）</p>
-<div class="admonition info"><p class="admonition-title">Deterministic encryption scheme
-</p><p>没有确定性的公钥加密方案满足IND-CPA-Secure</p>
-</div>
-<p>在实践中，我们想让同一条公钥pk去加密多条消息，于是有：</p>
-<div class="admonition warning"><p class="admonition-title">Multiple Encryption
-</p><p>若公钥加密方案满足IND-CPA-secure，那么其也满足multiple encryption的不可区分性。</p>
-</div>
-<h2 id="Arbitrary-long-messages">Arbitrary long messages</h2>
-<p>由上文对多消息加密的安全性，可以构造一个加密方案，其基于最初的公钥加密：每一块都来个加密然后发送。该方案是IND-CPA-secure的。</p>
-<p>然而，这不够高效，于是有混合加密方案：</p>
-<p>公钥加密只加密私钥加密的密钥，私钥加密整条信息连带着公钥加密的密钥一同发送。</p>
-<h3 id="CCA-attacks">CCA attacks</h3>
-<hr>
-<p>CCA attack experiment</p>
+<p>此时，需要uservec做以下事：</p>
 <ol>
-<li>事先给定n，</li>
-<li>预言机:$(pk,sk)\leftarrow Gen(1^n),b\leftarrow \{0,1\}$，并将公钥返回给攻击者。</li>
-<li>攻击者发送密文$c_i$,预言机返回$Dec_{sk}(c_i)$</li>
-<li>可进行多次第三步，之后敌手发送$m_0,m_1$,预言机返回$c’$<br>
-之后还可以多次进行第三步，但无法对$c’$进行Dec。</li>
-<li>敌手发送b’,之后和其他定义一样。</li>
+<li>保存32个用户寄存器</li>
+<li>切换kernel page table</li>
+<li>创建或找到kernel stack，改变sp。</li>
+<li>jump to kernel C code（usertrap）</li>
 </ol>
-<hr>
-<div class="admonition warning"><p class="admonition-title">CCA-secure
-</p><p>对任意PPT敌手$\mathcal{A}$,若满足以下性质，则满足CCA-secure：
-$$Pr[PubK_{\mathcal{A},\prod}^{\mathbf{cca}}=1]\leq 1/2+negl(n)$$</p>
-</div>
-<h2 id="Key-encapsulation-machanism-KEM">Key-encapsulation machanism(KEM)</h2>
-<p>KEM定义为$Gen,Encaps,Decaps$</p>
-<p>$Gen(1^n)\rightarrow (pk,sk)$<br>
-$Encaps(1^n,pk)\rightarrow (c,k),k\in\{0,1\}^{p(n)}$<br>
-$Decaps(sk,c)\rightarrow k$</p>
-<p>同样也要求存在可忽略的概率不成功（公钥啊嗯）</p>
-<hr>
-<p>KEM experiment</p>
+<p>以上步骤均通过uservec的汇编代码执行。需要注意的是，trampoline和trapframe（用户寄存器以及kernel寄存器保存处）在user 和kernel page table中都是固定的，这防止了因ecall导致的可能的页表错误。</p>
+<p>汇编代码中的sscratch用于移除a0，让接下来的保存寄存器等操作可以通过a0实现。</p>
+<h4 id="usertrap">usertrap</h4>
+<p>该函数如下所示：</p>
+<pre class="language-c" data-language="c"><code class="language-c">void
+usertrap(void)
+{
+  int which_dev = 0;
+  if((r_sstatus() &amp; SSTATUS_SPP) != 0)
+    panic("usertrap: not from user mode");
+
+  // send interrupts and exceptions to kerneltrap(),
+  // since we're now in the kernel.
+  w_stvec((uint64)kernelvec);
+
+  struct proc *p = myproc();
+  
+  // save user program counter.
+  p-&gt;trapframe-&gt;epc = r_sepc();
+  
+  if(r_scause() == 8){
+    // system call
+
+    if(p-&gt;killed)
+      exit(-1);
+
+    // sepc points to the ecall instruction,
+    // but we want to return to the next instruction.
+    p-&gt;trapframe-&gt;epc += 4;
+
+    // an interrupt will change sstatus &amp;c registers,
+    // so don't enable until done with those registers.
+    intr_on();
+
+    syscall();
+  } else if((which_dev = devintr()) != 0){
+    // ok
+  } else {
+    printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p-&gt;pid);
+    printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
+    p-&gt;killed = 1;
+  }
+
+  if(p-&gt;killed)
+    exit(-1);
+
+  // give up the CPU if this is a timer interrupt.
+  if(which_dev == 2)
+    yield();
+
+  usertrapret();
+}</code></pre>
+<p>感觉还是很好理解的。其做了以下事情：</p>
 <ol>
-<li>事先给定n。</li>
-<li>预言机$Gen(1^n)\rightarrow (pk,sk),Encaps_{pk}(1^n)\rightarrow (c’,k)$,随机选择$b\leftarrow\{0,1\}$，若b=0，k’=k，否则k从$\{0,1\}^n$随机获取，返回敌手$(pk,(c’,k’))$</li>
-<li>敌手返回b’，剩余和其他预言机定义相同。</li>
+<li>检查SPP等。</li>
+<li>在内核进行任何操作之前，写入kernelvec，使得若发生kernel trap（一般而言就是exception）跳转到kernelvec。</li>
+<li>保存用户程序计数器（防止切换改变SEPC）</li>
+<li>根据不同情况，进行不同的处理。</li>
+</ol>
+<h4 id="usertrapret">usertrapret</h4>
+<pre class="language-c" data-language="c"><code class="language-c">void
+usertrapret(void)
+{
+  struct proc *p = myproc();
+
+  // we're about to switch the destination of traps from
+  // kerneltrap() to usertrap(), so turn off interrupts until
+  // we're back in user space, where usertrap() is correct.
+  intr_off();
+
+  // send syscalls, interrupts, and exceptions to trampoline.S
+  w_stvec(TRAMPOLINE + (uservec - trampoline));
+
+  // set up trapframe values that uservec will need when
+  // the process next re-enters the kernel.
+  p-&gt;trapframe-&gt;kernel_satp = r_satp();         // kernel page table
+  p-&gt;trapframe-&gt;kernel_sp = p-&gt;kstack + PGSIZE; // process's kernel stack
+  p-&gt;trapframe-&gt;kernel_trap = (uint64)usertrap;
+  p-&gt;trapframe-&gt;kernel_hartid = r_tp();         // hartid for cpuid()
+
+  // set up the registers that trampoline.S's sret will use
+  // to get to user space.
+  
+  // set S Previous Privilege mode to User.
+  unsigned long x = r_sstatus();
+  x &amp;= ~SSTATUS_SPP; // clear SPP to 0 for user mode
+  x |= SSTATUS_SPIE; // enable interrupts in user mode
+  w_sstatus(x);
+
+  // set S Exception Program Counter to the saved user pc.
+  w_sepc(p-&gt;trapframe-&gt;epc);
+
+  // tell trampoline.S the user page table to switch to.
+  uint64 satp = MAKE_SATP(p-&gt;pagetable);
+
+  // jump to trampoline.S at the top of memory, which 
+  // switches to the user page table, restores user registers,
+  // and switches to user mode with sret.
+  uint64 fn = TRAMPOLINE + (userret - trampoline);
+  ((void (*)(uint64,uint64))fn)(TRAPFRAME, satp);
+}</code></pre>
+<p>嗯哼，感觉饥初始写的也很明白（<br>
+这里可以说的就是，trampoline中的SEPC实际上可以不用在usertrap里保存，这里的保存顺序是没有必然联系的。</p>
+<h4 id="userret">userret</h4>
+<p>汇编代码，其做了以下事：</p>
+<ol>
+<li>切换 page table。</li>
+<li>restore user register。</li>
+<li>a0改为return的返回值（sscratch）</li>
+<li>sret</li>
+</ol>
+<p>sret执行以下部分：</p>
+<ol>
+<li>切换回user mode</li>
+<li>SPEC保存至PC寄存器</li>
+<li>重新打开中断</li>
 </ol>
 <hr>
-<div class="admonition warning"><p class="admonition-title">warning</p><p>对任意PPT敌手$\mathcal{A}$,若满足以下性质则有CPA-secure：
-$$Pr[KEM_{\mathcal{A},\prod}^{\mathbf{pa}}=1]\leq 1/2+negl(n)$$</p>
+<p>以上过程中，xv6尽可能地使系统调用看上去像是函数，但实际上是需要一个层级的调用过程。</p>
+<h4 id="kernel-trap">kernel trap</h4>
+<p>该部分。。其实和user trap差不多，但简单一点。</p>
+<p>kernelvec只在栈里保存和恢复寄存器，而kerneltrap处理interrupts（time）和exception。</p>
+<h3 id="RISC-V-assembly-easy">RISC-V assembly (easy)</h3>
+<p>这部分是简单的对着代码进行分析，让学生熟悉RISC-V的。但xv6的RISC-V并不用完整写一个程序，所以我这种完全不会RISC-V的也可以上手。</p>
+<p>摆一张图：</p>
+<p><img src="https://906337931-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-MHZoT2b_bcLghjAOPsJ%2F-MM-XjiGboAFe-3YvZfT%2F-MM0rYc4eVnR9nOesAAv%2Fimage.png?alt=media&amp;token=f30ebac8-8dc0-4b5d-8aa7-b241a10b43b3" alt="RISC-V registers"></p>
+<p><s>用别人图床不也挺好吗</s></p>
+<p>分析的代码部分：</p>
+<pre class="language-c" data-language="c"><code class="language-c">user/_call:     file format elf64-littleriscv
+
+Disassembly of section .text:
+
+0000000000000000 &lt;g&gt;:
+#include "kernel/param.h"
+#include "kernel/types.h"
+#include "kernel/stat.h"
+#include "user/user.h"
+
+int g(int x) {
+   0:	1141                	addi	sp,sp,-16
+   2:	e422                	sd	s0,8(sp)
+   4:	0800                	addi	s0,sp,16
+  return x+3;
+}
+   6:	250d                	addiw	a0,a0,3
+   8:	6422                	ld	s0,8(sp)
+   a:	0141                	addi	sp,sp,16
+   c:	8082                	ret
+
+000000000000000e &lt;f&gt;:
+
+int f(int x) {
+   e:	1141                	addi	sp,sp,-16
+  10:	e422                	sd	s0,8(sp)
+  12:	0800                	addi	s0,sp,16
+  return g(x);
+}
+  14:	250d                	addiw	a0,a0,3
+  16:	6422                	ld	s0,8(sp)
+  18:	0141                	addi	sp,sp,16
+  1a:	8082                	ret
+
+000000000000001c &lt;main&gt;:
+
+void main(void) {
+  1c:	1141                	addi	sp,sp,-16
+  1e:	e406                	sd	ra,8(sp)
+  20:	e022                	sd	s0,0(sp)
+  22:	0800                	addi	s0,sp,16
+  printf("%d %d\n", f(8)+1, 13);
+  24:	4635                	li	a2,13
+  26:	45b1                	li	a1,12
+  28:	00000517          	auipc	a0,0x0
+  2c:	7c050513          	addi	a0,a0,1984 # 7e8 &lt;malloc+0xea&gt;
+  30:	00000097          	auipc	ra,0x0
+  34:	610080e7          	jalr	1552(ra) # 640 &lt;printf&gt;
+  exit(0);
+  38:	4501                	li	a0,0
+  3a:	00000097          	auipc	ra,0x0
+  3e:	27e080e7          	jalr	638(ra) # 2b8 &lt;exit&gt;</code></pre>
+<p>这里是解答部分：</p>
+<div class="admonition info"><p class="admonition-title">Question 1
+</p><p>Which registers contain arguments to functions? For example, which register holds 13 in main's call to printf?</p>
 </div>
-<p>用先前构造的公钥密码方案（IND-CPA/IND-CCA）可以很容易构造KEM(IND-CPA/IND-CCA)，构造方法略（懒），把加密的消息换成k就行了。</p>
-<p>需要注意的是，由于k本身需要“随机”选择，因此消息空间需要具有合适的“min-entropy”。</p>
-<p>当然，专门的KEM算法效率肯定比这种构造的效率要高。</p>
-<h3 id="Hybrid-Encryption">Hybrid Encryption</h3>
-<p>有了KEM，就可以构造更高效的（混合）公钥加密。</p>
-<p>设$\prod=(Gen,Encaps,Decaps),\prod’=(Gen’,Enc’,Dec’)$,构造$\prod^{hy}=(Gen^{hy},Enc^{hy},Dec^{hy})$</p>
-<p>$Gen^{hy}:(pk,sk)\leftarrow Gen(1^n)$<br>
-$Enc^{hy}:c’ \leftarrow Enc_k’(m)$<br>
-output:$(c,c’)$<br>
-$Dec^{hy}:k=Decaps_{sk}©,m=Dec_k’(c’)$</p>
-<div class="admonition info"><p class="admonition-title">info</p><p>若$\prod$ 是CPA-secure KEM，$\prod'$私钥密码是EAV下安全，则$\prod^{hy}$是CPA-secure的。</p>
+<p>a0------a7. 13 存储在a2.</p>
+<div class="admonition info"><p class="admonition-title">Question 2
+</p><p>Where is the call to function f in the assembly code for main? Where is the call to g? (Hint: the compiler may inline functions.)</p>
 </div>
-<div class="admonition info"><p class="admonition-title">info</p><p>若$\prod$ 是CCA-secure KEM，$\prod'$私钥密码是CCA-secure，则$\prod^{hy}$是CCA-secure的。</p>
+<p>编译器优化直接内联展开了。</p>
+<div class="admonition info"><p class="admonition-title">Question 3
+</p><p>At what address is the function printf located?</p>
 </div>
-<h2 id="EIGamal-Encryption">EIGamal Encryption</h2>
-<p>基本思路：<br>
-利用DH problem，接收者选择$a\leftarrow \mathbb{Z}_q$作为私钥，而把群$(G,q,g)$和$g^a$作为公钥公开，那么任何人可以指定b，传输$g^b，K\cdot M$给接收者，则接收者运行$K\leftarrow(g^b)^a$,从而解密，并共享密钥。</p>
-<h3 id="scheme">scheme</h3>
-<p>$Gen(1^n):Run(G,q,g)\leftarrow\mathbb{G}(1^n)$随机选择$x\leftarrow\mathbb{Z}_q$,计算$y=g^x$<br>
-$$(sk,pk)=((G,q,g,x)(G,q,g,y))$$<br>
-$Enc(m,pk):$对于输入m，随机选择$r\leftarrow\mathbb{Z}_q,$<br>
-$$C=(g^r,m\cdot y^r)$$<br>
-$Dec(C,sk):C=(C_1,C_2),$<br>
-$$m=C_2\cdot(C_1^x)^{-1}$$</p>
-<p>在这里可以认为$(G,q,g)$为安全参数。</p>
-<h3 id="Security">Security</h3>
-<div class="admonition warning"><p class="admonition-title">lemma EIGamal
-</p><p>设$G$为有限群，$m\in G$任意，随机选择的$k\in G$和设置的$k'=k\cdot m$具有相同的分布，即对任意的$g'\in G$
-$$Pr[k\cdot m=g']=1/G$$</p>
+<p><code>0000000000000630 &lt;printf&gt;</code>。</p>
+<div class="admonition info"><p class="admonition-title">Question 4
+</p><p>What value is in the register ra just after the jalr to printf in main?</p>
 </div>
-<p>上方的lemma中，可以看到类似于私钥密码中的一次一密定义，那么由此，可以设想出另外一种"EIGamal"的加密方式：</p>
-<p>随机选择$g^z$,让密文$C=(g^r,m\cdot g^z)$</p>
-<p>因此， $g^z$ 对敌手是未知的，则其能够满足信息论安全（即完美加密）</p>
-<p>EIGamal的安全性证明便基于此类的不可区分性小于$1/2+negl(n)$,而其证明又依赖于DDH assumption。</p>
-<p>安全证明就略了。（😋）</p>
-<h2 id="RSA-attacks">RSA attacks</h2>
-<p>回顾一下“课本”上的RSA：</p>
-<p>$Gen()$:选择两个大素数p，q，N=pq，均匀选择e，$1&lt;e&lt;\phi(N)$且$gcd(e,\phi(N))=1$.计算$d,ed=1\quad \phi(N)$<br>
-$Enc(pk,m): c=m^e\quad mod N$<br>
-$Dec(sk,c): m=c^d \quad mod N$</p>
-<div class="admonition missing"><p class="admonition-title">RSA in our class
-</p><p>课本上的RSA是不能够直接使用的。</p>
+<p>返回的地址ra是main里头的对应行数的地址。</p>
+<div class="admonition info"><p class="admonition-title">Question 5
+</p><p>Run the following code. What is the output?
+The output depends on that fact that the RISC-V is little-endian. If the RISC-V were instead big-endian what would you set i to in order to yield the same output? Would you need to change 57616 to a different value?</p>
 </div>
-<p>RSA假设中，m是随机均匀选择的，但其本质上而言，消息并不满足这一条件。同时，RSA加密过程是确定性的，因此必定不是安全的。</p>
-<p>具体攻击方法略。反正很容易构造捏。</p>
+<pre class="language-c" data-language="c"><code class="language-c">unsigned int i = 0x00646c72;
+printf("H%x Wo%s", 57616, &amp;i);</code></pre>
+<p>大端小端的问题。。。计组都搞过了，不回答😤😤😤</p>
+<div class="admonition info"><p class="admonition-title">Question 6
+</p><p>In the following code, what is going to be printed after 'y='? (note: the answer is not a specific value.) Why does this happen?</p>
+</div>
+<pre class="language-c" data-language="c"><code class="language-c">printf("x=%d y=%d", 3);</code></pre>
+<p>未定义行为，当前的a2寄存器不知道是什么值，因此输出也是未知的。</p>
+<h3 id="Backtrace-moderate">Backtrace (moderate)</h3>
+<p>实现一个回溯的Backtrace。</p>
+<p>还是很简单的一道题，用指针就行了，我还在想用什么riscv指令来访问物理内存。自己做这些题还是容易舍近求远。</p>
+<p>本题目需要理解下图：</p>
+<p><img src="/images/OS/xv6-stack.png" alt="xv6 Stack"></p>
+<p>在每一层的堆栈中，return address位于frame pointer的offset(-8)位置，二上一个frame pointer的在当前frame pointer offset(-16)位置，因此若要存取上一个堆栈信息，可以直接用指针的加减来获得。</p>
+<p>首先在<code>kernel/defs.h</code>等地方加上必要的配置，例如函数声明等。</p>
+<p>其次在<code>kernel/riscv.h</code>里增加以下函数声明：</p>
+<pre class="language-c" data-language="c"><code class="language-c">static inline uint64
+r_fp()
+{
+  uint64 x;
+  asm volatile("mv %0, s0" : "=r" (x) );
+  return x;
+}</code></pre>
+<p>该函数可以获取当前帧指针<code>s0</code>的值。</p>
+<p>在<code>kernel/printf.c</code>里增加以下内容：</p>
+<pre class="language-c" data-language="c"><code class="language-c">void backtrace(){
+  printf("backtrace:\n");
+  uint64 fp = r_fp();
+  uint64 start = PGROUNDUP(fp), end = PGROUNDDOWN(fp);
+  while(end&lt;=fp&amp;&amp;fp&lt;=start){
+    printf("%p\n", *(uint64*)(fp-8));
+    fp = *(uint64*)(fp-16);
+  }
+}</code></pre>
+<p>其中的start和end变量是为了防止fp的无限回溯超出界限。xv6会将每一个stack都分配一个page，因此用PGROUNDUP等宏即可获取上下限。</p>
+<h3 id="Alarm-hard">Alarm (hard)</h3>
+<p>按照他的步骤来就算简单。</p>
+<p>本题要求增加两个系统调用：sigalarm和sigreturn。</p>
+<p>除了增加系统调用所必要的修改外，其他修改如下：</p>
+<p>由于跳转函数会破坏寄存器的值，因此需要在proc结构里保存寄存器的值。这里的实现是有些偷懒的，只根据alarmtest.asm里的所需值增加了所需要的寄存器：sp，pc，s0-s1, ra以及a0-a7，但实际上无从知道编译器会用哪些用户寄存器，因此在实际使用的时候应该将32个寄存器全部存储。</p>
+<pre class="language-c" data-language="c"><code class="language-c">struct proc {
+  //...
+  uint64 ticks; //时间间隔
+  uint64 func; //执行的函数指针
+  uint64 count; //经过多长时间
+  uint64 alarm_epc; //保存的pc寄存器
+  uint64 in_handler; //是否有return
+
+  // 保存的寄存器
+  uint64 sp;
+  uint64 s0;
+  uint64 s1;
+  uint64 ra;
+  uint64 a0;
+  uint64 a1;
+  uint64 a2;
+  uint64 a3;
+  uint64 a4;
+  uint64 a5;
+  uint64 a6;
+  uint64 a7;
+};</code></pre>
+<p><code>kernel/proc.c</code> 的<code>allocproc</code>函数里也增加初始化内容：</p>
+<pre class="language-c" data-language="c"><code class="language-c">static struct proc*
+allocproc(void)
+{
+
+found:
+    //.....
+  p-&gt;count = 0;
+  p-&gt;ticks = 0;
+  p-&gt;func = 0;
+  p-&gt;alarm_epc = 0;
+  p-&gt;in_handler = 0;
+  p-&gt;a0 = p-&gt;a1 = p-&gt;a2 = p-&gt;a3 = p-&gt;a4 = p-&gt;a5 = p-&gt;a6 = p-&gt;a7 =0;
+  p-&gt;sp = p-&gt;ra = p-&gt;s0 = p-&gt;s1 = 0;
+  return p;
+}</code></pre>
+<p>两系统调用：</p>
+<pre class="language-c" data-language="c"><code class="language-c">uint64
+sys_sigalarm(void){
+  int ticks;
+  uint64 func;
+  if(argint(0, &amp;ticks) &lt; 0 &amp;&amp; argaddr(1, &amp;func)&lt;0){
+    return -1;
+  }
+  struct proc *p = myproc();
+  func = p-&gt;trapframe-&gt;a1;
+  printf("%p\n", func);
+  if(ticks == 0 &amp;&amp; func == 0){
+    p-&gt;ticks = p-&gt;func = p-&gt;count = 0;
+    return 0;
+  }
+
+  p-&gt;ticks = ticks;
+  p-&gt;func = func;
+  p-&gt;count = 0;
+
+  return 0;
+}
+uint64
+sys_sigreturn(void){
+  struct proc *p = myproc();
+  if (p-&gt;in_handler){
+    p-&gt;trapframe-&gt;epc  = p-&gt;alarm_epc;
+    p-&gt;count = 0;
+    p-&gt;in_handler = 0;
+
+    p-&gt;trapframe-&gt;a0 = p-&gt;a0;
+    p-&gt;trapframe-&gt;a1 = p-&gt;a1;
+    p-&gt;trapframe-&gt;a2 = p-&gt;a2;
+    p-&gt;trapframe-&gt;a3 = p-&gt;a3;
+    p-&gt;trapframe-&gt;a4 = p-&gt;a4;
+    p-&gt;trapframe-&gt;a5 = p-&gt;a5;
+    p-&gt;trapframe-&gt;a6 = p-&gt;a6;
+    p-&gt;trapframe-&gt;a7 = p-&gt;a7;
+
+    p-&gt;trapframe-&gt;sp = p-&gt;sp;
+    p-&gt;trapframe-&gt;s0 = p-&gt;s0;
+    p-&gt;trapframe-&gt;s1 = p-&gt;s1;
+    p-&gt;trapframe-&gt;ra = p-&gt;ra;
+  }
+  return 0;
+}</code></pre>
+<p><code>kernel/trap.c</code>:</p>
+<pre class="language-c" data-language="c"><code class="language-c">void
+usertrap(void)
+{   
+  // ...
+  // give up the CPU if this is a timer interrupt.
+  if(which_dev == 2){
+    if (p-&gt;func||p-&gt;ticks){
+      p-&gt;count++;
+      if (p-&gt;count==p-&gt;ticks){
+        p-&gt;in_handler = 1;
+        p-&gt;alarm_epc = p-&gt;trapframe-&gt;epc;
+        p-&gt;trapframe-&gt;epc = p-&gt;func;
+
+        p-&gt;a0 = p-&gt;trapframe-&gt;a0;
+        p-&gt;a1 = p-&gt;trapframe-&gt;a1;
+        p-&gt;a2 = p-&gt;trapframe-&gt;a2;
+        p-&gt;a3 = p-&gt;trapframe-&gt;a3;
+        p-&gt;a4 = p-&gt;trapframe-&gt;a4;
+        p-&gt;a5 = p-&gt;trapframe-&gt;a5;
+        p-&gt;a6 = p-&gt;trapframe-&gt;a6;
+        p-&gt;a7 = p-&gt;trapframe-&gt;a7;
+        p-&gt;sp = p-&gt;trapframe-&gt;sp;
+        p-&gt;s0 = p-&gt;trapframe-&gt;s0;
+        p-&gt;s1 = p-&gt;trapframe-&gt;s1;
+        p-&gt;ra = p-&gt;trapframe-&gt;ra;
+      }
+    }
+    yield();
+  }
+  usertrapret();
+}
+</code></pre>
+<h3 id="Option">Option</h3>
+<p>Optional Challenge是要在backtrace里打印出name而不是地址，这部分。。。网上找不到，我也不会。大概的思路就是像gdb一样从可执行文件里读symbol然后输出，可问题是怎么获得呢？不会捏。</p>
+<h2 id="Lab-Lazy-2020">Lab Lazy(2020)</h2>
+<p>2021课程把这个lab删了。可能是因为课堂上已经把lab的至少一半的内容给泄完了。</p>
+<p>但其实剩下的也是重量级，谁能想得到把panic删了的。</p>
+<h3 id="课程-2">课程</h3>
+<p>课程关于代码的解释都在lab里面，所以这里只稍微提一下原理。</p>
+<p>lazy lab本身需要利用虚拟内存的Page faults来加载page，RV里，Page fault的原因存储在SCAUSE，虚拟内存中的地址存储在STVAL寄存器中：</p>
+<p><img src="https://906337931-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-MHZoT2b_bcLghjAOPsJ%2F-MMD_TK8Ar4GqWE6xfWV%2F-MMNmVfRDZSAOKze10lZ%2Fimage.png?alt=media&amp;token=4bbfdfa6-1491-4ab8-8248-03bd0e36a8e9" alt="RISC-V SCAUSE value"></p>
+<p>以及在TRAPFRAME中存储的用户程序寄存器值。</p>
+<p>因此，我们可以根据以上信息来进行lazy page allocation，替代eager allocation以提高性能。</p>
+<h3 id="Eliminate-allocation-from-sbrk-easy">Eliminate allocation from sbrk() (easy)</h3>
+<p>只要改一下sys_sbrk就行。</p>
+<p><code>sysproc.c</code>:</p>
+<pre class="language-c" data-language="c"><code class="language-c">uint64
+sys_sbrk(void)
+{
+  int addr;
+  int n;
+  struct proc* p;
+  if(argint(0, &amp;n) &lt; 0)
+    return -1;
+  p =  myproc();
+  p-&gt;sz = p-&gt;sz+n;
+  //if(growproc(n) &lt; 0)
+  //  return -1;
+  return addr;
+}</code></pre>
+<p>运行结果大致如下：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">init: starting sh
+$ echo hi
+usertrap(): unexpected scause 0x000000000000000f pid=3
+            sepc=0x0000000000001258 stval=0x0000000000004008
+va=0x0000000000004000 pte=0x0000000000000000
+panic: uvmunmap: not mapped</code></pre>
+<p>可以看到uvmunmap出现了panic，因为这里只改了heap的位置，没有分配真正的内存，因此也没有真正的页表，无法进行unmap操作。</p>
+<h3 id="Lazy-allocation-moderate">Lazy allocation (moderate)</h3>
+<p>lazy allocation的思路是引发page fault（这里只处理load和save类型的page fault）时进行分配。由于物理内存和逻辑内存是全相联的，所以简单的分配给一页就行。</p>
+<p>具体代码见下面整体任务。</p>
+<h3 id="Lazytests-and-Usertests-moderate">Lazytests and Usertests (moderate)</h3>
+<p><code>trap.c</code>:处理Page Fault的分配页表。</p>
+<pre class="language-c" data-language="c"><code class="language-c">void
+usertrap(void)
+{
+  //......
+  if(r_scause() == 8){
+    // system call
+
+    if(p-&gt;killed)
+      exit(-1);
+
+    // sepc points to the ecall instruction,
+    // but we want to return to the next instruction.
+    p-&gt;trapframe-&gt;epc += 4;
+
+    // an interrupt will change sstatus &amp;c registers,
+    // so don't enable until done with those registers.
+    intr_on();
+
+    syscall();
+  } else if (r_scause() == 13 || r_scause() == 15){
+    uint64 va = r_stval();
+    //printf("page fault: %p\n", va);
+    //printf("%p, %p\n", r_stval(), va);
+    if(va &gt;= p-&gt;sz||va&lt;=p-&gt;trapframe-&gt;sp){
+      p-&gt;killed = 1;
+      //printf("usertrap(): error va %p pid=%d\n", va, p-&gt;pid);
+    } else {
+      uint64 ka = (uint64)kalloc();
+      if (ka==0){
+        p-&gt;killed = 1;
+      } else {
+        memset((void*)ka, 0, PGSIZE);
+        va = PGROUNDDOWN(va);
+        if(mappages(p-&gt;pagetable, va, PGSIZE, ka, PTE_W|PTE_U|PTE_R)!=0){
+          kfree((void*)ka);
+          p-&gt;killed = 1;
+        }
+      }      
+    }
+  } else if((which_dev = devintr()) != 0){
+    // ok
+  }
+  //....
+}</code></pre>
+<p>上述代码在load或save page fault进入，首先进行合法性检查，之后开始分配内存。若无内存，就kill内存，否则将内存置0，mappages将其映射到目标用户的页表中。</p>
+<p><code>sysproc.c</code>: 修改sbrk。</p>
+<pre class="language-c" data-language="c"><code class="language-c">uint64
+sys_sbrk(void)
+{
+  int addr;
+  int n;
+  struct proc* p;
+  if(argint(0, &amp;n) &lt; 0)
+    return -1;
+  p =  myproc();
+  addr = p-&gt;sz;
+  p-&gt;sz = p-&gt;sz+n;
+  if (n&lt;0) {
+    uvmdealloc(p-&gt;pagetable, p-&gt;sz-n, p-&gt;sz);
+  }
+
+  //if(growproc(n) &lt; 0)
+  //  return -1;
+  return addr;
+}</code></pre>
+<p>增加了负数的处理。</p>
+<p><code>vm.c</code> 处理fork，copyin（write）和copyout（read）</p>
+<pre class="language-c" data-language="c"><code class="language-c">// 要用到proc结构，引入头文件。
+#include "spinlock.h"
+#include "proc.h"
+
+//该部分的改动实际上就是注释掉两个panic，这谁想得到，或者敢这样做？
+//哎，以后得多试了，这里卡了好久。
+// Remove npages of mappings starting from va. va must be
+// page-aligned. The mappings must exist.
+// Optionally free the physical memory.
+void
+uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
+{
+  uint64 a;
+  pte_t *pte;
+
+  if((va % PGSIZE) != 0)
+    panic("uvmunmap: not aligned");
+
+  for(a = va; a &lt; va + npages*PGSIZE; a += PGSIZE){
+    if((pte = walk(pagetable, a, 0)) == 0){
+      //panic("uvmunmap: walk");
+      continue;
+    }
+
+    if((*pte &amp; PTE_V) == 0)
+      continue;
+      //panic("uvmunmap: not mapped");
+    if(PTE_FLAGS(*pte) == PTE_V)
+      panic("uvmunmap: not a leaf");
+    if(do_free){
+      uint64 pa = PTE2PA(*pte);
+      kfree((void*)pa);
+    }
+    *pte = 0;
+  }
+}
+
+// 同上。fork用的。
+// Given a parent process's page table, copy
+// its memory into a child's page table.
+// Copies both the page table and the
+// physical memory.
+// returns 0 on success, -1 on failure.
+// frees any allocated pages on failure.
+int
+uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
+{
+  pte_t *pte;
+  uint64 pa, i;
+  uint flags;
+  char *mem;
+
+  for(i = 0; i &lt; sz; i += PGSIZE){
+    if((pte = walk(old, i, 0)) == 0)
+      //panic("uvmcopy: pte should exist");
+      continue;
+    if((*pte &amp; PTE_V) == 0)
+      //panic("uvmcopy: page not present");
+      continue;
+    pa = PTE2PA(*pte);
+    flags = PTE_FLAGS(*pte);
+    if((mem = kalloc()) == 0)
+      goto err;
+    memmove(mem, (char*)pa, PGSIZE);
+    if(mappages(new, i, PGSIZE, (uint64)mem, flags) != 0){
+      kfree(mem);
+      goto err;
+    }
+  }
+  return 0;
+
+ err:
+  uvmunmap(new, 0, i / PGSIZE, 1);
+  return -1;
+}
+
+// Copy from kernel to user.
+// Copy len bytes from src to virtual address dstva in a given page table.
+// Return 0 on success, -1 on error.
+int
+copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
+{
+  uint64 n, va0, pa0;
+  struct proc* p = myproc();
+  while(len &gt; 0){
+    va0 = PGROUNDDOWN(dstva);
+    pa0 = walkaddr(pagetable, va0);
+
+    if(pa0 == 0) {
+      if(va0 &gt;= p-&gt;sz||va0&lt;=p-&gt;trapframe-&gt;sp){
+        return -1;
+        //printf("usertrap(): error va %p pid=%d\n", va, p-&gt;pid);
+      } else {
+        pa0 = (uint64)kalloc();
+        if (pa0==0){
+          p-&gt;killed = 1;
+          return -1;
+        } else {
+          memset((void*)pa0, 0, PGSIZE);
+          va0 = PGROUNDDOWN(va0);
+          if(mappages(p-&gt;pagetable, va0, PGSIZE, pa0, PTE_W|PTE_U|PTE_R)!=0){
+            kfree((void*)pa0);
+            p-&gt;killed = 1;
+            return -1;
+          }
+        }      
+      }
+    }
+    n = PGSIZE - (dstva - va0);
+    if(n &gt; len)
+      n = len;
+    memmove((void *)(pa0 + (dstva - va0)), src, n);
+
+    len -= n;
+    src += n;
+    dstva = va0 + PGSIZE;
+  }
+  return 0;
+}
+
+// Copy from user to kernel.
+// Copy len bytes to dst from virtual address srcva in a given page table.
+// Return 0 on success, -1 on error.
+int
+copyin(pagetable_t pagetable, char *dst, uint64 srcva, uint64 len)
+{
+  uint64 n, va0, pa0;
+  struct proc* p = myproc();
+  while(len &gt; 0){
+    va0 = PGROUNDDOWN(srcva);
+    pa0 = walkaddr(pagetable, va0);
+
+    if(pa0 == 0) {
+      if(va0 &gt;= p-&gt;sz||va0&lt;=p-&gt;trapframe-&gt;sp){
+        return -1;
+        //printf("usertrap(): error va %p pid=%d\n", va, p-&gt;pid);
+      } else {
+        pa0 = (uint64)kalloc();
+        if (pa0==0){
+          p-&gt;killed = 1;
+          return -1;
+        } else {
+          memset((void*)pa0, 0, PGSIZE);
+          va0 = PGROUNDDOWN(va0);
+          if(mappages(p-&gt;pagetable, va0, PGSIZE, pa0, PTE_W|PTE_U|PTE_R)!=0){
+            kfree((void*)pa0);
+            p-&gt;killed = 1;
+            return -1;
+          }
+        }      
+      }
+    }
+    n = PGSIZE - (srcva - va0);
+    if(n &gt; len)
+      n = len;
+    memmove(dst, (void *)(pa0 + (srcva - va0)), n);
+
+    len -= n;
+    dst += n;
+    srcva = va0 + PGSIZE;
+  }
+  return 0;
+}</code></pre>
 <hr>
-<p>由上，RSA在实际使用过程中需要进行预处理等过程，才能够真正作为加密算法进行公钥加密。</p>
-<p>RSA-OAEP便用了哈希函数，使得RSA-OAEP是CCA Secure的（证明过程中用到了随机函数，其用SHA-256进行实例化。）</p>
+<p>哎，自己好菜。</p>
+<h2 id="Lab-Copy-On-Write-2021">Lab Copy-On-Write(2021)</h2>
+<h3 id="课程-3">课程</h3>
+<p>其实课程内容很少。</p>
+<p>Xv6以及其他类POSIX 系统，若要使用fork-exec方式来生成新的进程，fork便会带来不必要的复制：fork的意义是为exec带来新的pid以及进程资源，原进程的复制只会带来不必要的IO。</p>
+<p>于是，大部分操作系统都实现了Copy-On-Write（COW）fork，按需进行复制。</p>
+<h4 id="具体过程">具体过程</h4>
+<p>可以将fork后的父子进程共享同一份物理内存（page），这样，若不发生写入，则只需要修改一下子进程的pagetable即可。而为了满足这一点，需要将PTE标志位设为只读，且明确标明这是COW的结果（可在RSW位中设置），方便和出错情况区分。而当需要写入的时候，按需对写入页进行复制。</p>
+<p>写时复制带来了性能的提升，但相对也带来了维护的复杂性：什么时候释放页呢？这里就需要引入引用计数，而引用计数的相关知识。。略。感觉都会罢。</p>
+<h3 id="Implement-copy-on-write-hard">Implement copy-on write (hard)</h3>
+<p>该部分确实和Lazy重合度大，重点在PTE标志位的设定，以及kalloc.c中引用数据结构的维护。</p>
+<p>不用最开始就考虑复杂情况。由于xv6本身较为简单，因此标志位不会设定的太复杂，不需要考虑R和W位的组合问题，这里钻了牛角尖了。</p>
+<p>riscv.h:</p>
+<pre class="language-c" data-language="c"><code class="language-c">#define PTE_COW (1L &lt;&lt; 8) // 1 -&gt; Copy-On-Write PAGE</code></pre>
+<p>kalloc.c:</p>
+<pre class="language-c" data-language="c"><code class="language-c">#include "types.h"
+#include "param.h"
+#include "memlayout.h"
+#include "spinlock.h"
+#include "riscv.h"
+#include "defs.h"
+
+#define PA2CNT_INDEX(pa) (((uint64)pa)&gt;&gt;12)
+
+void freerange(void *pa_start, void *pa_end);
+
+struct cnt {
+  struct spinlock lock;
+  uint cnt[PHYSTOP&gt;&gt;PGSHIFT];
+} kcnt;
+
+
+
+extern char end[]; // first address after kernel.
+                   // defined by kernel.ld.
+
+struct run {
+  struct run *next;
+};
+
+struct {
+  struct spinlock lock;
+  struct run *freelist;
+} kmem;
+
+void
+kinit()
+{
+  initlock(&amp;kmem.lock, "kmem");
+  initlock(&amp;kcnt.lock, "kcnt");
+  freerange(end, (void*)PHYSTOP);
+}
+
+void
+freerange(void *pa_start, void *pa_end)
+{
+  char *p;
+  p = (char*)PGROUNDUP((uint64)pa_start);
+  for(; p + PGSIZE &lt;= (char*)pa_end; p += PGSIZE){
+    kcnt.cnt[PA2CNT_INDEX(p)] = 0;
+    kfree(p);
+  }
+}
+
+// Free the page of physical memory pointed at by v,
+// which normally should have been returned by a
+// call to kalloc().  (The exception is when
+// initializing the allocator; see kinit above.)
+void
+kfree(void *pa)
+{
+  struct run *r;
+
+  if(((uint64)pa % PGSIZE) != 0 || (char*)pa &lt; end || (uint64)pa &gt;= PHYSTOP)
+    panic("kfree");
+
+  acquire(&amp;kcnt.lock);
+  if(kcnt.cnt[PA2CNT_INDEX(pa)] != 0){
+    --kcnt.cnt[PA2CNT_INDEX(pa)];
+  }
+  release(&amp;kcnt.lock);
+  if (kcnt.cnt[PA2CNT_INDEX(pa)] != 0){
+    return;
+  }
+
+  // Fill with junk to catch dangling refs.
+  memset(pa, 1, PGSIZE);
+
+  r = (struct run*)pa;
+
+  acquire(&amp;kmem.lock);
+  r-&gt;next = kmem.freelist;
+  kmem.freelist = r;
+  release(&amp;kmem.lock);
+
+}
+
+// Allocate one 4096-byte page of physical memory.
+// Returns a pointer that the kernel can use.
+// Returns 0 if the memory cannot be allocated.
+void *
+kalloc(void)
+{
+  struct run *r;
+
+  acquire(&amp;kmem.lock);
+  r = kmem.freelist;
+  if(r){
+    kmem.freelist = r-&gt;next;
+    acquire(&amp;kcnt.lock);
+    kcnt.cnt[PA2CNT_INDEX(r)] = 1;
+    release(&amp;kcnt.lock);
+  }
+
+  release(&amp;kmem.lock);
+
+  if(r){
+    memset((char*)r, 5, PGSIZE); // fill with junk
+  }
+  return (void*)r;
+}
+
+void kincrease(uint64 pa){
+  acquire(&amp;kcnt.lock);
+  kcnt.cnt[PA2CNT_INDEX(pa)] += 1;
+  release(&amp;kcnt.lock);
+}</code></pre>
+<p>vm.c:</p>
+<pre class="language-c" data-language="c"><code class="language-c">int
+uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
+{
+  pte_t *pte;
+  uint64 pa, i;
+  uint flags;
+  //char *mem;
+
+  for(i = 0; i &lt; sz; i += PGSIZE){
+    if((pte = walk(old, i, 0)) == 0)
+      panic("uvmcopy: pte should exist");
+    if((*pte &amp; PTE_V) == 0)
+      panic("uvmcopy: page not present");
+    pa = PTE2PA(*pte);    
+    kincrease(pa);
+    
+    *pte |= PTE_COW;
+    *pte &amp;= ~PTE_W;
+    flags = PTE_FLAGS(*pte);
+    //if((mem = kalloc()) == 0)
+    //  goto err;
+    //memmove(mem, (char*)pa, PGSIZE);
+    if(mappages(new, i, PGSIZE, (uint64)pa, flags) != 0){
+      // 若无法分配一个page。。。感觉要改mappage，这里头有个remap。
+      //kfree((void*)pa);
+      goto err;
+    }
+  }
+  return 0;
+  //...
+}
+
+
+int
+copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
+{
+  uint64 n, va0, pa0;
+  pte_t* pte0;
+  while(len &gt; 0){
+    va0 = PGROUNDDOWN(dstva);
+    pa0 = walkaddr(pagetable, va0);
+    if(pa0 == 0)
+      return -1;
+
+    pte0 = walk(pagetable, va0, 0);
+    if((*pte0 &amp; PTE_W) == 0){
+      if(cow(pagetable, va0)&lt;0){
+        return -1;
+      }
+    }
+    pa0 = PTE2PA(*pte0);
+    //.....
+  }
+}
+
+int cow(pagetable_t pagetable, uint64 va)
+{
+  if(va&gt;=MAXVA){
+    return -1;
+  }
+  pte_t* pte;
+  if((pte = walk(pagetable, va, 0)) == 0){
+    panic("cow(): cow walk error.");
+    return -1;
+  }
+  if((*pte &amp; PTE_V) == 0){
+    return -1;
+  }
+  if((*pte &amp; PTE_COW) == 0){
+    return -1;
+  }
+  if((*pte &amp; PTE_U) == 0){
+    return -1;
+  }
+
+  uint64 ka = (uint64)kalloc(), pa = PTE2PA(*pte);
+  uint flags = PTE_FLAGS(*pte);
+  if (ka==0){
+    return -1;
+  }
+
+  memmove((void*)ka, (char*)pa, PGSIZE);
+  flags &amp;= ~PTE_COW;
+  flags |= PTE_W;
+  *pte = PA2PTE(ka) | flags;
+  kfree((void*)pa);
+  return 0;
+}</code></pre>
+<p>trap.c:</p>
+<pre class="language-c" data-language="c"><code class="language-c">void
+usertrap(void)
+{
+  //...
+  if(r_scause() == 8){
+    // system call
+    // ...
+    syscall();
+  } else if (r_scause() == 15){
+    uint64 va = r_stval();
+    if(cow(p-&gt;pagetable, va)&lt;0){
+      p-&gt;killed = 1;
+    }
+  } //...
+}
+</code></pre>
+<p>再修改一下defs.h即可。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
                 
             </div>
@@ -801,7 +1566,7 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zzzremake.github.io/2023/02/24/modern-cryptoxi-public-key-encryption/">https://zzzremake.github.io/2023/02/24/modern-cryptoxi-public-key-encryption/</a>
+                    <a href="https://zzzremake.github.io/2024/01/27/mit-6.s081-lab4-6-trap-lazy-cow/">https://zzzremake.github.io/2024/01/27/mit-6.s081-lab4-6-trap-lazy-cow/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -839,12 +1604,8 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Crypto/">
-                                    <span class="chip bg-color">Crypto</span>
-                                </a>
-                            
-                                <a href="/tags/Public-key/">
-                                    <span class="chip bg-color">Public key</span>
+                                <a href="/tags/OS/">
+                                    <span class="chip bg-color">OS</span>
                                 </a>
                             
                         </div>
@@ -1161,31 +1922,31 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2023/03/03/modern-cryptoxii-digital-signature/">
+                <a href="/2024/01/27/mit-6.s081-lab7-9-thread/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.webp" class="responsive-img" alt="Modern-CryptoⅫ-Digital-Signature">
+                        <img src="/medias/featureimages/1.webp" class="responsive-img" alt="MIT 6.S081 Lab7-9 Thread &amp; Network Driver">
                         
-                        <span class="card-title">Modern-CryptoⅫ-Digital-Signature</span>
+                        <span class="card-title">MIT 6.S081 Lab7-9 Thread &amp; Network Driver</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            公钥加密最后一章，公钥语境下的认证性：数字签名
+                            MIT 操作系统课程6.S081 第三部分：Thread，以及Network Driver.
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-03
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-01-27
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Crypto/" class="post-category">
-                                    Crypto
+                            <a href="/categories/OS/" class="post-category">
+                                    OS
                                 </a>
                             
                             
@@ -1195,16 +1956,8 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
-                    </a>
-                    
-                    <a href="/tags/Public-key/">
-                        <span class="chip bg-color">Public key</span>
-                    </a>
-                    
-                    <a href="/tags/Digital-Signature/">
-                        <span class="chip bg-color">Digital Signature</span>
+                    <a href="/tags/OS/">
+                        <span class="chip bg-color">OS</span>
                     </a>
                     
                 </div>
@@ -1218,31 +1971,31 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/02/16/modern-cryptox-key-management-and-public-key-revolution/">
+                <a href="/2023/12/06/cnss-recruit-2023-sa-writeup/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.webp" class="responsive-img" alt="Modern-CryptoⅩ Key management and public key revolution">
+                        <img src="/medias/featureimages/21.webp" class="responsive-img" alt="CNSS Recruit 2023 SA writeup">
                         
-                        <span class="card-title">Modern-CryptoⅩ Key management and public key revolution</span>
+                        <span class="card-title">CNSS Recruit 2023 SA writeup</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            公钥密码学的正式开端，以及密钥管理。
+                            突然发现忘写了这个，记录一下罢。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-06
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Crypto/" class="post-category">
-                                    Crypto
+                            <a href="/categories/CNSS/" class="post-category">
+                                    CNSS
                                 </a>
                             
                             
@@ -1252,16 +2005,12 @@ $Dec(sk,c): m=c^d \quad mod N$</p>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
+                    <a href="/tags/CNSS/">
+                        <span class="chip bg-color">CNSS</span>
                     </a>
                     
-                    <a href="/tags/Public-key/">
-                        <span class="chip bg-color">Public key</span>
-                    </a>
-                    
-                    <a href="/tags/Key-management/">
-                        <span class="chip bg-color">Key management</span>
+                    <a href="/tags/DevOps/">
+                        <span class="chip bg-color">DevOps</span>
                     </a>
                     
                 </div>
