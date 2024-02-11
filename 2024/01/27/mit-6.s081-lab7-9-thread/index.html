@@ -7,7 +7,7 @@
 <!-- hexo injector head_begin end -->
     <meta charset="utf-8">
     <meta name="keywords" content="MIT 6.S081 Lab7-9 Thread &amp; Network Driver, ZzzRemake">
-    <meta name="description" content="MIT 操作系统课程6.S081 第三部分：Thread，以及Network Driver.">
+    <meta name="description" content="MIT 操作系统课程6.S081 第三部分：Thread，Network Driver, 以及file system">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -611,14 +611,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2024-01-30
+                    2024-02-11
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Words Count:&nbsp;&nbsp;
-                    1.4k
+                    2.4k
                 </div>
                 
 
@@ -865,6 +865,249 @@ e1000_recv(void)
 }</code></pre>
 <hr>
 <p>去看了下optional challenge，很有趣，但我没时间写了呜呜呜。</p>
+<h2 id="Lab-File-System">Lab File System</h2>
+<h3 id="课程-3">课程</h3>
+<p>这部分还是有些小晕，主要是锁的部分，有的地方不用加有的地方要加。后面应该要整理一份梳理一下。</p>
+<h3 id="Large-files-moderate">Large files (moderate)</h3>
+<p>实现双重间接块。</p>
+<p>改下定义：</p>
+<pre class="language-c" data-language="c"><code class="language-c">//fs.h
+#define NDIRECT 11
+#define NINDIRECT_DOUBLE (NINDIRECT * NINDIRECT)
+#define MAXFILE (NDIRECT + NINDIRECT + NINDIRECT_DOUBLE)
+
+struct dinode {
+  short type;           // File type
+  short major;          // Major device number (T_DEVICE only)
+  short minor;          // Minor device number (T_DEVICE only)
+  short nlink;          // Number of links to inode in file system
+  uint size;            // Size of file (bytes)
+  uint addrs[NDIRECT+1+1];   // Data block addresses
+};
+
+//file.h
+struct inode {
+  uint dev;           // Device number
+  uint inum;          // Inode number
+  int ref;            // Reference count
+  struct sleeplock lock; // protects everything below here
+  int valid;          // inode has been read from disk?
+
+  short type;         // copy of disk inode
+  short major;
+  short minor;
+  short nlink;
+  uint size;
+  uint addrs[NDIRECT+1+1];
+};</code></pre>
+<p>bmap.c:</p>
+<pre class="language-c" data-language="c"><code class="language-c">static uint
+bmap(struct inode *ip, uint bn)
+{
+  uint addr, *a;
+  struct buf *bp;
+  if(bn &lt; NDIRECT){
+    if((addr = ip-&gt;addrs[bn]) == 0)
+      ip-&gt;addrs[bn] = addr = balloc(ip-&gt;dev);
+    return addr;
+  }
+  bn -= NDIRECT;
+
+  if(bn &lt; NINDIRECT){
+    // Load indirect block, allocating if necessary.
+    if((addr = ip-&gt;addrs[NDIRECT]) == 0)
+      ip-&gt;addrs[NDIRECT] = addr = balloc(ip-&gt;dev);
+    bp = bread(ip-&gt;dev, addr);
+    a = (uint*)bp-&gt;data;
+    if((addr = a[bn]) == 0){
+      a[bn] = addr = balloc(ip-&gt;dev);
+      log_write(bp);
+    }
+    brelse(bp);
+    return addr;
+  }
+  // begin
+  bn -= NINDIRECT;
+
+  int first_index = bn/NINDIRECT, second_index = bn%NINDIRECT;
+  if(bn &lt; NINDIRECT_DOUBLE){
+    if((addr = ip-&gt;addrs[NDIRECT+1]) == 0)
+      ip-&gt;addrs[NDIRECT+1] = addr = balloc(ip-&gt;dev);
+    bp = bread(ip-&gt;dev, addr);
+    a = (uint*)bp-&gt;data;
+    if((addr = a[first_index]) == 0){
+      a[first_index] = addr = balloc(ip-&gt;dev);
+      log_write(bp);
+    }
+    brelse(bp);
+    // second : to data
+    bp = bread(ip-&gt;dev, addr);
+    a = (uint*)bp-&gt;data;
+    if((addr = a[second_index]) == 0){
+      a[second_index] = addr = balloc(ip-&gt;dev);
+      log_write(bp);
+    }
+    brelse(bp);
+    return addr;
+  }
+  // end
+  panic("bmap: out of range");
+}
+
+void
+itrunc(struct inode *ip)
+{
+  int i, j;
+  struct buf *bp;
+  uint *a;
+
+  for(i = 0; i &lt; NDIRECT; i++){
+    if(ip-&gt;addrs[i]){
+      bfree(ip-&gt;dev, ip-&gt;addrs[i]);
+      ip-&gt;addrs[i] = 0;
+    }
+  }
+
+  if(ip-&gt;addrs[NDIRECT]){
+    bp = bread(ip-&gt;dev, ip-&gt;addrs[NDIRECT]);
+    a = (uint*)bp-&gt;data;
+    for(j = 0; j &lt; NINDIRECT; j++){
+      if(a[j])
+        bfree(ip-&gt;dev, a[j]);
+    }
+    brelse(bp);
+    bfree(ip-&gt;dev, ip-&gt;addrs[NDIRECT]);
+    ip-&gt;addrs[NDIRECT] = 0;
+  }
+
+
+  // begin
+  struct buf *bp_index;
+  uint *a_index;
+
+  if(ip-&gt;addrs[NDIRECT+1]){
+    bp = bread(ip-&gt;dev, ip-&gt;addrs[NDIRECT+1]);
+    a = (uint*)bp-&gt;data;
+    for(i = 0; i&lt;NINDIRECT;i++){
+      if(a[i]){
+        bp_index = bread(ip-&gt;dev, a[i]);
+        a_index = (uint*)bp_index-&gt;data;
+        for(j = 0; j&lt;NINDIRECT;j++){
+          if(a_index[j])
+            bfree(ip-&gt;dev, a_index[j]);
+        }
+        brelse(bp_index);
+        bfree(ip-&gt;dev, a[i]);
+        a[i] = 0;
+      }
+    }
+    brelse(bp);
+    bfree(ip-&gt;dev, ip-&gt;addrs[NINDIRECT+1]);
+    ip-&gt;addrs[NDIRECT+1] = 0;
+  }
+  // end
+  ip-&gt;size = 0;
+  iupdate(ip);
+}</code></pre>
+<h3 id="Symbolic-links-moderate">Symbolic links (moderate)</h3>
+<p>增加系统调用的部分略。</p>
+<p>定义：</p>
+<pre class="language-c" data-language="c"><code class="language-c">//stat.h
+#define T_SYMLINK 4   // Symlink
+//fcntl.h
+#define O_NOFOLLOW 0x100</code></pre>
+<p>sysfile.c:</p>
+<pre class="language-c" data-language="c"><code class="language-c">uint64
+sys_open(void)
+{
+  char path[MAXPATH];
+  int fd, omode;
+  struct file *f;
+  struct inode *ip;
+  int n;
+
+  if((n = argstr(0, path, MAXPATH)) &lt; 0 || argint(1, &amp;omode) &lt; 0)
+    return -1;
+
+  begin_op();
+
+  if(omode &amp; O_CREATE){
+    ip = create(path, T_FILE, 0, 0);
+    if(ip == 0){
+      end_op();
+      return -1;
+    }
+  } else {
+    int cnt = 0;
+    for(cnt = 0;cnt&lt;10;++cnt){
+      //printf("cnt: %d\n", cnt);
+      if((ip = namei(path)) == 0){
+        end_op();
+        return -1;
+      }
+      ilock(ip);
+      if(ip-&gt;type == T_SYMLINK &amp;&amp; ((omode &amp; O_NOFOLLOW) == 0)){
+        if(readi(ip, 0, (uint64)path, 0, MAXPATH) != MAXPATH){
+          iunlockput(ip);
+          end_op();
+          return -1;
+        }
+        iunlockput(ip);
+      } else {
+        break;
+      }
+    }
+    if(cnt==10){
+      iunlockput(ip);
+      end_op();
+      return -1;
+    }
+
+    if(ip-&gt;type == T_DIR &amp;&amp; omode != O_RDONLY){
+      iunlockput(ip);
+      end_op();
+      return -1;
+    }
+  }
+  //...
+
+}
+
+uint64
+sys_symlink(void){
+  char target[MAXPATH], path[MAXPATH];
+  if(argstr(0, target, MAXPATH) &lt; 0 || argstr(1, path, MAXPATH) &lt; 0){
+    return -1;
+  }
+
+  int len = strlen(target);
+
+  struct inode* ip;
+  begin_op();
+  if((ip = create(path, T_SYMLINK, 0, 0)) == 0){
+    end_op();
+    return -1;
+  }
+  //create 就是加锁的ip，这里铸币了
+  //ilock(ip);
+  if(writei(ip, 0, (uint64)target, 0, len) != len){
+    end_op();
+    return -1;
+  }
+  iunlockput(ip);
+  end_op();
+  return 0;
+}</code></pre>
+<p>几个错误点：</p>
+<ol>
+<li>文档里的api不记得了，甚至还想自己实现一遍writei/readi，幸好悬崖勒马了。</li>
+<li>另外对open的使用也不太熟悉，导致我还以为要在symlink的系统调用里头用O_TAG，我寻思也没有file层的调用啊。</li>
+<li>最后就是ilock…这部分到现在还是不太了解，等之后细细梳理了。不过在这里和lock的原理无关，单纯就是自己会忘记加iunlockput而已。</li>
+</ol>
+<h2 id="碎碎念">碎碎念</h2>
+<p>一拖再拖到最后剩一个mmap lab没完成，只能期待后面有时间写了。接下来没有lab了，课程还会继续看，但博客不再更新了，令人感叹。</p>
+<p>写lab确实是有用的，满足了我写代码的需求，并且我也确实熟悉了关于操作系统的知识。但到后面就会发现，我这种三天打鱼两天晒网式学习严重影响了学6.S081 的过程，这也是我没时间写mmap lab的原因。</p>
+<p>希望自己以后学这些确实能学到知识的时候，不会再去用这种态度去糟蹋知识吧。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
                 
             </div>
@@ -1260,7 +1503,7 @@ e1000_recv(void)
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            MIT 操作系统课程6.S081 第三部分：Thread，以及Network Driver.
+                            MIT 操作系统课程6.S081 第三部分：Thread，Network Driver, 以及file system
                         
                     </div>
                     <div class="publish-info">
@@ -1523,7 +1766,7 @@ e1000_recv(void)
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">57.4k</span>
+                        class="white-color">58.4k</span>
             
             
             
