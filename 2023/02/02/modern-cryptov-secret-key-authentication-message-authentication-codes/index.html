@@ -615,7 +615,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-02-18
+                    2024-07-19
                 </div>
                 
 
@@ -644,10 +644,10 @@
             <div id="articleContent">
                 <h2 id="消息认证">消息认证</h2>
 <p>至今为止，我们所讨论的安全都是secrecy，即保证EAV、CPA下不泄露任何除明文长度外的明文信息。本章要讨论的便是另一方面的安全：消息认证。即：保证消息的完整性，或保证消息来源身份的可靠性。</p>
-<p>之前在群里和群友讨论过这类话题，群友似乎认为MAC（消息认证码）能够加密信息）所以说加密和认证是十分容易搞混的。</p>
 <div class="admonition warning"><p class="admonition-title">Encryption and Message Authentication
 </p><p>Secrecy保证秘密性，和authenticity认证性是两个<strong>完全不同</strong>的性质。Encryption不能保证任何的authenticity，而message authentication也不能保证任何的secrecy。</p>
 </div>
+<p>为什么这里特地强调？之前在群里和群友讨论过这类话题，群友似乎认为哈希（后面可以看到是MAC）能够加密信息,所以说加密和认证是十分容易搞混的。</p>
 <p>举个例子，即使你加密了信息传给另一方，敌手截获了你的信息，改了下你的密文转发给目标，解密出来的可能是完全不同的东西。如果你对OFB，CTR这类模式加密的密文进行异或某些位的操作，可以直接改变明文特定位的信息。</p>
 <h2 id="Message-Authentication-Codes-MAC">Message Authentication Codes(MAC)</h2>
 <p>这个MAC和设备的物理地址（Media Access Control Address）不是一个东西）</p>
@@ -666,7 +666,8 @@
 虽然Gen和Mac有概率性，但有：<br>
 $$Pr[Vrfy_k(m,Mac_k( m))=1|k\leftarrow Gen(1^n)]=1$$</p>
 <p>Canonical verification：一般而言，Mac是确定性的，则Vrfy可被顺理成章的定义为：<br>
-$$Vrfy_k(m,t)=1&lt;=&gt; Mac_k(m)=t$$</p>
+$$Vrfy_k(m,t)=1&lt;=&gt; Mac_k(m)=t$$<br>
+Vrfy用Mac来定义。</p>
 <h3 id="Security-of-MACs">Security of MACs</h3>
 <p>假设情景：两方互相通信（使用明文M和标签T），敌手在通信信道中截取信息，他的目标是伪造出一组$M’,T’$，使得$Vrfy_k ( M’,T’)=1$</p>
 <p>搬出预言机来形式化定义罢！</p>
@@ -697,7 +698,7 @@ Chosen-message：允许 A选择任何的消息进行相关信息学习。</p>
 若攻击者能够在上述的方案中获得除了最后发送的消息是否Vrfy成功外，还能得到<strong>时间信息</strong>：这里的时间信息是指Vrfy这个决策过程中所花费的时间。<br>
 比方说，Canonical Mac（之后直接用Mac代指了）的Vrfy过程是逐位比较tag是否相同，若遇到不同位直接提前返回结果。那么，这和Vrfy过程成功，比较完所有位的时间花费相比，必定短了一些。</p>
 <p>于是：比如，对于一个16-byte长度的tag，敌手对于第一个byte的判断，向预言机发送$(m,t_0),(m,t_1),…(m,t_{255})$，遍历所有可能性，后面全部置0.这样便可以通过时间比较来检测$t_j$含有正确的一块，这样不断循环下一步，便可以通过$256\times 16$来寻找到该tag的正确信息。</p>
-<p>实际上，这种攻击方式已经获得成功过。</p>
+<p>实际上，这种攻击方式已经获得成功过（现实中有成功的案例），也就是密码学上一个新的攻击方式：侧信道攻击（旁路攻击）。</p>
 <h2 id="Constructions：MAC">Constructions：MAC</h2>
 <h3 id="Fixed-length-MAC">Fixed-length MAC</h3>
 <p>可以用PRF来构造出一个MAC方案：</p>
@@ -1413,7 +1414,7 @@ $t_{output}=t_{last}$</p>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">58.4k</span>
+                        class="white-color">56.1k</span>
             
             
             

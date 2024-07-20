@@ -611,14 +611,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2024-02-11
+                    2024-02-22
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Words Count:&nbsp;&nbsp;
-                    2.4k
+                    2.7k
                 </div>
                 
 
@@ -867,6 +867,23 @@ e1000_recv(void)
 <h2 id="Lab-File-System">Lab File System</h2>
 <h3 id="课程-3">课程</h3>
 <p>这部分还是有些小晕，主要是锁的部分，有的地方不用加有的地方要加。后面应该要整理一份梳理一下。</p>
+<h3 id="buffer">buffer</h3>
+<p>这部分主要为bread，bwrite和brelse。</p>
+<p>bread：调用的bget其中bcache.lock 保证了bcache和得到的buffer初始化的原子性，从而让bget可以在bcache.lock release后再获取b-&gt;lock.<br>
+而bwrite， brelse反而无关紧要，bwrite必须写一个带锁的block，而brelse将锁去除并将block放回bcache。</p>
+<h3 id="logging">logging</h3>
+<p>主要流程为：</p>
+<pre class="language-c" data-language="c"><code class="language-c">begin_op();
+//...
+bp = bread();
+bp-&gt;data[...] = ...;
+log_write(bp);
+//...
+end_op();</code></pre>
+<p>begin_op完成对log这一全局变量的commit状态检查以及预留空间（log写入的空间不能超过LOGSIZE）的检查。<br>
+log_write 则在完成必要的检查后，pin了一个block（防止其被evict）并在上面进行多次写。多次写相比于一次写立刻提交有了性能提升。<br>
+end_op()完成写入log、commit log（通过写入head），install_trans（将log写入文件系统），清空log(log.lh.n = 0)，最后再写入head来擦除transaction。</p>
+<p>若commit后发生崩溃，则recover_from_log会在系统启动中由fsinit-initlog调用，写入log。</p>
 <h3 id="Large-files-moderate">Large files (moderate)</h3>
 <p>实现双重间接块。</p>
 <p>改下定义：</p>
@@ -1765,7 +1782,7 @@ sys_symlink(void){
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">58.4k</span>
+                        class="white-color">56.1k</span>
             
             
             

@@ -611,7 +611,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-02-23
+                    2024-07-19
                 </div>
                 
 
@@ -644,10 +644,10 @@
 贝叶斯公式：$Pr[B|A]=\frac{Pr[A|B]\cdot Pr[B]}{Pr[A]}$<br>
 全概率公式$Pr[A]=\sum_i^nPr[A|B_i]\cdot Pr[B_i]$</p>
 <p>怎么样，都会吧（</p>
-<h2 id="random-number">random-number</h2>
+<h3 id="random-number">random-number</h3>
 <p>密码学中，随机数的生成是很重要的，例如加密方案中生成密钥的$Gen$便需要以此保证随机性。然而，这里不讨论如何生成，以及怎么判定随机数，留在第四章进行<s>咕咕咕</s></p>
-<p>现在这里所进行的是一些概念的讨论：<br>
-随机数生成大约需要：</p>
+<p>现在这里所进行的是一些概念的讨论：</p>
+<p>首先假设：无论敌手还是信任方，都能获取无限量的独立、无偏的bits。</p>
 <ol>
 <li>收集高熵数据，这里的高熵是指高不确定性，但并不是密码学中我们所需要的随机。</li>
 <li>以数据为依据，生成一系列几乎独立的(independent),无偏的(unbiased)位序列。</li>
@@ -669,9 +669,9 @@ $$<br>
 其中，$Gen，Enc$是概率性的。Gen需要随机生成密钥来保证安全性，Enc我们允许随机，但Dec需要满足以下性质：<br>
 $$Correctness:\forall k \in \mathcal{K},m\in\mathcal{M}:Dec_k(Enc_k(m))=m$$<br>
 即解密正确性。<br>
-在这里，可以用<strong>概率</strong>的方式来看待$K,M,C$,作为其取值空间的随机变量。$K$肯定是随机生成了，而在攻击者看来，$M$(随机变量)是在消息空间中的概率分布，而采集到的$m$信息是其的采样。也因此，$C$也是概率分布。这和我们平常认为两者是确定的不同。</p>
+在这里，可以用<strong>概率</strong>的方式来看待。设$K \in \mathcal{K},M \in \mathcal{M} ,C \in \mathcal{C}$,作为其取值空间的随机变量。$K$肯定是随机生成了，而在攻击者看来，$M$(随机变量)是在消息空间中的概率分布，而采集到的$m$信息是其的采样。也因此，$C$也是概率分布。这和我们平常认为两者是确定的不同。</p>
 <p>理论上而言，明文应该和加密策略，也就是K无关，两者相互独立。</p>
-<p>那么我们再回顾一下之前对安全目标的定义，假设现在通信双方正在通过对称密钥的方式进行通信，敌手能够观察到的就是通信的密文内容。并且，敌手还可以做到：</p>
+<p>那么我们再回顾一下之前对安全目标的定义，假设现在通信双方正在通过对称密钥的方式进行通信，敌手能够观察到的就是通信的密文内容（Ciphertext-Only Attack）。并且，敌手还可以做到：</p>
 <ol>
 <li>可以知道所有可能的发送的消息，以及消息空间的概率分布</li>
 <li>同时攻击者也知道加密方案本身，但敌手不知道密钥 $k$。<br>
@@ -679,15 +679,22 @@ $$Correctness:\forall k \in \mathcal{K},m\in\mathcal{M}:Dec_k(Enc_k(m))=m$$<br>
 </ol>
 <div class="admonition info"><p class="admonition-title">攻击者无法通过观察密文来获得任何和明文相关的信息。
 </p><p>$$\forall m\in\mathcal{M},c\in\mathcal{C},Pr[M=m|C=c]=Pr[M=m]\qquad(Pr[C=c]&gt;0)$$
-密文和明文的随机变量是相互独立的。</p>
+即密文和明文的随机变量是相互独立的。</p>
 </div>
-<div class="admonition info"><p class="admonition-title">密文的分布和加密的明文信息相互独立。
+<div class="admonition info"><p class="admonition-title">密文的分布和明文相互独立。
 </p><p>$$\forall m.m'\in\mathcal{M},c\in\mathcal{C},Pr[Enc_K(m)=c]=Pr[Enc_K(m')=c]$$</p>
 </div>
-<p>这两种表达是相互等价的，这里不给出证明过程（但确实可以证，只是我懒不想写，证明过程需要用到上面所给的概率论基础）<br>
-然而证明过程还是很好玩的，也许等之后补上？<s>再次咕咕咕</s></p>
+<p>这两种表达是相互等价的。</p>
+<p>Proof:</p>
+<ol>
+<li>证明若为perfectly secret，则$Pr[Enc_K(m) = c] = Pr[Enc_K(m’) = c]$.</li>
+</ol>
+<p><img src="/images/Crypto/perfect-encryption-proof-1.png" alt="Proof 1"></p>
+<ol start="2">
+<li>反过来：</li>
+</ol>
+<p><img src="/images/Crypto/perfect-encryption-proof-2.png" alt="Proof 2"></p>
 <h2 id="indistinguishability">indistinguishability</h2>
-<p><strong>寒假更新咯！</strong></p>
 <p>可以对上述的过程进行另一种表述，这种表述是通过experiment实现的。攻击者试图被动的观察密文，并给定两条明文，判断该密文是哪一条明文加密的。</p>
 <p>于是便引入了一个密码学上十分重要的模型：<strong>预言机（oracle）</strong>，目前可以把其理解为一个执行指定操作的黑箱。它总是能正确的给你所设定好的目标答案。</p>
 <p>上述观察过程，可以表示为$Priv_{\mathcal{A}\prod}^{eav}$，表示在窃听者$eav$下的不可区分性experiment，敌手为A，该不可区分性experiment为block符号,类似加密方案。</p>
@@ -715,6 +722,7 @@ $Gen\rightarrow k\in\mathcal{K}$,uniformly at random<br>
 $Enc_k(m)=m\oplus k,Dec_k ( c ) =c\oplus k$<br>
 其为Perfect secret。证明过程：</p>
 <p>$Pr[Enc_k(m)=c]=Pr[m\oplus k=c]=Pr[k=c\oplus m]=|\mathcal{K}|^{-1}=2^{-l}$</p>
+<p>则$Pr[Enc_k(m)=c] = Pr[Enc_k(m’)=c]=2^{-l}$</p>
 <p>当然你也可以用群的方式写写。</p>
 <p>需要特别指出的是，这里的密钥、明文、密文的长度都是等长的，因此生成密钥、加密过程以及泄露消息等都有一些缺点。OTP并不是好用的加密方案。<br>
 并且，OTP不能够复用密钥。一旦复用，攻击者可以通过</p>
@@ -1403,7 +1411,7 @@ $Enc_k(m)=m\oplus k,Dec_k ( c ) =c\oplus k$<br>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">58.4k</span>
+                        class="white-color">56.1k</span>
             
             
             

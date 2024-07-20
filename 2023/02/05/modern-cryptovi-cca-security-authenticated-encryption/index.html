@@ -619,7 +619,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-02-16
+                    2024-07-20
                 </div>
                 
 
@@ -665,8 +665,8 @@ $b=16-(|m|mod 16)$<br>
 </p><p>Since we don’t know what information an attacker might be able to learn when a ciphertext it sends is decrypted by a receiver, in reality we make the worst-case assumption that the attacker learns everything, where the adversary is stronger than whom in padding-oracle attack.</p>
 </div>
 <h2 id="CCA-schemes">CCA schemes</h2>
-<p>到如今，我们没有构造出任何一个CCA secure的加密方案。</p>
-<p>据个例子。最简单的一个scheme：$Enc_k(m)=&lt;r,F_k( r)\oplus m&gt;$<br>
+<p><strong>到如今，我们没有构造出任何一个CCA secure的加密方案。</strong></p>
+<p>举个例子。最简单的一个scheme：$Enc_k(m)=&lt;r,F_k( r)\oplus m&gt;$<br>
 那么，在上面的CCA定义中最后一条中，敌手会收到预言机的回应：$&lt;r,s=F_k( r)\oplus m_b&gt;$，则他可以随机选取一个x，访问Dec预言机：$s\oplus x\oplus F_k( r)=Dec_k(&lt;r,s\oplus x&gt;)$<br>
 从而学习到$m_b\oplus x$.</p>
 <p>CCA Security 需要不可延展性:$ non-malleability$.这种性质导致，若敌手对给定的密文进行任何修饰。它解密出来的明文不应该和原明文有任何联系。</p>
@@ -1431,7 +1431,7 @@ the encrypt-then-authenticate approach with ChaCha20 and Poly1305</li>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">58.4k</span>
+                        class="white-color">56.1k</span>
             
             
             

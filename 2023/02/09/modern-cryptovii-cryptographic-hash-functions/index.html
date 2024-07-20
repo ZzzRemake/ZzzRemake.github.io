@@ -615,7 +615,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-02-23
+                    2024-07-20
                 </div>
                 
 
@@ -645,9 +645,9 @@
                 <p>计算机科学上到处都是哈希函数，得益于哈希函数可以作为一种“压缩”的方式，进行诸如哈希表的构建。密码学上的哈希函数则要满足更多的性质。</p>
 <h2 id="Collision-resistance">Collision resistance</h2>
 <p>形式化：<br>
-对于$H:\{0,1\}^m\rightarrow \{0,1\}^n,m\geq n$对任何的PPT算法，无法找到一个碰撞，或者说对 $x\neq x’,H(x)\neq H(x’)$,那么该函数抗碰撞。</p>
+对于$H:\{0,1\}^m\rightarrow \{0,1\}^n,m\geq n$对任何的PPT算法，无法找到一个碰撞，或者说对多项式的寻找方式，$x\neq x’,H(x)\neq H(x’)$,那么该函数抗碰撞。</p>
 <p>$m&gt;n$，则哈希函数必定会产生碰撞。只是对PPT敌手而言，只有极小概率能够找到碰撞。<br>
-可以看到，这里定义的哈希函数是<strong>unkeyed</strong>的，也因此是确定性的。然而，实际运用中，若要攻破这一哈希函数，便需要去找到一对碰撞，而碰撞的寻找是十分困难的。实际上，这里的unkeyed只是指$H(k,x)$中的k为公开常量，而非随机选定的意思。</p>
+可以看到，这里定义的哈希函数是<strong>unkeyed</strong>的，也因此是确定性的。然而，实际运用中，若要攻破这一哈希函数，便需要去找到一对碰撞，而碰撞的寻找是十分困难的。实际上，这里的unkeyed只是指$H(k,x)$中的k为公开常量，而非随机选定的意思。随机选定也就是我们之前讨论的PRF之类的了。</p>
 <p>在密码学中的证明里，若结果依赖抗碰撞性，形式上我们考虑使用keyed哈希函数，实际上通常使用unkeyed哈希函数，并且同样能够满足抗碰撞。</p>
 <h3 id="Definition">Definition</h3>
 <div class="admonition warning"><p class="admonition-title">Definition: Hash Functions
@@ -690,7 +690,7 @@ $h_{B+1}=H(x)$</p>
 </p><p>if $h$ is collision resistant, so is $H$.</p>
 </div>
 <p>对上述性质的证明过程，可以通过反证法，若H不满足该性质，则h也不满足抗碰撞。</p>
-<p>顺带一提，王小云院士的一大工作便是找到杂凑(hash)函数的碰撞，也因她的工作，采用MD transform的MD5,SHA-1被证明是不安全的。实际运用中，最好采用SHA-2,或者不是MD transform形式的SHA-3算法。</p>
+<p>顺带一提，我国密码学的王小云院士的一大工作便是找到杂凑(hash)函数的碰撞，也因她的工作，采用MD transform的MD5,SHA-1被证明是不安全的。实际运用中，最好采用SHA-2,或者不是MD transform形式的SHA-3算法。</p>
 <h2 id="Hash-and-MAC">Hash-and-MAC</h2>
 <p>有了hash函数后，对<strong>任意长度</strong>的明文m进行认证，可以采用“先对m进行hash，再对hash值进行mac计算”。MAC保证了攻击者无法对任何新的哈希值进行认证，而抗碰撞使攻击者无法找到对应的明文。</p>
 <hr>
@@ -705,7 +705,7 @@ $Vrfy$满足canonical条件。</p>
 </div>
 <p>证明过程需要用到归约性证明，证明若敌手要攻破构造的方案，要么攻破MAC要么找到碰撞。</p>
 <h3 id="using-Hash-functions-as-MACs">using Hash functions as MACs</h3>
-<p>在许多场合中，人们会错误的直接把密码学意义上的hash函数用于认证<s>谁会去学密码学啊</s>,这实际上是十分危险的。</p>
+<p>在许多场合中，人们会错误的直接把密码学意义上的hash函数用于认证<s>没有基本的密码学常识</s>,这实际上是十分危险的。</p>
 <p>$Naive$<s>y**ng</s> MAC：$Mac_k(m)=H(k||m)$</p>
 <p>但用hash函数构造MAC是可行的：</p>
 <p>$Nested$ MAC（两密钥），若采用的哈希函数是PRF，则NMAC也是PRF，从而就是MAC。</p>
@@ -767,11 +767,11 @@ $F_k(x)=H(k||x)$</p>
 <p>MAC要求通信双方在通信前共享密钥，而哈希函数虽然不用密钥的存储，但要求能够安全存储哈希值。</p>
 <h3 id="basic-password-protocol">basic password protocol</h3>
 <p><s>谁的密码明文存储啊？</s></p>
-<p><s>哦，CSDN啊，没事了</s></p>
-<p>感觉现实中对密码进行哈希操作已经是稀松平常了。具有抗碰撞性的哈希就是好用。</p>
+<p><s>原来是CSDN啊</s></p>
+<p>现实中对密码进行哈希操作已经是稀松平常了。具有抗碰撞性的哈希就是好用。</p>
 <p>然而，由于许多人采用弱密码，可以用在线字典攻击(攻击者对用户清单统一尝试较少密码)，也可以离线字典攻击(暴力查找H(w)=storaged password).<br>
 而batch离线字典攻击则假设敌手获取一整个存储密码的文件$F$，用事先准备的字典集合$Dict$对其进行离线字典攻击，这种方式更容易攻破其密码,时间复杂度为$|Dict|+|F|$</p>
-<p>于是就有了public salt，也就是我们说的<strong>加盐</strong>，即使在密码文件中公开存储盐值，也可以保证其时间复杂度大幅上升，攻击者必须遍历密码文件才能完成一次攻击尝试，于是时间复杂度为$O(|Dict|\times|F|)$</p>
+<p>于是就有了public salt，也就是我们常说的<strong>加盐</strong>，即使在密码文件中公开存储盐值，也可以保证其时间复杂度大幅上升，攻击者必须遍历密码文件才能完成一次攻击尝试，于是时间复杂度为$O(|Dict|\times|F|)$</p>
 <hr>
 <p>回到对于密码的哈希：如果哈希函数，例如SHA1执行过快，也就是单步执行过快，计算机也能在可接受的时间内完成计算。</p>
 <p>于是就有“慢”哈希函数，或者多次应用哈希函数来减慢速度；或者如之前已经叙述过的“加盐”，抑或是服务器辅助的方法（密码学老师似乎就是搞这方向的，还搞了两篇自己的论文放在PPT，乐）。</p>
@@ -1443,7 +1443,7 @@ $F_k(x)=H(k||x)$</p>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">58.4k</span>
+                        class="white-color">56.1k</span>
             
             
             

@@ -6,7 +6,7 @@
   <link href="https://zzzremake.github.io/atom.xml" rel="self"/>
   
   <link href="https://zzzremake.github.io/"/>
-  <updated>2024-02-11T05:39:49.404Z</updated>
+  <updated>2024-02-22T05:22:30.102Z</updated>
   <id>https://zzzremake.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://zzzremake.github.io/2024/01/27/mit-6.s081-lab7-9-thread/"/>
     <id>https://zzzremake.github.io/2024/01/27/mit-6.s081-lab7-9-thread/</id>
     <published>2024-01-27T07:26:45.000Z</published>
-    <updated>2024-02-11T05:39:49.404Z</updated>
+    <updated>2024-02-22T05:22:30.102Z</updated>
     
     
       
@@ -103,7 +103,7 @@
     <link href="https://zzzremake.github.io/2023/11/09/mit-6.s081-lab1-3-begin-xv6/"/>
     <id>https://zzzremake.github.io/2023/11/09/mit-6.s081-lab1-3-begin-xv6/</id>
     <published>2023-11-09T02:38:42.000Z</published>
-    <updated>2023-11-13T03:03:37.323Z</updated>
+    <updated>2024-04-06T14:05:24.616Z</updated>
     
     
       
@@ -312,7 +312,7 @@
     <link href="https://zzzremake.github.io/2023/02/13/modern-cryptoix-public-key-and-pre-knowledge/"/>
     <id>https://zzzremake.github.io/2023/02/13/modern-cryptoix-public-key-and-pre-knowledge/</id>
     <published>2023-02-13T01:48:59.000Z</published>
-    <updated>2023-02-23T15:16:08.664Z</updated>
+    <updated>2024-07-20T05:26:20.003Z</updated>
     
     
       
@@ -321,7 +321,7 @@
         
     <summary type="html">&lt;p&gt;信安数学爷们可以跳过这章（&lt;/p&gt;
 &lt;p&gt;同时，这章只是为了稍微有点数论基础的人恶补一下所需知识，没有接触过数论的还是稍微学学再来（&lt;/p&gt;
-&lt;h2 id=&quot;math&quot;&gt;math&lt;/h2&gt;
+&lt;h2 id=&quot;Math&quot;&gt;Math&lt;/h2&gt;
 &lt;h3 id=&quot;Integers-mod-N&quot;&gt;Integers mod N&lt;/h3&gt;
 &lt;p&gt;gcd，以及$&#92;xi(N)$(欧拉函数)</summary>
         
@@ -371,7 +371,7 @@
     <link href="https://zzzremake.github.io/2023/02/09/modern-cryptovii-cryptographic-hash-functions/"/>
     <id>https://zzzremake.github.io/2023/02/09/modern-cryptovii-cryptographic-hash-functions/</id>
     <published>2023-02-09T01:20:59.000Z</published>
-    <updated>2023-02-23T14:34:37.345Z</updated>
+    <updated>2024-07-20T05:19:48.030Z</updated>
     
     
       
@@ -398,7 +398,7 @@
     <link href="https://zzzremake.github.io/2023/02/05/modern-cryptovi-cca-security-authenticated-encryption/"/>
     <id>https://zzzremake.github.io/2023/02/05/modern-cryptovi-cca-security-authenticated-encryption/</id>
     <published>2023-02-05T07:26:56.000Z</published>
-    <updated>2023-02-16T08:49:25.571Z</updated>
+    <updated>2024-07-19T16:03:23.489Z</updated>
     
     
       
@@ -428,7 +428,7 @@
     <link href="https://zzzremake.github.io/2023/02/02/modern-cryptov-secret-key-authentication-message-authentication-codes/"/>
     <id>https://zzzremake.github.io/2023/02/02/modern-cryptov-secret-key-authentication-message-authentication-codes/</id>
     <published>2023-02-02T06:59:34.000Z</published>
-    <updated>2023-02-18T01:54:37.626Z</updated>
+    <updated>2024-07-19T15:53:10.519Z</updated>
     
     
       
@@ -436,8 +436,7 @@
         
         
     <summary type="html">&lt;h2 id=&quot;消息认证&quot;&gt;消息认证&lt;/h2&gt;
-&lt;p&gt;至今为止，我们所讨论的安全都是secrecy，即保证EAV、CPA下不泄露任何除明文长度外的明文信息。本章要讨论的便是另一方面的安全：消息认证。即：保证消息的完整性，或保证消息来源身份的可靠性。&lt;/p&gt;
-&lt;p&gt;之前在群里和群友讨论过这类话题，群友似乎认为MAC（消息认证码）能够加密信息）所以说加密和认证是十分容易搞混的</summary>
+&lt;p&gt;至今为止，我们所讨论的安全都是secrecy，即保证EAV、CPA下不泄露任何除明文长度外的明文信息。本章要讨论的便是另一方面的安全：消息认证。即：保证消息的完整性，或保证消息来源身份的可靠性</summary>
         
       
     
@@ -457,7 +456,7 @@
     <link href="https://zzzremake.github.io/2023/01/31/modern-cryptoiv-private-key-encryption/"/>
     <id>https://zzzremake.github.io/2023/01/31/modern-cryptoiv-private-key-encryption/</id>
     <published>2023-01-31T07:54:43.000Z</published>
-    <updated>2023-02-23T14:12:21.451Z</updated>
+    <updated>2024-04-06T13:48:57.441Z</updated>
     
     
       
@@ -487,7 +486,7 @@
     <link href="https://zzzremake.github.io/2023/01/03/modern-cryptoiii-computational-security/"/>
     <id>https://zzzremake.github.io/2023/01/03/modern-cryptoiii-computational-security/</id>
     <published>2023-01-03T04:48:18.000Z</published>
-    <updated>2023-02-16T08:45:32.967Z</updated>
+    <updated>2024-04-05T10:57:42.571Z</updated>
     
     
       
@@ -495,7 +494,7 @@
         
         
     <summary type="html">&lt;h2 id=&quot;Computational-Security&quot;&gt;Computational Security&lt;/h2&gt;
-&lt;p&gt;Perfect Security在拥有无限算力的eav窃听者情况下是可证明安全的，不会泄露任何有关明文的信息，因此被称为&lt;strong&gt;信息论安全&lt;/strong&gt;。然而，该方法具有密钥长度必须和明文长度等长、密钥不能复用，且加密方案有着不必要的强安全性</summary>
+&lt;p&gt;Perfect Security在拥有无限算力的eav(窃听者)情况下是可证明安全的，不会泄露任何有关明文的信息，因此被称为&lt;strong&gt;信息论安全&lt;/strong&gt;。然而，该方法具有密钥长度必须和明文长度等长、密钥不能复用，且加密方案有着不必要的强安全性</summary>
         
       
     
@@ -513,7 +512,7 @@
     <link href="https://zzzremake.github.io/2022/12/25/devops-chu-tan-yi-ci-bu-cheng-gong-de-zhao-xin-jing-li/"/>
     <id>https://zzzremake.github.io/2022/12/25/devops-chu-tan-yi-ci-bu-cheng-gong-de-zhao-xin-jing-li/</id>
     <published>2022-12-25T07:48:00.000Z</published>
-    <updated>2023-09-09T12:14:42.294Z</updated>
+    <updated>2024-07-19T14:28:39.134Z</updated>
     
     
       
@@ -545,7 +544,7 @@
     <link href="https://zzzremake.github.io/2022/12/02/modern-cryptoii-perfect-encryption/"/>
     <id>https://zzzremake.github.io/2022/12/02/modern-cryptoii-perfect-encryption/</id>
     <published>2022-12-02T13:41:16.000Z</published>
-    <updated>2023-02-23T13:49:36.757Z</updated>
+    <updated>2024-07-19T13:32:46.069Z</updated>
     
     
       
@@ -572,7 +571,7 @@
     <link href="https://zzzremake.github.io/2022/11/26/modern-cryptoi-introduction/"/>
     <id>https://zzzremake.github.io/2022/11/26/modern-cryptoi-introduction/</id>
     <published>2022-11-26T02:38:42.000Z</published>
-    <updated>2023-02-16T08:59:48.566Z</updated>
+    <updated>2024-07-19T13:13:39.155Z</updated>
     
     
       
@@ -580,9 +579,9 @@
         
         
     <summary type="html">&lt;p&gt;该博客。。大约是学校课程的一个小小的复习。&lt;/p&gt;
-&lt;p&gt;另有本博客附加说明：&lt;/p&gt;
-&lt;div class=&quot;admonition info&quot;&gt;&lt;p class=&quot;admonition-title&quot;&gt;说明框
-&lt;/p&gt;&lt;p&gt;这种格式一般而言是对性质、构造等的说明</summary>
+&lt;div class=&quot;admonition info&quot;&gt;&lt;p class=&quot;admonition-title&quot;&gt;Note
+&lt;/p&gt;&lt;p&gt;如果你是某西南大专xx计划的学生，那么恭喜你在六选四里选到了唯一的宝藏课。
+如果你是网安的，那你还会享受到1.1的权重（这是算保研的！），赢上加赢</summary>
         
       
     

@@ -619,7 +619,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2023-02-23
+                    2024-04-06
                 </div>
                 
 
@@ -649,11 +649,11 @@
                 <h2 id="对上节的补充说明">对上节的补充说明</h2>
 <p>上接 <a href="https://zzzremake.github.io/2023/01/03/modern-cryptoiii-computational-security/#Stronger-security-notions-CPA-Security">Ⅲ</a>。</p>
 <p>我们目前已经拥有的加密方案，只有one-time pad以及其Ⅲ里头的改进型。改进型的加密方案是在单消息意义下的EAV不可区分性。<br>
-在多消息的情况下，由于one-time pad本质是<strong>确定性</strong>的，所以不能保证安全性。由此可以导出：</p>
+在多消息的情况下，由于one-time pad的Enc本质是<strong>确定性</strong>的，所以不能保证安全性。由此可以导出：</p>
 <p>!!!<br>
 若一个加密方案中Enc为确定性的，则在EAV下无法保证多消息加密的不可区分性。</p>
-<p>因此，需要概率意义上的Enc，也因此可以导出CPA-Security。</p>
-<p>另外，多消息加密的、固定明文长度的加密方案，理论上进行重复便可以加密任意长的消息，但在这章的后续部分中，将介绍更为有效率的加密任意长度的消息方式。</p>
+<p>因此，需要概率意义上的Enc，有了它就可以继续讨论CPA-Security。</p>
+<p>另外，多消息加密的、固定明文长度的加密方案，理论上不断重复同一过程便可以加密任意长的消息，但在这章的后续部分中，将介绍更为有效率的加密任意长度的消息方式。</p>
 <hr>
 <p>在开始本节构造CPA加密方案前，有必要对伪随机性进行深入讨论。</p>
 <h2 id="Pseudorandom-functions">Pseudorandom functions</h2>
@@ -663,8 +663,7 @@ PRG是将作为种子的随机序列进行扩展长度，使其无法与相同�
 </p><p>$$F:\{0,1\}^{l_{key}} \times \{0,1\}^{l_{in}} \rightarrow \{0,1\}^{l_{out}}$$</p>
 <ol>
 <li>Efficient:
-$$l_{key}(n)=l_{in}(n)=l_{out}(n)^a$$
-实际上的PRF可以不等长，但在接下来的讨论中，可以</li>
+$$l_{key}(n)=l_{in}(n)=l_{out}(n)^a$$</li>
 <li>Secure: $F(k,\cdot)$with a random key $\mathcal{k} \in \{0,1\}^{n}$ 和随机函数$\{0,1\}^{n}\rightarrow\{0,1\}^{n} $无法区分。</li>
 </ol>
 </div>
@@ -747,7 +746,7 @@ $$F_s^l(IV)=GetBits_1(Init(s,IV),1^l)$$<br>
 <p>CBC的主体部分是作为一个链条进行的，所以只能序列性的进行加密，无法有效的并行化处理从而加速加密过程。</p>
 <h5 id="Chain-CBC-mode">Chain CBC mode</h5>
 <p>这种模式在SSL 3.0和TLS 1.0中使用，将其上一次加密的最后一个分组返回的密文块作为下一条明文加密的$IV$。看上去，这种方式能够加密更多的消息而不用重新生成新的$IV$.然而，这种方式不是CPA secure的。</p>
-<p>感觉介绍这个案例的更多原因是警醒别人不要随意改动原来已被证明安全的方案。即使只是很小的改动也无法保证能保持安全性。</p>
+<p>介绍这个案例的更多原因是警醒别人不要随意改动原来已被证明安全的方案。即使只是很小的改动也无法保证能保持安全性。</p>
 <h4 id="OFB">OFB</h4>
 <p>相比于CBC：</p>
 <ol>
@@ -1439,7 +1438,7 @@ CTR限制了长度，因此在n=64，比如采用DES时能够加密34GB的明文
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
-                        class="white-color">58.4k</span>
+                        class="white-color">56.1k</span>
             
             
             
